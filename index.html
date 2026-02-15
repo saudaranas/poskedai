@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POSKedai - Sistem POS Kedai Makanan Termudah & Termurah</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        /* ==================== RESET ==================== */
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;color:#1e293b;overflow-x:hidden}
+        a{text-decoration:none;color:inherit}
+        img{max-width:100%}
+
+        /* ==================== NAVBAR ==================== */
+        .navbar{
+            position:fixed;top:0;left:0;right:0;z-index:100;
+            padding:16px 24px;
+            transition:all 0.3s;
+        }
+        .navbar.scrolled{
+            background:rgba(255,255,255,0.95);
+            backdrop-filter:blur(10px);
+            box-shadow:0 2px 20px rgba(0,0,0,0.08);
+            padding:12px 24px;
+        }
+        .nav-container{
+            max-width:1200px;margin:0 auto;
+            display:flex;justify-content:space-between;align-items:center;
+        }
+        .nav-logo{font-weight:900;font-size:1.5rem;color:#f97316;}
+        .nav-logo span{color:#1e293b}
+        .nav-links{display:flex;gap:32px;align-items:center;}
+        .nav-links a{font-weight:600;font-size:0.9rem;color:#64748b;transition:color 0.2s;}
+        .nav-links a:hover{color:#f97316}
+        .nav-cta{
+            background:#f97316;color:#fff!important;
+            padding:10px 24px;border-radius:50px;
+            font-weight:700;transition:all 0.3s;
+            box-shadow:0 4px 15px rgba(249,115,22,0.3);
+        }
+        .nav-cta:hover{background:#ea580c;transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,0.4);}
+        .nav-mobile{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;}
+
+        /* ==================== HERO ==================== */
+        .hero{
+            min-height:100vh;
+            background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#fed7aa 100%);
+            display:flex;align-items:center;
+            padding:120px 24px 80px;
+            position:relative;
+            overflow:hidden;
+        }
+        .hero::before{
+            content:'';position:absolute;top:-50%;right:-20%;
+            width:800px;height:800px;
+            background:radial-gradient(circle,rgba(249,115,22,0.1) 0%,transparent 70%);
+            border-radius:50%;
+        }
+        .hero-container{
+            max-width:1200px;margin:0 auto;width:100%;
+            display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+        }
+        .hero-content{position:relative;z-index:2;}
+        .hero-badge{
+            display:inline-block;
+            background:#fff;
+            padding:8px 20px;border-radius:50px;
+            font-size:0.8rem;font-weight:700;color:#f97316;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom:24px;
+            animation:fadeInUp 0.6s ease;
+        }
+        .hero h1{
+            font-size:3.5rem;font-weight:900;
+            line-height:1.1;margin-bottom:24px;
+            color:#1e293b;
+            animation:fadeInUp 0.6s ease 0.1s both;
+        }
+        .hero h1 span{
+            background:linear-gradient(135deg,#f97316,#ef4444);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        .hero p{
+            font-size:1.15rem;color:#64748b;
+            line-height:1.7;margin-bottom:36px;
+            max-width:500px;
+            animation:fadeInUp 0.6s ease 0.2s both;
+        }
+        .hero-buttons{
+            display:flex;gap:16px;flex-wrap:wrap;
+            animation:fadeInUp 0.6s ease 0.3s both;
+        }
+        .btn-hero{
+            padding:16px 36px;border-radius:50px;
+            font-weight:700;font-size:1rem;
+            border:none;cursor:pointer;
+            transition:all 0.3s;
+            display:inline-flex;align-items:center;gap:8px;
+        }
+        .btn-hero-primary{
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;
+            box-shadow:0 8px 25px rgba(249,115,22,0.35);
+        }
+        .btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
+        .btn-hero-secondary{
+            background:#fff;color:#1e293b;
+            box-shadow:0 4px 15px rgba(0,0,0,0.08);
+        }
+        .btn-hero-secondary:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.12);}
+        .hero-stats{
+            display:flex;gap:40px;margin-top:48px;
+            animation:fadeInUp 0.6s ease 0.4s both;
+        }
+        .hero-stat h3{font-size:2rem;font-weight:900;color:#f97316;}
+        .hero-stat p{font-size:0.8rem;color:#94a3b8;font-weight:600;}
+
+        /* Hero Image / Mockup */
+        .hero-visual{
+            position:relative;z-index:2;
+            animation:fadeInRight 0.8s ease 0.3s both;
+        }
+        .hero-mockup{
+            background:#fff;
+            border-radius:24px;
+            box-shadow:0 30px 60px rgba(0,0,0,0.12);
+            overflow:hidden;
+            border:4px solid #e2e8f0;
+        }
+        .mockup-header{
+            background:linear-gradient(135deg,#f97316,#ef4444);
+            padding:16px 20px;color:#fff;
+        }
+        .mockup-header h4{font-size:1rem;}
+        .mockup-header p{font-size:0.7rem;opacity:0.8;}
+        .mockup-nav{
+            background:#fff;padding:10px 16px;
+            display:flex;gap:6px;border-bottom:1px solid #f1f5f9;
+        }
+        .mockup-nav-btn{
+            padding:6px 12px;border-radius:8px;
+            font-size:0.65rem;font-weight:600;
+            background:#f1f5f9;color:#94a3b8;
+        }
+        .mockup-nav-btn.active{background:#f97316;color:#fff;}
+        .mockup-body{padding:16px;}
+        .mockup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+        .mockup-item{
+            background:#f8fafc;border:2px solid #f1f5f9;
+            border-radius:10px;padding:10px;text-align:center;
+        }
+        .mockup-item-name{font-size:0.6rem;font-weight:700;color:#334155;}
+        .mockup-item-price{font-size:0.75rem;font-weight:800;color:#f97316;margin-top:2px;}
+        .mockup-float{
+            position:absolute;
+            background:#fff;border-radius:16px;padding:12px 16px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.15);
+            font-size:0.75rem;font-weight:700;
+            animation:float 3s ease-in-out infinite;
+        }
+        .mockup-float-1{top:20%;right:-20px;color:#22c55e;}
+        .mockup-float-2{bottom:20%;left:-20px;color:#f97316;}
+
+        /* ==================== FEATURES ==================== */
+        .features{padding:100px 24px;background:#fff;}
+        .section-container{max-width:1200px;margin:0 auto;}
+        .section-header{text-align:center;margin-bottom:64px;}
+        .section-badge{
+            display:inline-block;background:#fff7ed;
+            padding:8px 20px;border-radius:50px;
+            font-size:0.8rem;font-weight:700;color:#f97316;
+            margin-bottom:16px;
+        }
+        .section-header h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;}
+        .section-header h2 span{color:#f97316;}
+        .section-header p{font-size:1.1rem;color:#64748b;max-width:600px;margin:0 auto;}
+
+        .features-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:24px;
+        }
+        .feature-card{
+            background:#fff;border:2px solid #f1f5f9;
+            border-radius:20px;padding:32px;
+            transition:all 0.3s;position:relative;overflow:hidden;
+        }
+        .feature-card:hover{
+            border-color:#fed7aa;
+            transform:translateY(-8px);
+            box-shadow:0 20px 40px rgba(0,0,0,0.08);
+        }
+        .feature-icon{
+            width:56px;height:56px;
+            border-radius:16px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.5rem;margin-bottom:20px;
+        }
+        .fi-orange{background:#fff7ed;}
+        .fi-green{background:#f0fdf4;}
+        .fi-blue{background:#eff6ff;}
+        .fi-purple{background:#faf5ff;}
+        .fi-red{background:#fef2f2;}
+        .fi-yellow{background:#fefce8;}
+        .feature-card h3{font-size:1.15rem;font-weight:800;margin-bottom:10px;}
+        .feature-card p{font-size:0.9rem;color:#64748b;line-height:1.6;}
+
+        /* ==================== HOW IT WORKS ==================== */
+        .how-it-works{padding:100px 24px;background:#f8fafc;}
+        .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;}
+        .step-card{text-align:center;position:relative;}
+        .step-number{
+            width:60px;height:60px;
+            border-radius:50%;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;font-weight:900;font-size:1.3rem;
+            display:flex;align-items:center;justify-content:center;
+            margin:0 auto 20px;
+            box-shadow:0 8px 20px rgba(249,115,22,0.3);
+        }
+        .step-card h3{font-size:1.1rem;font-weight:800;margin-bottom:8px;}
+        .step-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
+        .step-arrow{
+            position:absolute;top:30px;right:-16px;
+            font-size:1.5rem;color:#cbd5e1;
+        }
+
+        /* ==================== PRICING ==================== */
+        .pricing{padding:100px 24px;background:#fff;}
+        .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto;}
+        .price-card{
+            background:#fff;border:2px solid #f1f5f9;
+            border-radius:24px;padding:36px;
+            transition:all 0.3s;text-align:center;
+            position:relative;
+        }
+        .price-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.08);}
+        .price-card.popular{
+            border-color:#f97316;
+            box-shadow:0 20px 40px rgba(249,115,22,0.15);
+            transform:scale(1.05);
+        }
+        .price-card.popular:hover{transform:scale(1.05) translateY(-8px);}
+        .popular-badge{
+            position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;padding:6px 24px;border-radius:50px;
+            font-size:0.75rem;font-weight:700;
+            box-shadow:0 4px 15px rgba(249,115,22,0.3);
+        }
+        .price-card h3{font-size:1.2rem;font-weight:800;margin-bottom:4px;}
+        .price-card .price-desc{font-size:0.85rem;color:#94a3b8;margin-bottom:24px;}
+        .price-amount{margin-bottom:24px;}
+        .price-amount .currency{font-size:1.2rem;font-weight:700;color:#64748b;vertical-align:top;}
+        .price-amount .amount{font-size:3.5rem;font-weight:900;color:#1e293b;}
+        .price-amount .period{font-size:0.9rem;color:#94a3b8;font-weight:600;}
+        .price-features{list-style:none;text-align:left;margin-bottom:32px;}
+        .price-features li{
+            padding:10px 0;font-size:0.9rem;color:#64748b;
+            border-bottom:1px solid #f8fafc;
+            display:flex;align-items:center;gap:10px;
+        }
+        .price-features li .check{color:#22c55e;font-weight:700;}
+        .price-features li .cross{color:#e2e8f0;font-weight:700;}
+        .btn-price{
+            display:block;width:100%;padding:14px;
+            border-radius:50px;border:none;
+            font-weight:700;font-size:0.95rem;
+            cursor:pointer;transition:all 0.3s;
+        }
+        .btn-price-primary{
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;box-shadow:0 8px 20px rgba(249,115,22,0.3);
+        }
+        .btn-price-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(249,115,22,0.4);}
+        .btn-price-secondary{background:#f8fafc;color:#1e293b;}
+        .btn-price-secondary:hover{background:#f1f5f9;transform:translateY(-2px);}
+
+        /* ==================== COMPARISON ==================== */
+        .comparison{padding:100px 24px;background:#f8fafc;}
+        .compare-table{
+            max-width:900px;margin:0 auto;
+            background:#fff;border-radius:20px;
+            overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);
+        }
+        .compare-row{
+            display:grid;grid-template-columns:2fr 1fr 1fr;
+            padding:16px 24px;border-bottom:1px solid #f8fafc;
+            font-size:0.9rem;align-items:center;
+        }
+        .compare-row:last-child{border:none;}
+        .compare-header{
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;font-weight:700;
+        }
+        .compare-row:nth-child(even){background:#fafbfc;}
+        .compare-label{font-weight:600;color:#334155;}
+        .compare-value{text-align:center;font-weight:700;}
+        .compare-yes{color:#22c55e;}
+        .compare-no{color:#e2e8f0;}
+
+        /* ==================== TESTIMONIAL ==================== */
+        .testimonials{padding:100px 24px;background:#fff;}
+        .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+        .testimonial-card{
+            background:#f8fafc;border-radius:20px;padding:32px;
+            position:relative;
+        }
+        .testimonial-card::before{
+            content:'"';position:absolute;top:16px;left:24px;
+            font-size:4rem;color:#f97316;opacity:0.2;font-weight:900;
+            line-height:1;
+        }
+        .testimonial-text{font-size:0.95rem;color:#64748b;line-height:1.7;margin-bottom:20px;position:relative;z-index:1;}
+        .testimonial-author{display:flex;align-items:center;gap:12px;}
+        .testimonial-avatar{
+            width:48px;height:48px;border-radius:50%;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            display:flex;align-items:center;justify-content:center;
+            color:#fff;font-weight:800;font-size:1.1rem;
+        }
+        .testimonial-name{font-weight:700;font-size:0.9rem;}
+        .testimonial-role{font-size:0.75rem;color:#94a3b8;}
+        .testimonial-stars{color:#f97316;font-size:0.85rem;margin-bottom:12px;}
+
+        /* ==================== CTA ==================== */
+        .cta{
+            padding:100px 24px;
+            background:linear-gradient(135deg,#f97316,#ef4444);
+            text-align:center;color:#fff;
+            position:relative;overflow:hidden;
+        }
+        .cta::before{
+            content:'';position:absolute;top:-50%;left:-20%;
+            width:600px;height:600px;
+            background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);
+            border-radius:50%;
+        }
+        .cta h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;position:relative;z-index:2;}
+        .cta p{font-size:1.15rem;opacity:0.9;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto;position:relative;z-index:2;}
+        .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+        .btn-cta-white{
+            background:#fff;color:#f97316;
+            padding:16px 36px;border-radius:50px;
+            font-weight:700;font-size:1rem;border:none;cursor:pointer;
+            box-shadow:0 8px 25px rgba(0,0,0,0.15);
+            transition:all 0.3s;
+            display:inline-flex;align-items:center;gap:8px;
+        }
+        .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,0,0,0.2);}
+        .btn-cta-outline{
+            background:transparent;color:#fff;
+            padding:16px 36px;border-radius:50px;
+            font-weight:700;font-size:1rem;
+            border:2px solid rgba(255,255,255,0.5);cursor:pointer;
+            transition:all 0.3s;
+            display:inline-flex;align-items:center;gap:8px;
+        }
+        .btn-cta-outline:hover{background:rgba(255,255,255,0.15);border-color:#fff;}
+
+        /* ==================== FAQ ==================== */
+        .faq{padding:100px 24px;background:#fff;}
+        .faq-list{max-width:700px;margin:0 auto;}
+        .faq-item{border-bottom:2px solid #f1f5f9;padding:20px 0;}
+        .faq-question{
+            display:flex;justify-content:space-between;align-items:center;
+            cursor:pointer;font-weight:700;font-size:1rem;
+            color:#1e293b;
+        }
+        .faq-question:hover{color:#f97316;}
+        .faq-toggle{
+            font-size:1.5rem;color:#f97316;
+            transition:transform 0.3s;font-weight:300;
+        }
+        .faq-answer{
+            max-height:0;overflow:hidden;
+            transition:max-height 0.3s ease;
+            font-size:0.9rem;color:#64748b;line-height:1.7;
+        }
+        .faq-item.active .faq-answer{max-height:200px;padding-top:12px;}
+        .faq-item.active .faq-toggle{transform:rotate(45deg);}
+
+        /* ==================== FOOTER ==================== */
+        .footer{
+            background:#0f172a;color:#94a3b8;
+            padding:60px 24px 30px;
+        }
+        .footer-container{
+            max-width:1200px;margin:0 auto;
+            display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;
+        }
+        .footer-brand h3{color:#fff;font-size:1.5rem;font-weight:900;margin-bottom:12px;}
+        .footer-brand h3 span{color:#f97316;}
+        .footer-brand p{font-size:0.85rem;line-height:1.6;}
+        .footer-links h4{color:#fff;font-weight:700;margin-bottom:16px;font-size:0.95rem;}
+        .footer-links a{display:block;font-size:0.85rem;margin-bottom:10px;transition:color 0.2s;}
+        .footer-links a:hover{color:#f97316;}
+        .footer-bottom{
+            max-width:1200px;margin:30px auto 0;
+            padding-top:30px;border-top:1px solid #1e293b;
+            text-align:center;font-size:0.8rem;
+        }
+
+        /* ==================== WHATSAPP FLOAT ==================== */
+        .wa-float{
+            position:fixed;bottom:24px;right:24px;z-index:90;
+            width:60px;height:60px;border-radius:50%;
+            background:#25D366;color:#fff;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.8rem;
+            box-shadow:0 8px 25px rgba(37,211,102,0.4);
+            cursor:pointer;transition:all 0.3s;
+            text-decoration:none;
+        }
+        .wa-float:hover{transform:scale(1.1);box-shadow:0 12px 35px rgba(37,211,102,0.5);}
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+        @keyframes fadeInRight{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+        @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+        .animate{opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
+        .animate.visible{opacity:1;transform:translateY(0);}
+
+        /* ==================== RESPONSIVE ==================== */
+        @media(max-width:968px){
+            .nav-links{display:none;}
+            .nav-mobile{display:block;}
+            .hero-container{grid-template-columns:1fr;text-align:center;}
+            .hero h1{font-size:2.5rem;}
+            .hero p{margin:0 auto 36px;}
+            .hero-buttons{justify-content:center;}
+            .hero-stats{justify-content:center;}
+            .hero-visual{max-width:400px;margin:0 auto;}
+            .features-grid{grid-template-columns:1fr 1fr;}
+            .steps-grid{grid-template-columns:1fr 1fr;}
+            .step-arrow{display:none;}
+            .pricing-grid{grid-template-columns:1fr;}
+            .price-card.popular{transform:none;}
+            .price-card.popular:hover{transform:translateY(-8px);}
+            .testimonial-grid{grid-template-columns:1fr;}
+            .compare-row{grid-template-columns:1.5fr 1fr 1fr;font-size:0.8rem;padding:12px 16px;}
+            .footer-container{grid-template-columns:1fr;}
+        }
+        @media(max-width:600px){
+            .hero h1{font-size:2rem;}
+            .features-grid{grid-template-columns:1fr;}
+            .steps-grid{grid-template-columns:1fr;}
+            .hero-stats{flex-direction:column;gap:16px;}
+            .cta h2{font-size:1.8rem;}
+            .mockup-float{display:none;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="#" class="nav-logo">POS<span>Kedai</span></a>
+        <div class="nav-links">
+            <a href="#features">Fungsi</a>
+            <a href="#cara">Cara Guna</a>
+            <a href="#harga">Harga</a>
+            <a href="#faq">FAQ</a>
+            <a href="#hubungi" class="nav-cta">Hubungi Kami</a>
+        </div>
+        <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+    </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">🔥 Sistem POS #1 Untuk Kedai Makan</div>
+            <h1>Urus Kedai Makan Jadi <span>Lebih Mudah</span></h1>
+            <p>Sistem POS lengkap yang murah, mudah guna, dan tak perlu beli mesin mahal. Guna tablet atau phone yang anda sedia ada!</p>
+            <div class="hero-buttons">
+                <a href="https://wa.me/60123456789?text=Saya%20berminat%20dengan%20POSKedai!" class="btn-hero btn-hero-primary">
+                    📱 Cuba Percuma 7 Hari
+                </a>
+                <a href="#features" class="btn-hero btn-hero-secondary">
+                    Lihat Fungsi →
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <h3>50+</h3>
+                    <p>Kedai Guna</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>RM30</h3>
+                    <p>Sebulan Je</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>24/7</h3>
+                    <p>Support</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="mockup-float mockup-float-1">✅ Pesanan #0012 Selesai!</div>
+            <div class="mockup-float mockup-float-2">💰 Jualan: RM 1,250</div>
+            <div class="hero-mockup">
+                <div class="mockup-header">
+                    <h4>🍽️ POS Kedai Makanan</h4>
+                    <p>Sistem Pengurusan Pesanan</p>
+                </div>
+                <div class="mockup-nav">
+                    <span class="mockup-nav-btn active">🛒 Pesanan</span>
+                    <span class="mockup-nav-btn">📦 Senarai</span>
+                    <span class="mockup-nav-btn">📋 Menu</span>
+                    <span class="mockup-nav-btn">💰 Laporan</span>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-grid">
+                        <div class="mockup-item"><div class="mockup-item-name">Nasi Lemak</div><div class="mockup-item-price">RM 5.00</div></div>
+                        <div class="mockup-item"><div class="mockup-item-name">Mee Goreng</div><div class="mockup-item-price">RM 6.00</div></div>
+                        <div class="mockup-item"><div class="mockup-item-name">Roti Canai</div><div class="mockup-item-price">RM 1.50</div></div>
+                        <div class="mockup-item"><div class="mockup-item-name">Teh Tarik</div><div class="mockup-item-price">RM 2.00</div></div>
+                        <div class="mockup-item"><div class="mockup-item-name">Nasi Goreng</div><div class="mockup-item-price">RM 6.00</div></div>
+                        <div class="mockup-item"><div class="mockup-item-name">Milo Ais</div><div class="mockup-item-price">RM 3.00</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FEATURES ==================== -->
+<section class="features" id="features">
+    <div class="section-container">
+        <div class="section-header animate">
+            <div class="section-badge">✨ Fungsi Lengkap</div>
+            <h2>Semua Yang Kedai Anda <span>Perlukan</span></h2>
+            <p>Dari ambil pesanan sampai cetak resit, semua dalam satu sistem yang mudah guna</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate">
+                <div class="feature-icon fi-orange">🛒</div>
+                <h3>Pesanan Pantas</h3>
+                <p>Klik menu, pilih kuantiti, terus hantar pesanan. Cepat dan tak silap order lagi!</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon fi-green">🧾</div>
+                <h3>Cetak Resit</h3>
+                <p>Auto generate resit lengkap dengan nama kedai, alamat, dan butiran pesanan.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon fi-blue">🪑</div>
+                <h3>Nombor Meja</h3>
+                <p>Pilih meja untuk setiap pesanan. Tak keliru hantar makanan ke meja salah!</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon fi-purple">💰</div>
+                <h3>Laporan Jualan</h3>
+                <p>Tengok jualan harian, mingguan, dan bulanan. Tahu mana menu paling laris!</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon fi-red">🏷️</div>
+                <h3>Diskaun & Promosi</h3>
+                <p>Bagi diskaun kepada pelanggan dengan mudah. Auto kira harga selepas diskaun.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon fi-yellow">👤</div>
+                <h3>Login Staff</h3>
+                <p>Setiap staff ada akaun sendiri. Tahu siapa yang ambil pesanan dan buat jualan.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="how-it-works" id="cara">
+    <div class="section-container">
+        <div class="section-header animate">
+            <div class="section-badge">🚀 Mudah Je</div>
+            <h2>Mula Dalam <span>4 Langkah</span></h2>
+            <p>Setup cepat, terus boleh guna hari ni!</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card animate">
+                <div class="step-number">1</div>
+                <h3>Hubungi Kami</h3>
+                <p>WhatsApp kami dan bagi maklumat kedai anda</p>
+                <span class="step-arrow">→</span>
+            </div>
+            <div class="step-card animate">
+                <div class="step-number">2</div>
+                <h3>Kami Setup</h3>
+                <p>Dalam 1-2 hari, sistem anda siap dengan menu lengkap</p>
+                <span class="step-arrow">→</span>
+            </div>
+            <div class="step-card animate">
+                <div class="step-number">3</div>
+                <h3>Kami Ajar</h3>
+                <p>Kami tunjuk cara guna — senang je, 15 minit dah faham!</p>
+                <span class="step-arrow">→</span>
+            </div>
+            <div class="step-card animate">
+                <div class="step-number">4</div>
+                <h3>Mula Guna!</h3>
+                <p>Buka link di tablet/phone, login, terus boleh ambil pesanan!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PRICING ==================== -->
+<section class="pricing" id="harga">
+    <div class="section-container">
+        <div class="section-header animate">
+            <div class="section-badge">💎 Harga Berbaloi</div>
+            <h2>Pilih Pakej <span>Anda</span></h2>
+            <p>Jauh lebih murah dari sistem POS lain. Tak perlu beli mesin!</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="price-card animate">
+                <h3>🥉 Asas</h3>
+                <p class="price-desc">Untuk kedai kecil</p>
+                <div class="price-amount">
+                    <span class="currency">RM</span>
+                    <span class="amount">30</span>
+                    <span class="period">/bulan</span>
+                </div>
+                <ul class="price-features">
+                    <li><span class="check">✓</span> 1 peranti</li>
+                    <li><span class="check">✓</span> Menu tak terhad</li>
+                    <li><span class="check">✓</span> Pesanan & resit</li>
+                    <li><span class="check">✓</span> Laporan harian</li>
+                    <li><span class="cross">✗</span> Laporan mingguan/bulanan</li>
+                    <li><span class="cross">✗</span> Nombor meja</li>
+                    <li><span class="cross">✗</span> Multi staff</li>
+                </ul>
+                <button class="btn-price btn-price-secondary" onclick="window.open('https://wa.me/60123456789?text=Saya%20minat%20Pakej%20Asas%20POSKedai!')">Pilih Pakej</button>
+            </div>
+            <div class="price-card popular animate">
+                <div class="popular-badge">⭐ POPULAR</div>
+                <h3>🥈 Pro</h3>
+                <p class="price-desc">Paling berbaloi</p>
+                <div class="price-amount">
+                    <span class="currency">RM</span>
+                    <span class="amount">60</span>
+                    <span class="period">/bulan</span>
+                </div>
+                <ul class="price-features">
+                    <li><span class="check">✓</span> 3 peranti</li>
+                    <li><span class="check">✓</span> Menu tak terhad</li>
+                    <li><span class="check">✓</span> Pesanan & resit</li>
+                    <li><span class="check">✓</span> Laporan harian/mingguan/bulanan</li>
+                    <li><span class="check">✓</span> Nombor meja</li>
+                    <li><span class="check">✓</span> Multi staff (3 akaun)</li>
+                    <li><span class="check">✓</span> Support WhatsApp</li>
+                </ul>
+                <button class="btn-price btn-price-primary" onclick="window.open('https://wa.me/60123456789?text=Saya%20minat%20Pakej%20Pro%20POSKedai!')">Pilih Pakej</button>
+            </div>
+            <div class="price-card animate">
+                <h3>🥇 Premium</h3>
+                <p class="price-desc">Untuk kedai besar</p>
+                <div class="price-amount">
+                    <span class="currency">RM</span>
+                    <span class="amount">100</span>
+                    <span class="period">/bulan</span>
+                </div>
+                <ul class="price-features">
+                    <li><span class="check">✓</span> Unlimited peranti</li>
+                    <li><span class="check">✓</span> Semua fungsi Pro</li>
+                    <li><span class="check">✓</span> Custom branding</li>
+                    <li><span class="check">✓</span> Unlimited staff</li>
+                    <li><span class="check">✓</span> Diskaun & promosi</li>
+                    <li><span class="check">✓</span> Support prioriti</li>
+                    <li><span class="check">✓</span> Setup percuma</li>
+                </ul>
+                <button class="btn-price btn-price-secondary" onclick="window.open('https://wa.me/60123456789?text=Saya%20minat%20Pakej%20Premium%20POSKedai!')">Pilih Pakej</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== COMPARISON ==================== -->
+<section class="comparison" id="comparison">
+    <div class="section-container">
+        <div class="section-header animate">
+            <div class="section-badge">📊 Perbandingan</div>
+            <h2>Kenapa Pilih <span>POSKedai?</span></h2>
+            <p>Bandingkan sendiri dengan sistem POS lain</p>
+        </div>
+        <div class="compare-table animate">
+            <div class="compare-row compare-header">
+                <span></span>
+                <span>POS Lain</span>
+                <span>🍽️ POSKedai</span>
+            </div>
+            <div class="compare-row">
+                <span class="compare-label">Harga Bulanan</span>
+                <span class="compare-value">RM 79 - 199</span>
+                <span class="compare-value" style="color:#f97316;font-weight:800;">RM 30 - 100</span>
+            </div>
+            <div class="compare-row">
+                <span class="compare-label">Perlu Beli Mesin?</span>
+                <span class="compare-value compare-no">Ya (RM 2,000++)</span>
+                <span class="compare-value compare-yes">Tidak! ✓</span>
+            </div>
+            <div class="compare-row">
+                <span class="compare-label">Guna Phone/Tablet</span>
+                <span class="compare-value compare-no">Terhad</span>
+                <span class="compare-value compare-yes">Ya! ✓</span>
+            </div>
+            <div class="compare-row">
+                <span class="compare-label">Setup</span>
+                <span class="compare-value">1-2 minggu</span>
+                <span class="compare-value" style="color:#22c55e;">1-2 hari! ✓</span>
+            </div>
+            <div class="compare-row">
+                <span class="compare-label">Kontrak</span>
+                <span class="compare-value compare-no">6-12 bulan</span>
+                <span class="compare-value compare-yes">Tiada kontrak! ✓</span>
+            </div>
+            <div class="compare-row">
+                <span class="compare-label">Support Bahasa Melayu</span>
+                <span class="compare-value compare-no">Terhad</span>
+                <span class="compare-value compare-yes">100%! ✓</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section class="testimonials" id="testimoni">
+    <div class="section-container">
+        <div class="section-header animate">
+            <div class="section-badge">💬 Testimoni</div>
+            <h2>Apa Kata <span>Pelanggan</span></h2>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card animate">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Dulu guna tulis tangan, selalu silap kira. Sekarang guna POSKedai, semua auto. Jualan pun nampak naik sebab tak bocor duit!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">PA</div>
+                    <div>
+                        <div class="testimonial-name">Pak Ali</div>
+                        <div class="testimonial-role">Kedai Nasi Campur Pak Ali</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card animate">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Murah sangat! Sistem lain caj RM 100++, ni RM 30 je. Dan senang guna, staff saya belajar dalam 10 minit je."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">KS</div>
+                    <div>
+                        <div class="testimonial-name">Kak Siti</div>
+                        <div class="testimonial-role">Warung Kak Siti</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card animate">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Best! Boleh tengok laporan jualan terus dari phone. Tak payah kira manual dah. Support pun laju, WhatsApp je terus reply."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">ER</div>
+                    <div>
+                        <div class="testimonial-name">En. Razak</div>
+                        <div class="testimonial-role">Restoran Selera Kampung</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FAQ ==================== -->
+<section class="faq" id="faq">
+    <div class="section-container">
+        <div class="section-header animate">
+            <div class="section-badge">❓ Soalan Lazim</div>
+            <h2>Soalan <span>Popular</span></h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Perlu beli mesin atau hardware khas?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Tidak! Anda cuma perlukan tablet atau smartphone yang sedia ada. Buka browser, login, terus boleh guna. Tak perlu install apa-apa app.</div>
+            </div>
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Macam mana kalau internet putus?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Sistem perlu internet untuk simpan data. Tapi data mobile (4G/5G) pun dah cukup. Kalau internet putus kejap, boleh catat manual dulu dan masukkan balik nanti.</div>
+            </div>
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Boleh cetak resit?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Ya! Sistem auto generate resit. Boleh cetak guna printer biasa atau thermal printer. Resit ada nama kedai, butiran pesanan, dan jumlah bayaran.</div>
+            </div>
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Data saya selamat ke?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Ya, sangat selamat! Data disimpan dalam Google Cloud — sama macam Gmail dan Google Drive anda. Backup automatik, takkan hilang.</div>
+            </div>
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Ada kontrak atau lock-in period?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">Tiada kontrak langsung! Bayar bulan ke bulan. Nak berhenti? Boleh stop bila-bila masa. Tiada caj tersembunyi.</div>
+            </div>
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Berapa lama nak setup?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">1-2 hari je! Anda bagi senarai menu dan maklumat kedai, kami setupkan semuanya. Lepas tu kami ajar cara guna — 15 minit dah boleh mula!</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta" id="hubungi">
+    <h2>Sedia Nak Mudahkan<br>Pengurusan Kedai Anda?</h2>
+    <p>Cuba percuma 7 hari. Tak suka? Berhenti bila-bila. Tiada risiko langsung!</p>
+    <div class="cta-buttons">
+        <a href="https://wa.me/60123456789?text=Saya%20berminat%20nak%20cuba%20POSKedai!%20Boleh%20bagi%20free%20trial?" class="btn-cta-white">
+            📱 WhatsApp Kami Sekarang
+        </a>
+        <a href="https://saudaranas.github.io/pos-kedai-makan/" class="btn-cta-outline" target="_blank">
+            👁️ Lihat Demo
+        </a>
+    </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3>POS<span>Kedai</span></h3>
+            <p>Sistem POS paling mudah dan murah untuk kedai makan di Malaysia. Dibina khas untuk peniaga tempatan. 🇲🇾</p>
+        </div>
+        <div class="footer-links">
+            <h4>Pautan</h4>
+            <a href="#features">Fungsi</a>
+            <a href="#harga">Harga</a>
+            <a href="#faq">FAQ</a>
+            <a href="#hubungi">Hubungi</a>
+        </div>
+        <div class="footer-links">
+            <h4>Hubungi</h4>
+            <a href="https://wa.me/60123456789">📱 WhatsApp</a>
+            <a href="mailto:hello@poskedai.com">📧 hello@poskedai.com</a>
+            <a href="#">📍 Malaysia</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 POSKedai. Hak Cipta Terpelihara. Dibina dengan ❤️ di Malaysia</p>
+    </div>
+</footer>
+
+<!-- ==================== WHATSAPP FLOAT ==================== -->
+<a href="https://wa.me/60123456789?text=Hai!%20Saya%20nak%20tahu%20lebih%20lanjut%20tentang%20POSKedai" class="wa-float" target="_blank">
+    💬
+</a>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+// Navbar scroll effect
+window.addEventListener('scroll', function() {
+    var navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// FAQ toggle
+function toggleFaq(element) {
+    var item = element.parentElement;
+    var isActive = item.classList.contains('active');
+    
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(function(faq) {
+        faq.classList.remove('active');
+    });
+    
+    // Open clicked (if wasn't active)
+    if (!isActive) {
+        item.classList.add('active');
+    }
+}
+
+// Scroll animation
+function handleScrollAnimation() {
+    var elements = document.querySelectorAll('.animate');
+    elements.forEach(function(el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+            el.classList.add('visible');
+        }
+    });
+}
+
+window.addEventListener('scroll', handleScrollAnimation);
+window.addEventListener('load', handleScrollAnimation);
+</script>
+
+</body>
+</html>
