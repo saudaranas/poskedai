@@ -8,7 +8,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-        /* ==================== RESET ==================== */
         *{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth}
         body{font-family:'Inter',sans-serif;color:#1e293b;overflow-x:hidden}
@@ -44,6 +43,13 @@
         }
         .nav-cta:hover{background:#ea580c;transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,0.4);}
         .nav-mobile{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;}
+        .nav-links.show{
+            display:flex!important;flex-direction:column;
+            position:absolute;top:60px;left:0;right:0;
+            background:#fff;padding:20px;gap:16px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.1);
+            border-radius:0 0 20px 20px;
+        }
 
         /* ==================== HERO ==================== */
         .hero{
@@ -51,8 +57,7 @@
             background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#fed7aa 100%);
             display:flex;align-items:center;
             padding:120px 24px 80px;
-            position:relative;
-            overflow:hidden;
+            position:relative;overflow:hidden;
         }
         .hero::before{
             content:'';position:absolute;top:-50%;right:-20%;
@@ -66,29 +71,24 @@
         }
         .hero-content{position:relative;z-index:2;}
         .hero-badge{
-            display:inline-block;
-            background:#fff;
+            display:inline-block;background:#fff;
             padding:8px 20px;border-radius:50px;
             font-size:0.8rem;font-weight:700;color:#f97316;
             box-shadow:0 2px 10px rgba(0,0,0,0.08);
-            margin-bottom:24px;
-            animation:fadeInUp 0.6s ease;
+            margin-bottom:24px;animation:fadeInUp 0.6s ease;
         }
         .hero h1{
-            font-size:3.5rem;font-weight:900;
-            line-height:1.1;margin-bottom:24px;
-            color:#1e293b;
+            font-size:3.5rem;font-weight:900;line-height:1.1;
+            margin-bottom:24px;color:#1e293b;
             animation:fadeInUp 0.6s ease 0.1s both;
         }
         .hero h1 span{
             background:linear-gradient(135deg,#f97316,#ef4444);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
         }
         .hero p{
-            font-size:1.15rem;color:#64748b;
-            line-height:1.7;margin-bottom:36px;
-            max-width:500px;
+            font-size:1.15rem;color:#64748b;line-height:1.7;
+            margin-bottom:36px;max-width:500px;
             animation:fadeInUp 0.6s ease 0.2s both;
         }
         .hero-buttons{
@@ -97,21 +97,15 @@
         }
         .btn-hero{
             padding:16px 36px;border-radius:50px;
-            font-weight:700;font-size:1rem;
-            border:none;cursor:pointer;
-            transition:all 0.3s;
-            display:inline-flex;align-items:center;gap:8px;
+            font-weight:700;font-size:1rem;border:none;cursor:pointer;
+            transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;
         }
         .btn-hero-primary{
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            color:#fff;
+            background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;
             box-shadow:0 8px 25px rgba(249,115,22,0.35);
         }
         .btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
-        .btn-hero-secondary{
-            background:#fff;color:#1e293b;
-            box-shadow:0 4px 15px rgba(0,0,0,0.08);
-        }
+        .btn-hero-secondary{background:#fff;color:#1e293b;box-shadow:0 4px 15px rgba(0,0,0,0.08);}
         .btn-hero-secondary:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.12);}
         .hero-stats{
             display:flex;gap:40px;margin-top:48px;
@@ -120,51 +114,203 @@
         .hero-stat h3{font-size:2rem;font-weight:900;color:#f97316;}
         .hero-stat p{font-size:0.8rem;color:#94a3b8;font-weight:600;}
 
-        /* Hero Image / Mockup */
+        /* ---- Hero Mockup (UPDATED to match real POS) ---- */
         .hero-visual{
             position:relative;z-index:2;
             animation:fadeInRight 0.8s ease 0.3s both;
         }
         .hero-mockup{
-            background:#fff;
-            border-radius:24px;
+            background:#fff;border-radius:24px;
             box-shadow:0 30px 60px rgba(0,0,0,0.12);
-            overflow:hidden;
-            border:4px solid #e2e8f0;
+            overflow:hidden;border:4px solid #e2e8f0;
         }
+
+        /* Mockup Header */
         .mockup-header{
-            background:linear-gradient(135deg,#f97316,#ef4444);
-            padding:16px 20px;color:#fff;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            padding:12px 16px;color:#fff;
+            display:flex;justify-content:space-between;align-items:center;
         }
-        .mockup-header h4{font-size:1rem;}
-        .mockup-header p{font-size:0.7rem;opacity:0.8;}
+        .mockup-header-left{display:flex;align-items:center;gap:8px;}
+        .mockup-header h4{font-size:0.9rem;font-weight:900;}
+        .mockup-header h4 em{font-style:normal;opacity:0.9;}
+        .mockup-staff-badge{
+            background:rgba(255,255,255,0.2);
+            padding:3px 10px;border-radius:50px;
+            font-size:0.6rem;font-weight:600;
+        }
+        .mockup-header-right{display:flex;align-items:center;gap:8px;}
+        .mockup-counter{
+            background:rgba(255,255,255,0.2);
+            padding:3px 10px;border-radius:50px;
+            font-size:0.65rem;font-weight:700;
+        }
+        .mockup-time{font-size:0.65rem;opacity:0.8;}
+
+        /* Mockup Nav Tabs */
         .mockup-nav{
-            background:#fff;padding:10px 16px;
-            display:flex;gap:6px;border-bottom:1px solid #f1f5f9;
+            background:#fff;padding:0;
+            display:flex;border-bottom:2px solid #f1f5f9;
         }
         .mockup-nav-btn{
-            padding:6px 12px;border-radius:8px;
-            font-size:0.65rem;font-weight:600;
-            background:#f1f5f9;color:#94a3b8;
+            flex:1;padding:10px 8px;text-align:center;
+            font-size:0.6rem;font-weight:700;
+            color:#94a3b8;border-bottom:3px solid transparent;
+            transition:all 0.3s;cursor:default;
         }
-        .mockup-nav-btn.active{background:#f97316;color:#fff;}
-        .mockup-body{padding:16px;}
-        .mockup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+        .mockup-nav-btn.active{
+            color:#f97316;border-bottom-color:#f97316;
+            background:#fff7ed;
+        }
+        .mockup-nav-btn .mn-icon{
+            font-size:0.9rem;display:block;margin-bottom:2px;
+        }
+
+        /* Mockup Body */
+        .mockup-body{padding:12px;background:#f8fafc;}
+
+        /* Search Bar */
+        .mockup-search{
+            background:#fff;border:2px solid #f1f5f9;
+            border-radius:50px;padding:7px 12px 7px 30px;
+            font-size:0.6rem;color:#94a3b8;width:100%;
+            margin-bottom:8px;position:relative;
+        }
+        .mockup-search::before{content:"🔍 ";font-size:0.6rem;}
+
+        /* Category Chips */
+        .mockup-cats{
+            display:flex;gap:5px;margin-bottom:10px;
+            overflow:hidden;
+        }
+        .mockup-cat{
+            padding:4px 12px;border-radius:50px;
+            font-size:0.55rem;font-weight:700;
+            background:#fff;border:2px solid #f1f5f9;
+            color:#94a3b8;white-space:nowrap;
+        }
+        .mockup-cat.active{
+            background:#f97316;color:#fff;border-color:#f97316;
+            box-shadow:0 2px 8px rgba(249,115,22,0.3);
+        }
+
+        /* Menu Grid */
+        .mockup-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+            margin-bottom:10px;
+        }
         .mockup-item{
-            background:#f8fafc;border:2px solid #f1f5f9;
-            border-radius:10px;padding:10px;text-align:center;
+            background:#fff;border:2px solid #f1f5f9;
+            border-radius:12px;padding:8px 6px;text-align:center;
+            position:relative;transition:all 0.2s;
         }
-        .mockup-item-name{font-size:0.6rem;font-weight:700;color:#334155;}
-        .mockup-item-price{font-size:0.75rem;font-weight:800;color:#f97316;margin-top:2px;}
+        .mockup-item.selected{border-color:#f97316;background:#fff7ed;}
+        .mockup-item-cat{font-size:0.45rem;color:#94a3b8;font-weight:600;}
+        .mockup-item-name{font-size:0.55rem;font-weight:700;color:#334155;margin:1px 0;}
+        .mockup-item-price{font-size:0.65rem;font-weight:800;color:#f97316;}
+        .mockup-item-badge{
+            position:absolute;top:-5px;right:-5px;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;width:16px;height:16px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:0.45rem;font-weight:800;
+            box-shadow:0 2px 6px rgba(249,115,22,0.4);
+        }
+
+        /* Cart Preview */
+        .mockup-cart{
+            background:#fff;border-radius:14px;
+            padding:10px;border:2px solid #f1f5f9;
+            margin-bottom:8px;
+        }
+        .mockup-cart-title{
+            font-size:0.6rem;font-weight:800;
+            margin-bottom:6px;display:flex;
+            align-items:center;gap:4px;
+        }
+        .mockup-cart-item{
+            display:flex;justify-content:space-between;
+            align-items:center;padding:4px 0;
+            border-bottom:1px solid #f8fafc;
+            font-size:0.55rem;
+        }
+        .mockup-cart-item:last-child{border:none;}
+        .mci-name{font-weight:700;color:#334155;}
+        .mci-detail{color:#94a3b8;}
+        .mci-qty{
+            display:flex;align-items:center;gap:4px;
+        }
+        .mci-qty-btn{
+            width:16px;height:16px;border-radius:50%;
+            border:1.5px solid #f97316;background:#fff;
+            color:#f97316;font-size:0.5rem;font-weight:700;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .mci-qty-btn.minus{border-color:#ef4444;color:#ef4444;}
+        .mci-qty-num{font-weight:800;font-size:0.6rem;min-width:14px;text-align:center;}
+        .mci-total{font-weight:800;color:#f97316;font-size:0.6rem;}
+
+        /* Table & Discount Row */
+        .mockup-info-row{
+            display:flex;gap:6px;margin-bottom:6px;
+        }
+        .mockup-info-box{
+            flex:1;background:#fff;border:2px solid #f1f5f9;
+            border-radius:10px;padding:5px 8px;
+            font-size:0.5rem;display:flex;align-items:center;gap:4px;
+        }
+        .mockup-info-box strong{color:#334155;}
+        .mockup-info-box span{
+            background:#f8fafc;padding:2px 8px;border-radius:6px;
+            font-weight:700;color:#1e293b;
+        }
+
+        /* Total Bar */
+        .mockup-total{
+            background:#1e293b;color:#fff;
+            padding:10px 14px;border-radius:14px;
+            display:flex;justify-content:space-between;
+            align-items:center;margin-bottom:8px;
+        }
+        .mockup-total-label{font-size:0.6rem;font-weight:600;}
+        .mockup-total-amount{font-size:1.1rem;font-weight:900;}
+
+        /* Payment Methods */
+        .mockup-payments{
+            display:flex;gap:5px;margin-bottom:8px;
+        }
+        .mockup-pay-btn{
+            flex:1;padding:6px 4px;
+            border:2px solid #f1f5f9;border-radius:10px;
+            background:#fff;text-align:center;
+            font-size:0.5rem;font-weight:700;color:#94a3b8;
+        }
+        .mockup-pay-btn.active{
+            border-color:#f97316;background:#fff7ed;color:#f97316;
+        }
+        .mockup-pay-btn .mp-icon{font-size:0.85rem;display:block;margin-bottom:1px;}
+
+        /* Submit Button */
+        .mockup-submit{
+            width:100%;padding:10px;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;border:none;border-radius:50px;
+            font-size:0.7rem;font-weight:700;
+            box-shadow:0 4px 15px rgba(249,115,22,0.35);
+        }
+
+        /* Floating Badges */
         .mockup-float{
-            position:absolute;
-            background:#fff;border-radius:16px;padding:12px 16px;
+            position:absolute;background:#fff;
+            border-radius:16px;padding:10px 16px;
             box-shadow:0 10px 30px rgba(0,0,0,0.15);
             font-size:0.75rem;font-weight:700;
             animation:float 3s ease-in-out infinite;
+            z-index:3;
         }
-        .mockup-float-1{top:20%;right:-20px;color:#22c55e;}
-        .mockup-float-2{bottom:20%;left:-20px;color:#f97316;}
+        .mockup-float-1{top:15%;right:-30px;color:#22c55e;}
+        .mockup-float-2{bottom:15%;left:-30px;color:#f97316;}
+        .mockup-float-3{top:50%;right:-40px;color:#3b82f6;}
 
         /* ==================== FEATURES ==================== */
         .features{padding:100px 24px;background:#fff;}
@@ -179,25 +325,18 @@
         .section-header h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;}
         .section-header h2 span{color:#f97316;}
         .section-header p{font-size:1.1rem;color:#64748b;max-width:600px;margin:0 auto;}
-
-        .features-grid{
-            display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:24px;
-        }
+        .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
         .feature-card{
             background:#fff;border:2px solid #f1f5f9;
             border-radius:20px;padding:32px;
             transition:all 0.3s;position:relative;overflow:hidden;
         }
         .feature-card:hover{
-            border-color:#fed7aa;
-            transform:translateY(-8px);
+            border-color:#fed7aa;transform:translateY(-8px);
             box-shadow:0 20px 40px rgba(0,0,0,0.08);
         }
         .feature-icon{
-            width:56px;height:56px;
-            border-radius:16px;
+            width:56px;height:56px;border-radius:16px;
             display:flex;align-items:center;justify-content:center;
             font-size:1.5rem;margin-bottom:20px;
         }
@@ -215,8 +354,7 @@
         .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;}
         .step-card{text-align:center;position:relative;}
         .step-number{
-            width:60px;height:60px;
-            border-radius:50%;
+            width:60px;height:60px;border-radius:50%;
             background:linear-gradient(135deg,#f97316,#ea580c);
             color:#fff;font-weight:900;font-size:1.3rem;
             display:flex;align-items:center;justify-content:center;
@@ -225,10 +363,7 @@
         }
         .step-card h3{font-size:1.1rem;font-weight:800;margin-bottom:8px;}
         .step-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
-        .step-arrow{
-            position:absolute;top:30px;right:-16px;
-            font-size:1.5rem;color:#cbd5e1;
-        }
+        .step-arrow{position:absolute;top:30px;right:-16px;font-size:1.5rem;color:#cbd5e1;}
 
         /* ==================== PRICING ==================== */
         .pricing{padding:100px 24px;background:#fff;}
@@ -236,8 +371,7 @@
         .price-card{
             background:#fff;border:2px solid #f1f5f9;
             border-radius:24px;padding:36px;
-            transition:all 0.3s;text-align:center;
-            position:relative;
+            transition:all 0.3s;text-align:center;position:relative;
         }
         .price-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.08);}
         .price-card.popular{
@@ -304,17 +438,15 @@
         .compare-yes{color:#22c55e;}
         .compare-no{color:#e2e8f0;}
 
-        /* ==================== TESTIMONIAL ==================== */
+        /* ==================== TESTIMONIALS ==================== */
         .testimonials{padding:100px 24px;background:#fff;}
         .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
         .testimonial-card{
-            background:#f8fafc;border-radius:20px;padding:32px;
-            position:relative;
+            background:#f8fafc;border-radius:20px;padding:32px;position:relative;
         }
         .testimonial-card::before{
             content:'"';position:absolute;top:16px;left:24px;
-            font-size:4rem;color:#f97316;opacity:0.2;font-weight:900;
-            line-height:1;
+            font-size:4rem;color:#f97316;opacity:0.2;font-weight:900;line-height:1;
         }
         .testimonial-text{font-size:0.95rem;color:#64748b;line-height:1.7;margin-bottom:20px;position:relative;z-index:1;}
         .testimonial-author{display:flex;align-items:center;gap:12px;}
@@ -348,8 +480,7 @@
             background:#fff;color:#f97316;
             padding:16px 36px;border-radius:50px;
             font-weight:700;font-size:1rem;border:none;cursor:pointer;
-            box-shadow:0 8px 25px rgba(0,0,0,0.15);
-            transition:all 0.3s;
+            box-shadow:0 8px 25px rgba(0,0,0,0.15);transition:all 0.3s;
             display:inline-flex;align-items:center;gap:8px;
         }
         .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,0,0,0.2);}
@@ -358,8 +489,7 @@
             padding:16px 36px;border-radius:50px;
             font-weight:700;font-size:1rem;
             border:2px solid rgba(255,255,255,0.5);cursor:pointer;
-            transition:all 0.3s;
-            display:inline-flex;align-items:center;gap:8px;
+            transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;
         }
         .btn-cta-outline:hover{background:rgba(255,255,255,0.15);border-color:#fff;}
 
@@ -369,27 +499,19 @@
         .faq-item{border-bottom:2px solid #f1f5f9;padding:20px 0;}
         .faq-question{
             display:flex;justify-content:space-between;align-items:center;
-            cursor:pointer;font-weight:700;font-size:1rem;
-            color:#1e293b;
+            cursor:pointer;font-weight:700;font-size:1rem;color:#1e293b;
         }
         .faq-question:hover{color:#f97316;}
-        .faq-toggle{
-            font-size:1.5rem;color:#f97316;
-            transition:transform 0.3s;font-weight:300;
-        }
+        .faq-toggle{font-size:1.5rem;color:#f97316;transition:transform 0.3s;font-weight:300;}
         .faq-answer{
-            max-height:0;overflow:hidden;
-            transition:max-height 0.3s ease;
+            max-height:0;overflow:hidden;transition:max-height 0.3s ease;
             font-size:0.9rem;color:#64748b;line-height:1.7;
         }
         .faq-item.active .faq-answer{max-height:200px;padding-top:12px;}
         .faq-item.active .faq-toggle{transform:rotate(45deg);}
 
         /* ==================== FOOTER ==================== */
-        .footer{
-            background:#0f172a;color:#94a3b8;
-            padding:60px 24px 30px;
-        }
+        .footer{background:#0f172a;color:#94a3b8;padding:60px 24px 30px;}
         .footer-container{
             max-width:1200px;margin:0 auto;
             display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;
@@ -415,7 +537,6 @@
             font-size:1.8rem;
             box-shadow:0 8px 25px rgba(37,211,102,0.4);
             cursor:pointer;transition:all 0.3s;
-            text-decoration:none;
         }
         .wa-float:hover{transform:scale(1.1);box-shadow:0 12px 35px rgba(37,211,102,0.5);}
 
@@ -423,7 +544,6 @@
         @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
         @keyframes fadeInRight{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
         @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-
         .animate{opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
         .animate.visible{opacity:1;transform:translateY(0);}
 
@@ -463,18 +583,18 @@
 <nav class="navbar" id="navbar">
     <div class="nav-container">
         <a href="#" class="nav-logo">POS<span>Kedai</span></a>
-        <div class="nav-links">
+        <div class="nav-links" id="navLinks">
             <a href="#features">Fungsi</a>
             <a href="#cara">Cara Guna</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
             <a href="#hubungi" class="nav-cta">Hubungi Kami</a>
         </div>
-        <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
+        <button class="nav-mobile" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
     </div>
 </nav>
 
-<!-- ==================== HERO ==================== -->
+<!-- ==================== HERO (UPDATED MOCKUP) ==================== -->
 <section class="hero" id="hero">
     <div class="hero-container">
         <div class="hero-content">
@@ -504,29 +624,150 @@
                 </div>
             </div>
         </div>
+
+        <!-- ===== UPDATED HERO MOCKUP - Matches Real POS ===== -->
         <div class="hero-visual">
-            <div class="mockup-float mockup-float-1">✅ Pesanan #0012 Selesai!</div>
+            <div class="mockup-float mockup-float-1">✅ Pesanan #12 Selesai!</div>
             <div class="mockup-float mockup-float-2">💰 Jualan: RM 1,250</div>
+            <div class="mockup-float mockup-float-3" style="animation-delay:1.5s">🧾 Resit dicetak!</div>
+            
             <div class="hero-mockup">
+                <!-- Header -->
                 <div class="mockup-header">
-                    <h4>🍽️ POS Kedai Makanan</h4>
-                    <p>Sistem Pengurusan Pesanan</p>
-                </div>
-                <div class="mockup-nav">
-                    <span class="mockup-nav-btn active">🛒 Pesanan</span>
-                    <span class="mockup-nav-btn">📦 Senarai</span>
-                    <span class="mockup-nav-btn">📋 Menu</span>
-                    <span class="mockup-nav-btn">💰 Laporan</span>
-                </div>
-                <div class="mockup-body">
-                    <div class="mockup-grid">
-                        <div class="mockup-item"><div class="mockup-item-name">Nasi Lemak</div><div class="mockup-item-price">RM 5.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-name">Mee Goreng</div><div class="mockup-item-price">RM 6.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-name">Roti Canai</div><div class="mockup-item-price">RM 1.50</div></div>
-                        <div class="mockup-item"><div class="mockup-item-name">Teh Tarik</div><div class="mockup-item-price">RM 2.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-name">Nasi Goreng</div><div class="mockup-item-price">RM 6.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-name">Milo Ais</div><div class="mockup-item-price">RM 3.00</div></div>
+                    <div class="mockup-header-left">
+                        <h4><em>POS</em>Kedai</h4>
+                        <span class="mockup-staff-badge">👤 Ahmad</span>
                     </div>
+                    <div class="mockup-header-right">
+                        <span class="mockup-counter">#12</span>
+                        <span class="mockup-time">14:30</span>
+                    </div>
+                </div>
+
+                <!-- Nav Tabs -->
+                <div class="mockup-nav">
+                    <span class="mockup-nav-btn active"><span class="mn-icon">🛒</span>Pesanan</span>
+                    <span class="mockup-nav-btn"><span class="mn-icon">📋</span>Senarai</span>
+                    <span class="mockup-nav-btn"><span class="mn-icon">📊</span>Jualan</span>
+                    <span class="mockup-nav-btn"><span class="mn-icon">📝</span>Menu</span>
+                </div>
+
+                <!-- Body -->
+                <div class="mockup-body">
+                    <!-- Search -->
+                    <div class="mockup-search">Cari menu...</div>
+
+                    <!-- Categories -->
+                    <div class="mockup-cats">
+                        <span class="mockup-cat active">🍽️ Semua</span>
+                        <span class="mockup-cat">🍚 Makanan</span>
+                        <span class="mockup-cat">🥤 Minuman</span>
+                        <span class="mockup-cat">🍰 Kuih</span>
+                    </div>
+
+                    <!-- Menu Grid -->
+                    <div class="mockup-grid">
+                        <div class="mockup-item selected">
+                            <div class="mockup-item-badge">2</div>
+                            <div class="mockup-item-cat">Makanan</div>
+                            <div class="mockup-item-name">Nasi Lemak</div>
+                            <div class="mockup-item-price">RM5.00</div>
+                        </div>
+                        <div class="mockup-item selected">
+                            <div class="mockup-item-badge">1</div>
+                            <div class="mockup-item-cat">Makanan</div>
+                            <div class="mockup-item-name">Mee Goreng</div>
+                            <div class="mockup-item-price">RM6.00</div>
+                        </div>
+                        <div class="mockup-item">
+                            <div class="mockup-item-cat">Makanan</div>
+                            <div class="mockup-item-name">Roti Canai</div>
+                            <div class="mockup-item-price">RM1.50</div>
+                        </div>
+                        <div class="mockup-item selected">
+                            <div class="mockup-item-badge">2</div>
+                            <div class="mockup-item-cat">Minuman</div>
+                            <div class="mockup-item-name">Teh Tarik</div>
+                            <div class="mockup-item-price">RM2.00</div>
+                        </div>
+                        <div class="mockup-item">
+                            <div class="mockup-item-cat">Makanan</div>
+                            <div class="mockup-item-name">Nasi Goreng</div>
+                            <div class="mockup-item-price">RM6.00</div>
+                        </div>
+                        <div class="mockup-item">
+                            <div class="mockup-item-cat">Minuman</div>
+                            <div class="mockup-item-name">Milo Ais</div>
+                            <div class="mockup-item-price">RM3.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Preview -->
+                    <div class="mockup-cart">
+                        <div class="mockup-cart-title">🛒 Troli</div>
+                        <div class="mockup-cart-item">
+                            <div>
+                                <div class="mci-name">Nasi Lemak</div>
+                                <div class="mci-detail">RM5.00 × 2</div>
+                            </div>
+                            <div class="mci-qty">
+                                <span class="mci-qty-btn minus">−</span>
+                                <span class="mci-qty-num">2</span>
+                                <span class="mci-qty-btn">+</span>
+                            </div>
+                            <div class="mci-total">RM10.00</div>
+                        </div>
+                        <div class="mockup-cart-item">
+                            <div>
+                                <div class="mci-name">Mee Goreng</div>
+                                <div class="mci-detail">RM6.00 × 1</div>
+                            </div>
+                            <div class="mci-qty">
+                                <span class="mci-qty-btn minus">−</span>
+                                <span class="mci-qty-num">1</span>
+                                <span class="mci-qty-btn">+</span>
+                            </div>
+                            <div class="mci-total">RM6.00</div>
+                        </div>
+                        <div class="mockup-cart-item">
+                            <div>
+                                <div class="mci-name">Teh Tarik</div>
+                                <div class="mci-detail">RM2.00 × 2</div>
+                            </div>
+                            <div class="mci-qty">
+                                <span class="mci-qty-btn minus">−</span>
+                                <span class="mci-qty-num">2</span>
+                                <span class="mci-qty-btn">+</span>
+                            </div>
+                            <div class="mci-total">RM4.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Table & Discount -->
+                    <div class="mockup-info-row">
+                        <div class="mockup-info-box">
+                            🪑 Meja: <span>5</span>
+                        </div>
+                        <div class="mockup-info-box">
+                            🏷️ Diskaun: <span>RM2.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="mockup-total">
+                        <span class="mockup-total-label">JUMLAH</span>
+                        <span class="mockup-total-amount">RM 18.00</span>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="mockup-payments">
+                        <div class="mockup-pay-btn active"><span class="mp-icon">💵</span>Tunai</div>
+                        <div class="mockup-pay-btn"><span class="mp-icon">📱</span>QR</div>
+                        <div class="mockup-pay-btn"><span class="mp-icon">🏦</span>Transfer</div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button class="mockup-submit">✅ Hantar Pesanan</button>
                 </div>
             </div>
         </div>
@@ -871,51 +1112,38 @@
 </footer>
 
 <!-- ==================== WHATSAPP FLOAT ==================== -->
-<a href="https://wa.me/60167388358?text=Hai!%20Saya%20nak%20tahu%20lebih%20lanjut%20tentang%20POSKedai" class="wa-float" target="_blank">
-    💬
-</a>
+<a href="https://wa.me/60167388358?text=Hai!%20Saya%20nak%20tahu%20lebih%20lanjut%20tentang%20POSKedai" class="wa-float" target="_blank">💬</a>
 
 <!-- ==================== SCRIPTS ==================== -->
 <script>
-// Navbar scroll effect
 window.addEventListener('scroll', function() {
     var navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
+    if (window.scrollY > 50) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
 });
 
-// FAQ toggle
 function toggleFaq(element) {
     var item = element.parentElement;
     var isActive = item.classList.contains('active');
-    
-    // Close all
-    document.querySelectorAll('.faq-item').forEach(function(faq) {
-        faq.classList.remove('active');
-    });
-    
-    // Open clicked (if wasn't active)
-    if (!isActive) {
-        item.classList.add('active');
-    }
+    document.querySelectorAll('.faq-item').forEach(function(faq) { faq.classList.remove('active'); });
+    if (!isActive) item.classList.add('active');
 }
 
-// Scroll animation
 function handleScrollAnimation() {
-    var elements = document.querySelectorAll('.animate');
-    elements.forEach(function(el) {
-        var rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-            el.classList.add('visible');
-        }
+    document.querySelectorAll('.animate').forEach(function(el) {
+        if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
     });
 }
 
 window.addEventListener('scroll', handleScrollAnimation);
 window.addEventListener('load', handleScrollAnimation);
+
+// Close mobile nav when link clicked
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+    link.addEventListener('click', function() {
+        document.getElementById('navLinks').classList.remove('show');
+    });
+});
 </script>
 
 </body>
