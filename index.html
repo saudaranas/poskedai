@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POSKedai - Sistem POS Kedai Makanan Termudah & Termurah</title>
+    <title>POSKedai - Sistem POS Kedai Makanan RM30/Bulan | Tak Perlu Mesin Mahal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 
         *{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth}
-        body{font-family:'Inter',sans-serif;color:#1e293b;overflow-x:hidden}
+        body{font-family:'Plus Jakarta Sans',sans-serif;color:#1e293b;overflow-x:hidden}
         a{text-decoration:none;color:inherit}
         img{max-width:100%}
 
@@ -21,16 +21,16 @@
             transition:all 0.3s;
         }
         .navbar.scrolled{
-            background:rgba(255,255,255,0.95);
-            backdrop-filter:blur(10px);
-            box-shadow:0 2px 20px rgba(0,0,0,0.08);
+            background:rgba(255,255,255,0.97);
+            backdrop-filter:blur(12px);
+            box-shadow:0 2px 20px rgba(0,0,0,0.06);
             padding:12px 24px;
         }
         .nav-container{
             max-width:1200px;margin:0 auto;
             display:flex;justify-content:space-between;align-items:center;
         }
-        .nav-logo{font-weight:900;font-size:1.5rem;color:#f97316;}
+        .nav-logo{font-weight:900;font-size:1.5rem;color:#f97316;letter-spacing:-0.5px;}
         .nav-logo span{color:#1e293b}
         .nav-links{display:flex;gap:32px;align-items:center;}
         .nav-links a{font-weight:600;font-size:0.9rem;color:#64748b;transition:color 0.2s;}
@@ -54,7 +54,7 @@
         /* ==================== HERO ==================== */
         .hero{
             min-height:100vh;
-            background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#fed7aa 100%);
+            background:linear-gradient(135deg,#fffbf5 0%,#fff7ed 40%,#ffedd5 100%);
             display:flex;align-items:center;
             padding:120px 24px 80px;
             position:relative;overflow:hidden;
@@ -62,7 +62,13 @@
         .hero::before{
             content:'';position:absolute;top:-50%;right:-20%;
             width:800px;height:800px;
-            background:radial-gradient(circle,rgba(249,115,22,0.1) 0%,transparent 70%);
+            background:radial-gradient(circle,rgba(249,115,22,0.08) 0%,transparent 70%);
+            border-radius:50%;
+        }
+        .hero::after{
+            content:'';position:absolute;bottom:-30%;left:-10%;
+            width:600px;height:600px;
+            background:radial-gradient(circle,rgba(249,115,22,0.05) 0%,transparent 70%);
             border-radius:50%;
         }
         .hero-container{
@@ -71,24 +77,38 @@
         }
         .hero-content{position:relative;z-index:2;}
         .hero-badge{
-            display:inline-block;background:#fff;
+            display:inline-flex;align-items:center;gap:8px;
+            background:#fff;
             padding:8px 20px;border-radius:50px;
             font-size:0.8rem;font-weight:700;color:#f97316;
-            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+            box-shadow:0 2px 15px rgba(0,0,0,0.06);
             margin-bottom:24px;animation:fadeInUp 0.6s ease;
+            border:1px solid #fed7aa;
         }
+        .hero-badge .pulse{
+            width:8px;height:8px;border-radius:50%;
+            background:#22c55e;
+            animation:pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
         .hero h1{
-            font-size:3.5rem;font-weight:900;line-height:1.1;
-            margin-bottom:24px;color:#1e293b;
+            font-size:3.2rem;font-weight:900;line-height:1.1;
+            margin-bottom:20px;color:#1e293b;
+            letter-spacing:-1px;
             animation:fadeInUp 0.6s ease 0.1s both;
         }
-        .hero h1 span{
-            background:linear-gradient(135deg,#f97316,#ef4444);
+        .hero h1 .price-highlight{
+            background:linear-gradient(135deg,#f97316,#ea580c);
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;
         }
+        .hero-sub{
+            font-size:1.25rem;font-weight:700;color:#ea580c;
+            margin-bottom:16px;
+            animation:fadeInUp 0.6s ease 0.15s both;
+        }
         .hero p{
-            font-size:1.15rem;color:#64748b;line-height:1.7;
-            margin-bottom:36px;max-width:500px;
+            font-size:1.05rem;color:#64748b;line-height:1.7;
+            margin-bottom:32px;max-width:500px;
             animation:fadeInUp 0.6s ease 0.2s both;
         }
         .hero-buttons{
@@ -107,25 +127,31 @@
         .btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
         .btn-hero-secondary{background:#fff;color:#1e293b;box-shadow:0 4px 15px rgba(0,0,0,0.08);}
         .btn-hero-secondary:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.12);}
-        .hero-stats{
-            display:flex;gap:40px;margin-top:48px;
+
+        /* Trust Badges - Replaces fake stats */
+        .hero-trust{
+            display:flex;flex-wrap:wrap;gap:16px;margin-top:36px;
             animation:fadeInUp 0.6s ease 0.4s both;
         }
-        .hero-stat h3{font-size:2rem;font-weight:900;color:#f97316;}
-        .hero-stat p{font-size:0.8rem;color:#94a3b8;font-weight:600;}
+        .trust-badge{
+            display:flex;align-items:center;gap:8px;
+            background:#fff;padding:10px 18px;border-radius:12px;
+            font-size:0.82rem;font-weight:600;color:#475569;
+            box-shadow:0 2px 10px rgba(0,0,0,0.04);
+            border:1px solid #f1f5f9;
+        }
+        .trust-badge .trust-icon{font-size:1.1rem;}
 
-        /* ---- Hero Mockup (UPDATED to match real POS) ---- */
+        /* ---- Hero Mockup ---- */
         .hero-visual{
             position:relative;z-index:2;
             animation:fadeInRight 0.8s ease 0.3s both;
         }
         .hero-mockup{
             background:#fff;border-radius:24px;
-            box-shadow:0 30px 60px rgba(0,0,0,0.12);
-            overflow:hidden;border:4px solid #e2e8f0;
+            box-shadow:0 30px 60px rgba(0,0,0,0.1),0 0 0 1px rgba(0,0,0,0.03);
+            overflow:hidden;
         }
-
-        /* Mockup Header */
         .mockup-header{
             background:linear-gradient(135deg,#f97316,#ea580c);
             padding:12px 16px;color:#fff;
@@ -146,8 +172,6 @@
             font-size:0.65rem;font-weight:700;
         }
         .mockup-time{font-size:0.65rem;opacity:0.8;}
-
-        /* Mockup Nav Tabs */
         .mockup-nav{
             background:#fff;padding:0;
             display:flex;border-bottom:2px solid #f1f5f9;
@@ -162,14 +186,8 @@
             color:#f97316;border-bottom-color:#f97316;
             background:#fff7ed;
         }
-        .mockup-nav-btn .mn-icon{
-            font-size:0.9rem;display:block;margin-bottom:2px;
-        }
-
-        /* Mockup Body */
+        .mockup-nav-btn .mn-icon{font-size:0.9rem;display:block;margin-bottom:2px;}
         .mockup-body{padding:12px;background:#f8fafc;}
-
-        /* Search Bar */
         .mockup-search{
             background:#fff;border:2px solid #f1f5f9;
             border-radius:50px;padding:7px 12px 7px 30px;
@@ -177,12 +195,7 @@
             margin-bottom:8px;position:relative;
         }
         .mockup-search::before{content:"🔍 ";font-size:0.6rem;}
-
-        /* Category Chips */
-        .mockup-cats{
-            display:flex;gap:5px;margin-bottom:10px;
-            overflow:hidden;
-        }
+        .mockup-cats{display:flex;gap:5px;margin-bottom:10px;overflow:hidden;}
         .mockup-cat{
             padding:4px 12px;border-radius:50px;
             font-size:0.55rem;font-weight:700;
@@ -193,8 +206,6 @@
             background:#f97316;color:#fff;border-color:#f97316;
             box-shadow:0 2px 8px rgba(249,115,22,0.3);
         }
-
-        /* Menu Grid */
         .mockup-grid{
             display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
             margin-bottom:10px;
@@ -216,8 +227,6 @@
             font-size:0.45rem;font-weight:800;
             box-shadow:0 2px 6px rgba(249,115,22,0.4);
         }
-
-        /* Cart Preview */
         .mockup-cart{
             background:#fff;border-radius:14px;
             padding:10px;border:2px solid #f1f5f9;
@@ -225,21 +234,17 @@
         }
         .mockup-cart-title{
             font-size:0.6rem;font-weight:800;
-            margin-bottom:6px;display:flex;
-            align-items:center;gap:4px;
+            margin-bottom:6px;display:flex;align-items:center;gap:4px;
         }
         .mockup-cart-item{
             display:flex;justify-content:space-between;
             align-items:center;padding:4px 0;
-            border-bottom:1px solid #f8fafc;
-            font-size:0.55rem;
+            border-bottom:1px solid #f8fafc;font-size:0.55rem;
         }
         .mockup-cart-item:last-child{border:none;}
         .mci-name{font-weight:700;color:#334155;}
         .mci-detail{color:#94a3b8;}
-        .mci-qty{
-            display:flex;align-items:center;gap:4px;
-        }
+        .mci-qty{display:flex;align-items:center;gap:4px;}
         .mci-qty-btn{
             width:16px;height:16px;border-radius:50%;
             border:1.5px solid #f97316;background:#fff;
@@ -249,11 +254,7 @@
         .mci-qty-btn.minus{border-color:#ef4444;color:#ef4444;}
         .mci-qty-num{font-weight:800;font-size:0.6rem;min-width:14px;text-align:center;}
         .mci-total{font-weight:800;color:#f97316;font-size:0.6rem;}
-
-        /* Table & Discount Row */
-        .mockup-info-row{
-            display:flex;gap:6px;margin-bottom:6px;
-        }
+        .mockup-info-row{display:flex;gap:6px;margin-bottom:6px;}
         .mockup-info-box{
             flex:1;background:#fff;border:2px solid #f1f5f9;
             border-radius:10px;padding:5px 8px;
@@ -264,8 +265,6 @@
             background:#f8fafc;padding:2px 8px;border-radius:6px;
             font-weight:700;color:#1e293b;
         }
-
-        /* Total Bar */
         .mockup-total{
             background:#1e293b;color:#fff;
             padding:10px 14px;border-radius:14px;
@@ -274,23 +273,15 @@
         }
         .mockup-total-label{font-size:0.6rem;font-weight:600;}
         .mockup-total-amount{font-size:1.1rem;font-weight:900;}
-
-        /* Payment Methods */
-        .mockup-payments{
-            display:flex;gap:5px;margin-bottom:8px;
-        }
+        .mockup-payments{display:flex;gap:5px;margin-bottom:8px;}
         .mockup-pay-btn{
             flex:1;padding:6px 4px;
             border:2px solid #f1f5f9;border-radius:10px;
             background:#fff;text-align:center;
             font-size:0.5rem;font-weight:700;color:#94a3b8;
         }
-        .mockup-pay-btn.active{
-            border-color:#f97316;background:#fff7ed;color:#f97316;
-        }
+        .mockup-pay-btn.active{border-color:#f97316;background:#fff7ed;color:#f97316;}
         .mockup-pay-btn .mp-icon{font-size:0.85rem;display:block;margin-bottom:1px;}
-
-        /* Submit Button */
         .mockup-submit{
             width:100%;padding:10px;
             background:linear-gradient(135deg,#f97316,#ea580c);
@@ -298,12 +289,10 @@
             font-size:0.7rem;font-weight:700;
             box-shadow:0 4px 15px rgba(249,115,22,0.35);
         }
-
-        /* Floating Badges */
         .mockup-float{
             position:absolute;background:#fff;
             border-radius:16px;padding:10px 16px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.15);
+            box-shadow:0 10px 30px rgba(0,0,0,0.12);
             font-size:0.75rem;font-weight:700;
             animation:float 3s ease-in-out infinite;
             z-index:3;
@@ -312,19 +301,59 @@
         .mockup-float-2{bottom:15%;left:-30px;color:#f97316;}
         .mockup-float-3{top:50%;right:-40px;color:#3b82f6;}
 
+        /* ==================== PAIN POINT SECTION ==================== */
+        .pain-section{
+            padding:80px 24px;
+            background:#fff;
+            border-bottom:1px solid #f1f5f9;
+        }
+        .pain-container{
+            max-width:800px;margin:0 auto;text-align:center;
+        }
+        .pain-container h2{
+            font-size:2rem;font-weight:900;margin-bottom:12px;
+            letter-spacing:-0.5px;
+        }
+        .pain-container h2 span{color:#ef4444;}
+        .pain-sub{
+            font-size:1.05rem;color:#64748b;margin-bottom:40px;line-height:1.7;
+        }
+        .pain-grid{
+            display:grid;grid-template-columns:1fr 1fr;gap:16px;
+            text-align:left;margin-bottom:40px;
+        }
+        .pain-card{
+            background:#fef2f2;border:1px solid #fecaca;
+            border-radius:16px;padding:20px 24px;
+            display:flex;gap:14px;align-items:flex-start;
+        }
+        .pain-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
+        .pain-card h4{font-size:0.95rem;font-weight:700;color:#dc2626;margin-bottom:4px;}
+        .pain-card p{font-size:0.85rem;color:#64748b;line-height:1.5;}
+        .pain-solution{
+            background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+            border:2px solid #bbf7d0;
+            border-radius:20px;padding:28px 32px;
+            display:flex;align-items:center;gap:16px;
+        }
+        .pain-solution-icon{font-size:2rem;}
+        .pain-solution-text{text-align:left;}
+        .pain-solution-text h4{font-size:1.1rem;font-weight:800;color:#166534;margin-bottom:4px;}
+        .pain-solution-text p{font-size:0.9rem;color:#4ade80;font-weight:600;}
+
         /* ==================== FEATURES ==================== */
-        .features{padding:100px 24px;background:#fff;}
+        .features{padding:100px 24px;background:#f8fafc;}
         .section-container{max-width:1200px;margin:0 auto;}
         .section-header{text-align:center;margin-bottom:64px;}
         .section-badge{
-            display:inline-block;background:#fff7ed;
+            display:inline-block;background:#fff;
             padding:8px 20px;border-radius:50px;
             font-size:0.8rem;font-weight:700;color:#f97316;
-            margin-bottom:16px;
+            margin-bottom:16px;border:1px solid #fed7aa;
         }
-        .section-header h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;}
+        .section-header h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;letter-spacing:-0.5px;}
         .section-header h2 span{color:#f97316;}
-        .section-header p{font-size:1.1rem;color:#64748b;max-width:600px;margin:0 auto;}
+        .section-header p{font-size:1.05rem;color:#64748b;max-width:600px;margin:0 auto;line-height:1.6;}
         .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
         .feature-card{
             background:#fff;border:2px solid #f1f5f9;
@@ -333,7 +362,7 @@
         }
         .feature-card:hover{
             border-color:#fed7aa;transform:translateY(-8px);
-            box-shadow:0 20px 40px rgba(0,0,0,0.08);
+            box-shadow:0 20px 40px rgba(0,0,0,0.06);
         }
         .feature-icon{
             width:56px;height:56px;border-radius:16px;
@@ -346,11 +375,11 @@
         .fi-purple{background:#faf5ff;}
         .fi-red{background:#fef2f2;}
         .fi-yellow{background:#fefce8;}
-        .feature-card h3{font-size:1.15rem;font-weight:800;margin-bottom:10px;}
-        .feature-card p{font-size:0.9rem;color:#64748b;line-height:1.6;}
+        .feature-card h3{font-size:1.1rem;font-weight:800;margin-bottom:10px;}
+        .feature-card p{font-size:0.88rem;color:#64748b;line-height:1.6;}
 
         /* ==================== HOW IT WORKS ==================== */
-        .how-it-works{padding:100px 24px;background:#f8fafc;}
+        .how-it-works{padding:100px 24px;background:#fff;}
         .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;}
         .step-card{text-align:center;position:relative;}
         .step-number{
@@ -361,137 +390,142 @@
             margin:0 auto 20px;
             box-shadow:0 8px 20px rgba(249,115,22,0.3);
         }
-        .step-card h3{font-size:1.1rem;font-weight:800;margin-bottom:8px;}
+        .step-card h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;}
         .step-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
         .step-arrow{position:absolute;top:30px;right:-16px;font-size:1.5rem;color:#cbd5e1;}
 
-        /* ==================== PRICING ==================== */
-        .pricing{padding:100px 24px;background:#fff;}
-        .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto;}
-        .price-card{
-            background:#fff;border:2px solid #f1f5f9;
-            border-radius:24px;padding:36px;
-            transition:all 0.3s;text-align:center;position:relative;
+        /* ==================== SINGLE PRICING ==================== */
+        .pricing{padding:100px 24px;background:#f8fafc;}
+        .pricing-single{
+            max-width:580px;margin:0 auto;
         }
-        .price-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.08);}
-        .price-card.popular{
-            border-color:#f97316;
-            box-shadow:0 20px 40px rgba(249,115,22,0.15);
-            transform:scale(1.05);
-        }
-        .price-card.popular:hover{transform:scale(1.05) translateY(-8px);}
-        .popular-badge{
-            position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            color:#fff;padding:6px 24px;border-radius:50px;
-            font-size:0.75rem;font-weight:700;
-            box-shadow:0 4px 15px rgba(249,115,22,0.3);
-        }
-        .price-card h3{font-size:1.2rem;font-weight:800;margin-bottom:4px;}
-        .price-card .price-desc{font-size:0.85rem;color:#94a3b8;margin-bottom:24px;}
-        .price-amount{margin-bottom:24px;}
-        .price-amount .currency{font-size:1.2rem;font-weight:700;color:#64748b;vertical-align:top;}
-        .price-amount .amount{font-size:3.5rem;font-weight:900;color:#1e293b;}
-        .price-amount .period{font-size:0.9rem;color:#94a3b8;font-weight:600;}
-        .price-features{list-style:none;text-align:left;margin-bottom:32px;}
-        .price-features li{
-            padding:10px 0;font-size:0.9rem;color:#64748b;
-            border-bottom:1px solid #f8fafc;
-            display:flex;align-items:center;gap:10px;
-        }
-        .price-features li .check{color:#22c55e;font-weight:700;}
-        .price-features li .cross{color:#e2e8f0;font-weight:700;}
-        .btn-price{
-            display:block;width:100%;padding:14px;
-            border-radius:50px;border:none;
-            font-weight:700;font-size:0.95rem;
-            cursor:pointer;transition:all 0.3s;
-        }
-        .btn-price-primary{
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            color:#fff;box-shadow:0 8px 20px rgba(249,115,22,0.3);
-        }
-        .btn-price-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(249,115,22,0.4);}
-        .btn-price-secondary{background:#f8fafc;color:#1e293b;}
-        .btn-price-secondary:hover{background:#f1f5f9;transform:translateY(-2px);}
-
-        /* ==================== COMPARISON ==================== */
-        .comparison{padding:100px 24px;background:#f8fafc;}
-        .compare-table{
-            max-width:900px;margin:0 auto;
-            background:#fff;border-radius:20px;
-            overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);
-        }
-        .compare-row{
-            display:grid;grid-template-columns:2fr 1fr 1fr;
-            padding:16px 24px;border-bottom:1px solid #f8fafc;
-            font-size:0.9rem;align-items:center;
-        }
-        .compare-row:last-child{border:none;}
-        .compare-header{
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            color:#fff;font-weight:700;
-        }
-        .compare-row:nth-child(even){background:#fafbfc;}
-        .compare-label{font-weight:600;color:#334155;}
-        .compare-value{text-align:center;font-weight:700;}
-        .compare-yes{color:#22c55e;}
-        .compare-no{color:#e2e8f0;}
-
-        /* ==================== TESTIMONIALS ==================== */
-        .testimonials{padding:100px 24px;background:#fff;}
-        .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-        .testimonial-card{
-            background:#f8fafc;border-radius:20px;padding:32px;position:relative;
-        }
-        .testimonial-card::before{
-            content:'"';position:absolute;top:16px;left:24px;
-            font-size:4rem;color:#f97316;opacity:0.2;font-weight:900;line-height:1;
-        }
-        .testimonial-text{font-size:0.95rem;color:#64748b;line-height:1.7;margin-bottom:20px;position:relative;z-index:1;}
-        .testimonial-author{display:flex;align-items:center;gap:12px;}
-        .testimonial-avatar{
-            width:48px;height:48px;border-radius:50%;
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            display:flex;align-items:center;justify-content:center;
-            color:#fff;font-weight:800;font-size:1.1rem;
-        }
-        .testimonial-name{font-weight:700;font-size:0.9rem;}
-        .testimonial-role{font-size:0.75rem;color:#94a3b8;}
-        .testimonial-stars{color:#f97316;font-size:0.85rem;margin-bottom:12px;}
-
-        /* ==================== CTA ==================== */
-        .cta{
-            padding:100px 24px;
-            background:linear-gradient(135deg,#f97316,#ef4444);
-            text-align:center;color:#fff;
+        .price-main-card{
+            background:#fff;border-radius:28px;
+            padding:48px 40px;text-align:center;
+            box-shadow:0 20px 60px rgba(0,0,0,0.08);
+            border:2px solid #fed7aa;
             position:relative;overflow:hidden;
         }
-        .cta::before{
-            content:'';position:absolute;top:-50%;left:-20%;
-            width:600px;height:600px;
-            background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);
+        .price-main-card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:4px;
+            background:linear-gradient(90deg,#f97316,#ea580c,#f97316);
+        }
+        .price-emoji{font-size:3rem;margin-bottom:16px;}
+        .price-main-card h3{
+            font-size:1.6rem;font-weight:900;margin-bottom:8px;
+            letter-spacing:-0.5px;
+        }
+        .price-main-desc{font-size:1rem;color:#64748b;margin-bottom:28px;}
+        .price-amount-single{margin-bottom:8px;}
+        .price-amount-single .currency{font-size:1.5rem;font-weight:800;color:#64748b;vertical-align:top;line-height:3.5rem;}
+        .price-amount-single .amount{font-size:4.5rem;font-weight:900;color:#1e293b;letter-spacing:-2px;}
+        .price-amount-single .period{font-size:1rem;color:#94a3b8;font-weight:600;}
+        .price-savings{
+            display:inline-block;
+            background:#f0fdf4;border:1px solid #bbf7d0;
+            padding:8px 20px;border-radius:50px;
+            font-size:0.85rem;font-weight:700;color:#166534;
+            margin-bottom:28px;
+        }
+        .price-features-single{
+            list-style:none;text-align:left;margin-bottom:32px;
+            display:grid;grid-template-columns:1fr 1fr;gap:10px;
+        }
+        .price-features-single li{
+            padding:8px 0;font-size:0.9rem;color:#475569;
+            display:flex;align-items:center;gap:10px;
+            font-weight:500;
+        }
+        .price-features-single li .check{color:#22c55e;font-weight:700;font-size:1.1rem;}
+        .btn-price-main{
+            display:block;width:100%;padding:18px;
+            border-radius:50px;border:none;
+            font-weight:800;font-size:1.1rem;
+            cursor:pointer;transition:all 0.3s;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;box-shadow:0 8px 25px rgba(249,115,22,0.35);
+        }
+        .btn-price-main:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
+        .price-note{
+            font-size:0.8rem;color:#94a3b8;margin-top:16px;
+            display:flex;align-items:center;justify-content:center;gap:6px;
+        }
+
+        /* ==================== HONEST COMPARISON ==================== */
+        .comparison{padding:100px 24px;background:#fff;}
+        .compare-cards{
+            max-width:900px;margin:0 auto;
+            display:grid;grid-template-columns:1fr 1fr;gap:24px;
+        }
+        .compare-card{
+            border-radius:20px;padding:32px;
+        }
+        .compare-card.others{
+            background:#f8fafc;border:2px solid #e2e8f0;
+        }
+        .compare-card.poskedai{
+            background:#fff7ed;border:2px solid #fed7aa;
+            position:relative;
+        }
+        .compare-card.poskedai::before{
+            content:'👑 POSKedai';position:absolute;top:-14px;left:24px;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;padding:6px 18px;border-radius:50px;
+            font-size:0.75rem;font-weight:700;
+        }
+        .compare-card h3{
+            font-size:1.2rem;font-weight:800;margin-bottom:20px;
+            padding-top:8px;
+        }
+        .compare-card.others h3{color:#64748b;}
+        .compare-card.poskedai h3{color:#ea580c;}
+        .compare-list{list-style:none;}
+        .compare-list li{
+            padding:10px 0;font-size:0.9rem;
+            border-bottom:1px solid rgba(0,0,0,0.05);
+            display:flex;align-items:flex-start;gap:10px;
+            line-height:1.5;
+        }
+        .compare-list li:last-child{border:none;}
+        .compare-list li .ci{font-size:1rem;flex-shrink:0;margin-top:1px;}
+
+        /* ==================== GUARANTEE (replaces fake testimonials) ==================== */
+        .guarantee{
+            padding:100px 24px;
+            background:linear-gradient(135deg,#f8fafc,#f1f5f9);
+        }
+        .guarantee-container{
+            max-width:800px;margin:0 auto;text-align:center;
+        }
+        .guarantee-shield{
+            width:100px;height:100px;
+            background:linear-gradient(135deg,#22c55e,#16a34a);
             border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:2.8rem;
+            margin:0 auto 28px;
+            box-shadow:0 12px 30px rgba(34,197,94,0.3);
         }
-        .cta h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;position:relative;z-index:2;}
-        .cta p{font-size:1.15rem;opacity:0.9;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto;position:relative;z-index:2;}
-        .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
-        .btn-cta-white{
-            background:#fff;color:#f97316;
-            padding:16px 36px;border-radius:50px;
-            font-weight:700;font-size:1rem;border:none;cursor:pointer;
-            box-shadow:0 8px 25px rgba(0,0,0,0.15);transition:all 0.3s;
-            display:inline-flex;align-items:center;gap:8px;
+        .guarantee-container h2{
+            font-size:2.2rem;font-weight:900;margin-bottom:16px;
+            letter-spacing:-0.5px;
         }
-        .btn-cta-white:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(0,0,0,0.2);}
-        .btn-cta-outline{
-            background:transparent;color:#fff;
-            padding:16px 36px;border-radius:50px;
-            font-weight:700;font-size:1rem;
-            border:2px solid rgba(255,255,255,0.5);cursor:pointer;
-            transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;
+        .guarantee-container h2 span{color:#22c55e;}
+        .guarantee-container>p{
+            font-size:1.05rem;color:#64748b;line-height:1.7;
+            max-width:600px;margin:0 auto 40px;
         }
-        .btn-cta-outline:hover{background:rgba(255,255,255,0.15);border-color:#fff;}
+        .guarantee-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+        }
+        .guarantee-card{
+            background:#fff;border-radius:16px;padding:28px 24px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.04);
+            border:1px solid #e2e8f0;
+        }
+        .guarantee-card .gc-icon{font-size:2rem;margin-bottom:12px;}
+        .guarantee-card h4{font-size:1rem;font-weight:800;margin-bottom:8px;}
+        .guarantee-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
 
         /* ==================== FAQ ==================== */
         .faq{padding:100px 24px;background:#fff;}
@@ -509,6 +543,53 @@
         }
         .faq-item.active .faq-answer{max-height:200px;padding-top:12px;}
         .faq-item.active .faq-toggle{transform:rotate(45deg);}
+
+        /* ==================== CTA ==================== */
+        .cta{
+            padding:100px 24px;
+            background:linear-gradient(135deg,#1e293b,#334155);
+            text-align:center;color:#fff;
+            position:relative;overflow:hidden;
+        }
+        .cta::before{
+            content:'';position:absolute;top:-50%;right:-20%;
+            width:600px;height:600px;
+            background:radial-gradient(circle,rgba(249,115,22,0.15) 0%,transparent 70%);
+            border-radius:50%;
+        }
+        .cta::after{
+            content:'';position:absolute;bottom:-40%;left:-10%;
+            width:400px;height:400px;
+            background:radial-gradient(circle,rgba(249,115,22,0.1) 0%,transparent 70%);
+            border-radius:50%;
+        }
+        .cta h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;position:relative;z-index:2;letter-spacing:-0.5px;}
+        .cta h2 span{color:#f97316;}
+        .cta p{font-size:1.1rem;opacity:0.7;margin-bottom:36px;max-width:550px;margin-left:auto;margin-right:auto;position:relative;z-index:2;line-height:1.6;}
+        .cta-price{
+            font-size:3rem;font-weight:900;color:#f97316;
+            margin-bottom:8px;position:relative;z-index:2;
+        }
+        .cta-price-note{
+            font-size:0.9rem;opacity:0.5;margin-bottom:32px;position:relative;z-index:2;
+        }
+        .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+        .btn-cta-orange{
+            background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;
+            padding:18px 40px;border-radius:50px;
+            font-weight:800;font-size:1.05rem;border:none;cursor:pointer;
+            box-shadow:0 8px 25px rgba(249,115,22,0.4);transition:all 0.3s;
+            display:inline-flex;align-items:center;gap:8px;
+        }
+        .btn-cta-orange:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.5);}
+        .btn-cta-ghost{
+            background:transparent;color:#fff;
+            padding:18px 40px;border-radius:50px;
+            font-weight:700;font-size:1.05rem;
+            border:2px solid rgba(255,255,255,0.2);cursor:pointer;
+            transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;
+        }
+        .btn-cta-ghost:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.4);}
 
         /* ==================== FOOTER ==================== */
         .footer{background:#0f172a;color:#94a3b8;padding:60px 24px 30px;}
@@ -531,14 +612,15 @@
         /* ==================== WHATSAPP FLOAT ==================== */
         .wa-float{
             position:fixed;bottom:24px;right:24px;z-index:90;
-            width:60px;height:60px;border-radius:50%;
+            display:flex;align-items:center;gap:10px;
             background:#25D366;color:#fff;
-            display:flex;align-items:center;justify-content:center;
-            font-size:1.8rem;
+            padding:14px 24px;border-radius:50px;
+            font-weight:700;font-size:0.9rem;
             box-shadow:0 8px 25px rgba(37,211,102,0.4);
             cursor:pointer;transition:all 0.3s;
         }
-        .wa-float:hover{transform:scale(1.1);box-shadow:0 12px 35px rgba(37,211,102,0.5);}
+        .wa-float:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(37,211,102,0.5);}
+        .wa-float .wa-icon{font-size:1.3rem;}
 
         /* ==================== ANIMATIONS ==================== */
         @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
@@ -552,28 +634,29 @@
             .nav-links{display:none;}
             .nav-mobile{display:block;}
             .hero-container{grid-template-columns:1fr;text-align:center;}
-            .hero h1{font-size:2.5rem;}
-            .hero p{margin:0 auto 36px;}
+            .hero h1{font-size:2.3rem;}
+            .hero p{margin:0 auto 32px;}
             .hero-buttons{justify-content:center;}
-            .hero-stats{justify-content:center;}
+            .hero-trust{justify-content:center;}
             .hero-visual{max-width:400px;margin:0 auto;}
             .features-grid{grid-template-columns:1fr 1fr;}
             .steps-grid{grid-template-columns:1fr 1fr;}
             .step-arrow{display:none;}
-            .pricing-grid{grid-template-columns:1fr;}
-            .price-card.popular{transform:none;}
-            .price-card.popular:hover{transform:translateY(-8px);}
-            .testimonial-grid{grid-template-columns:1fr;}
-            .compare-row{grid-template-columns:1.5fr 1fr 1fr;font-size:0.8rem;padding:12px 16px;}
+            .pain-grid{grid-template-columns:1fr;}
+            .compare-cards{grid-template-columns:1fr;}
+            .guarantee-grid{grid-template-columns:1fr;}
+            .price-features-single{grid-template-columns:1fr;}
             .footer-container{grid-template-columns:1fr;}
         }
         @media(max-width:600px){
-            .hero h1{font-size:2rem;}
+            .hero h1{font-size:1.9rem;}
             .features-grid{grid-template-columns:1fr;}
             .steps-grid{grid-template-columns:1fr;}
-            .hero-stats{flex-direction:column;gap:16px;}
+            .hero-trust{flex-direction:column;align-items:center;}
             .cta h2{font-size:1.8rem;}
             .mockup-float{display:none;}
+            .wa-float span{display:none;}
+            .wa-float{padding:16px;border-radius:50%;width:56px;height:56px;justify-content:center;}
         }
     </style>
 </head>
@@ -588,51 +671,50 @@
             <a href="#cara">Cara Guna</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
-            <a href="#hubungi" class="nav-cta">Hubungi Kami</a>
+            <a href="#hubungi" class="nav-cta">Cuba Percuma 7 Hari</a>
         </div>
         <button class="nav-mobile" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
     </div>
 </nav>
 
-<!-- ==================== HERO (UPDATED MOCKUP) ==================== -->
+<!-- ==================== HERO ==================== -->
 <section class="hero" id="hero">
     <div class="hero-container">
         <div class="hero-content">
-            <div class="hero-badge">🔥 Sistem POS #1 Untuk Kedai Makan</div>
-            <h1>Urus Kedai Makan Jadi <span>Lebih Mudah</span></h1>
-            <p>Sistem POS lengkap yang murah, mudah guna, dan tak perlu beli mesin mahal. Guna tablet atau phone yang anda sedia ada!</p>
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                Cuba Percuma 7 Hari — Tak Perlu Kad Kredit
+            </div>
+            <h1>POS Kedai Makan Paling Murah di Malaysia. <span class="price-highlight">RM30/Bulan.</span></h1>
+            <p class="hero-sub">Guna phone atau tablet yang anda sedia ada. Tak perlu beli mesin mahal.</p>
+            <p>Setup dalam 1 hari, staff belajar dalam 15 minit. Sistem POS yang dibina khas untuk gerai, restoran kecil, cafe, dan warung makan di Malaysia.</p>
             <div class="hero-buttons">
-                <a href="https://wa.me/60167388358?text=Saya%20berminat%20dengan%20POSKedai!" class="btn-hero btn-hero-primary">
+                <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-hero btn-hero-primary">
                     📱 Cuba Percuma 7 Hari
                 </a>
-                <a href="#features" class="btn-hero btn-hero-secondary">
-                    Lihat Fungsi →
+                <a href="https://pos-kedai-demo.netlify.app/" class="btn-hero btn-hero-secondary" target="_blank">
+                    👁️ Lihat Demo
                 </a>
             </div>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <h3>50+</h3>
-                    <p>Kedai Guna</p>
+            <div class="hero-trust">
+                <div class="trust-badge">
+                    <span class="trust-icon">✅</span> Cuba percuma 7 hari
                 </div>
-                <div class="hero-stat">
-                    <h3>RM30</h3>
-                    <p>Sebulan Je</p>
+                <div class="trust-badge">
+                    <span class="trust-icon">🚫</span> Tiada kontrak
                 </div>
-                <div class="hero-stat">
-                    <h3>24/7</h3>
-                    <p>Support</p>
+                <div class="trust-badge">
+                    <span class="trust-icon">📱</span> Guna phone sendiri
                 </div>
             </div>
         </div>
 
-        <!-- ===== UPDATED HERO MOCKUP - Matches Real POS ===== -->
         <div class="hero-visual">
             <div class="mockup-float mockup-float-1">✅ Pesanan #12 Selesai!</div>
             <div class="mockup-float mockup-float-2">💰 Jualan: RM 1,250</div>
             <div class="mockup-float mockup-float-3" style="animation-delay:1.5s">🧾 Resit dicetak!</div>
             
             <div class="hero-mockup">
-                <!-- Header -->
                 <div class="mockup-header">
                     <div class="mockup-header-left">
                         <h4><em>POS</em>Kedai</h4>
@@ -643,29 +725,20 @@
                         <span class="mockup-time">14:30</span>
                     </div>
                 </div>
-
-                <!-- Nav Tabs -->
                 <div class="mockup-nav">
                     <span class="mockup-nav-btn active"><span class="mn-icon">🛒</span>Pesanan</span>
                     <span class="mockup-nav-btn"><span class="mn-icon">📋</span>Senarai</span>
                     <span class="mockup-nav-btn"><span class="mn-icon">📊</span>Jualan</span>
                     <span class="mockup-nav-btn"><span class="mn-icon">📝</span>Menu</span>
                 </div>
-
-                <!-- Body -->
                 <div class="mockup-body">
-                    <!-- Search -->
                     <div class="mockup-search">Cari menu...</div>
-
-                    <!-- Categories -->
                     <div class="mockup-cats">
                         <span class="mockup-cat active">🍽️ Semua</span>
                         <span class="mockup-cat">🍚 Makanan</span>
                         <span class="mockup-cat">🥤 Minuman</span>
                         <span class="mockup-cat">🍰 Kuih</span>
                     </div>
-
-                    <!-- Menu Grid -->
                     <div class="mockup-grid">
                         <div class="mockup-item selected">
                             <div class="mockup-item-badge">2</div>
@@ -701,74 +774,84 @@
                             <div class="mockup-item-price">RM3.00</div>
                         </div>
                     </div>
-
-                    <!-- Cart Preview -->
                     <div class="mockup-cart">
                         <div class="mockup-cart-title">🛒 Troli</div>
                         <div class="mockup-cart-item">
-                            <div>
-                                <div class="mci-name">Nasi Lemak</div>
-                                <div class="mci-detail">RM5.00 × 2</div>
-                            </div>
-                            <div class="mci-qty">
-                                <span class="mci-qty-btn minus">−</span>
-                                <span class="mci-qty-num">2</span>
-                                <span class="mci-qty-btn">+</span>
-                            </div>
+                            <div><div class="mci-name">Nasi Lemak</div><div class="mci-detail">RM5.00 × 2</div></div>
+                            <div class="mci-qty"><span class="mci-qty-btn minus">−</span><span class="mci-qty-num">2</span><span class="mci-qty-btn">+</span></div>
                             <div class="mci-total">RM10.00</div>
                         </div>
                         <div class="mockup-cart-item">
-                            <div>
-                                <div class="mci-name">Mee Goreng</div>
-                                <div class="mci-detail">RM6.00 × 1</div>
-                            </div>
-                            <div class="mci-qty">
-                                <span class="mci-qty-btn minus">−</span>
-                                <span class="mci-qty-num">1</span>
-                                <span class="mci-qty-btn">+</span>
-                            </div>
+                            <div><div class="mci-name">Mee Goreng</div><div class="mci-detail">RM6.00 × 1</div></div>
+                            <div class="mci-qty"><span class="mci-qty-btn minus">−</span><span class="mci-qty-num">1</span><span class="mci-qty-btn">+</span></div>
                             <div class="mci-total">RM6.00</div>
                         </div>
                         <div class="mockup-cart-item">
-                            <div>
-                                <div class="mci-name">Teh Tarik</div>
-                                <div class="mci-detail">RM2.00 × 2</div>
-                            </div>
-                            <div class="mci-qty">
-                                <span class="mci-qty-btn minus">−</span>
-                                <span class="mci-qty-num">2</span>
-                                <span class="mci-qty-btn">+</span>
-                            </div>
+                            <div><div class="mci-name">Teh Tarik</div><div class="mci-detail">RM2.00 × 2</div></div>
+                            <div class="mci-qty"><span class="mci-qty-btn minus">−</span><span class="mci-qty-num">2</span><span class="mci-qty-btn">+</span></div>
                             <div class="mci-total">RM4.00</div>
                         </div>
                     </div>
-
-                    <!-- Table & Discount -->
                     <div class="mockup-info-row">
-                        <div class="mockup-info-box">
-                            🪑 Meja: <span>5</span>
-                        </div>
-                        <div class="mockup-info-box">
-                            🏷️ Diskaun: <span>RM2.00</span>
-                        </div>
+                        <div class="mockup-info-box">🪑 Meja: <span>5</span></div>
+                        <div class="mockup-info-box">🏷️ Diskaun: <span>RM2.00</span></div>
                     </div>
-
-                    <!-- Total -->
                     <div class="mockup-total">
                         <span class="mockup-total-label">JUMLAH</span>
                         <span class="mockup-total-amount">RM 18.00</span>
                     </div>
-
-                    <!-- Payment -->
                     <div class="mockup-payments">
                         <div class="mockup-pay-btn active"><span class="mp-icon">💵</span>Tunai</div>
                         <div class="mockup-pay-btn"><span class="mp-icon">📱</span>QR</div>
                         <div class="mockup-pay-btn"><span class="mp-icon">🏦</span>Transfer</div>
                     </div>
-
-                    <!-- Submit -->
                     <button class="mockup-submit">✅ Hantar Pesanan</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== PAIN POINT SECTION ==================== -->
+<section class="pain-section">
+    <div class="pain-container animate">
+        <h2>Masalah Yang Anda <span>Hadapi Sekarang</span></h2>
+        <p class="pain-sub">Kalau anda masih tulis pesanan atas kertas atau kira guna kalkulator, anda mungkin kenal situasi ini:</p>
+        <div class="pain-grid">
+            <div class="pain-card">
+                <span class="pain-icon">😤</span>
+                <div>
+                    <h4>Salah kira jualan</h4>
+                    <p>Hujung hari, duit tak sama dengan catatan. Tak tahu mana yang bocor.</p>
+                </div>
+            </div>
+            <div class="pain-card">
+                <span class="pain-icon">💸</span>
+                <div>
+                    <h4>POS lain terlalu mahal</h4>
+                    <p>Kena beli mesin RM2,000++, lepas tu bayar RM100-200 sebulan. Tak berbaloi untuk kedai kecil.</p>
+                </div>
+            </div>
+            <div class="pain-card">
+                <span class="pain-icon">😵</span>
+                <div>
+                    <h4>Silap hantar pesanan</h4>
+                    <p>Tulisan tangan susah baca. Dapur salah masak, customer complaint.</p>
+                </div>
+            </div>
+            <div class="pain-card">
+                <span class="pain-icon">📝</span>
+                <div>
+                    <h4>Tak tahu menu mana laris</h4>
+                    <p>Tak ada data jualan. Tak tahu nak push menu apa, nak buang menu apa.</p>
+                </div>
+            </div>
+        </div>
+        <div class="pain-solution">
+            <span class="pain-solution-icon">💡</span>
+            <div class="pain-solution-text">
+                <h4>POSKedai selesaikan semua ni — dengan hanya RM30/bulan dan phone anda.</h4>
+                <p>Tak perlu mesin mahal. Tak perlu kontrak. Tak perlu pening kepala.</p>
             </div>
         </div>
     </div>
@@ -780,7 +863,7 @@
         <div class="section-header animate">
             <div class="section-badge">✨ Fungsi Lengkap</div>
             <h2>Semua Yang Kedai Anda <span>Perlukan</span></h2>
-            <p>Dari ambil pesanan sampai cetak resit, semua dalam satu sistem yang mudah guna</p>
+            <p>Dari ambil pesanan sampai tengok laporan jualan — semua dalam satu sistem yang mudah guna</p>
         </div>
         <div class="features-grid">
             <div class="feature-card animate">
@@ -799,7 +882,7 @@
                 <p>Pilih meja untuk setiap pesanan. Tak keliru hantar makanan ke meja salah!</p>
             </div>
             <div class="feature-card animate">
-                <div class="feature-icon fi-purple">💰</div>
+                <div class="feature-icon fi-purple">📊</div>
                 <h3>Laporan Jualan</h3>
                 <p>Tengok jualan harian, mingguan, dan bulanan. Tahu mana menu paling laris!</p>
             </div>
@@ -828,190 +911,121 @@
         <div class="steps-grid">
             <div class="step-card animate">
                 <div class="step-number">1</div>
-                <h3>Hubungi Kami</h3>
-                <p>WhatsApp kami dan bagi maklumat kedai anda</p>
+                <h3>WhatsApp Kami</h3>
+                <p>Bagi nama kedai dan senarai menu anda</p>
                 <span class="step-arrow">→</span>
             </div>
             <div class="step-card animate">
                 <div class="step-number">2</div>
                 <h3>Kami Setup</h3>
-                <p>Dalam 1-2 hari, sistem anda siap dengan menu lengkap</p>
+                <p>Dalam 1 hari, sistem anda siap dengan menu lengkap</p>
                 <span class="step-arrow">→</span>
             </div>
             <div class="step-card animate">
                 <div class="step-number">3</div>
                 <h3>Kami Ajar</h3>
-                <p>Kami tunjuk cara guna — senang je, 15 minit dah faham!</p>
+                <p>15 minit je — senang sangat, staff pun boleh belajar sendiri</p>
                 <span class="step-arrow">→</span>
             </div>
             <div class="step-card animate">
                 <div class="step-number">4</div>
                 <h3>Mula Guna!</h3>
-                <p>Buka link di tablet/phone, login, terus boleh ambil pesanan!</p>
+                <p>Buka di phone atau tablet, login, terus ambil pesanan!</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==================== PRICING ==================== -->
+<!-- ==================== SINGLE PRICING ==================== -->
 <section class="pricing" id="harga">
     <div class="section-container">
         <div class="section-header animate">
-            <div class="section-badge">💎 Harga Berbaloi</div>
-            <h2>Pilih Pakej <span>Anda</span></h2>
-            <p>Jauh lebih murah dari sistem POS lain. Tak perlu beli mesin!</p>
+            <div class="section-badge">💎 Satu Harga. Semua Termasuk.</div>
+            <h2>Simple. Murah. <span>Berbaloi.</span></h2>
+            <p>Tiada pakej mengelirukan. Satu harga, semua fungsi.</p>
         </div>
-        <div class="pricing-grid">
-            <div class="price-card animate">
-                <h3>🥉 Asas</h3>
-                <p class="price-desc">Untuk kedai kecil</p>
-                <div class="price-amount">
+        <div class="pricing-single animate">
+            <div class="price-main-card">
+                <div class="price-emoji">🍽️</div>
+                <h3>POSKedai — Semua Dalam Satu</h3>
+                <p class="price-main-desc">Semua fungsi termasuk. Tiada caj tersembunyi.</p>
+                <div class="price-amount-single">
                     <span class="currency">RM</span>
                     <span class="amount">30</span>
                     <span class="period">/bulan</span>
                 </div>
-                <ul class="price-features">
-                    <li><span class="check">✓</span> 1 peranti</li>
+                <div class="price-savings">💰 Jimat RM2,000++ — tak perlu beli mesin POS</div>
+                <ul class="price-features-single">
+                    <li><span class="check">✓</span> Unlimited pesanan</li>
                     <li><span class="check">✓</span> Menu tak terhad</li>
-                    <li><span class="check">✓</span> Pesanan & resit</li>
-                    <li><span class="check">✓</span> Laporan harian</li>
-                    <li><span class="cross">✗</span> Laporan mingguan/bulanan</li>
-                    <li><span class="cross">✗</span> Nombor meja</li>
-                    <li><span class="cross">✗</span> Multi staff</li>
-                </ul>
-                <button class="btn-price btn-price-secondary" onclick="window.open('https://wa.me/60167388358?text=Saya%20minat%20Pakej%20Asas%20POSKedai!')">Pilih Pakej</button>
-            </div>
-            <div class="price-card popular animate">
-                <div class="popular-badge">⭐ POPULAR</div>
-                <h3>🥈 Pro</h3>
-                <p class="price-desc">Paling berbaloi</p>
-                <div class="price-amount">
-                    <span class="currency">RM</span>
-                    <span class="amount">60</span>
-                    <span class="period">/bulan</span>
-                </div>
-                <ul class="price-features">
-                    <li><span class="check">✓</span> 3 peranti</li>
-                    <li><span class="check">✓</span> Menu tak terhad</li>
-                    <li><span class="check">✓</span> Pesanan & resit</li>
-                    <li><span class="check">✓</span> Laporan harian/mingguan/bulanan</li>
+                    <li><span class="check">✓</span> Cetak resit</li>
+                    <li><span class="check">✓</span> Laporan jualan lengkap</li>
                     <li><span class="check">✓</span> Nombor meja</li>
-                    <li><span class="check">✓</span> Multi staff (3 akaun)</li>
+                    <li><span class="check">✓</span> Login staff</li>
+                    <li><span class="check">✓</span> Diskaun & promosi</li>
                     <li><span class="check">✓</span> Support WhatsApp</li>
                 </ul>
-                <button class="btn-price btn-price-primary" onclick="window.open('https://wa.me/60167388358?text=Saya%20minat%20Pakej%20Pro%20POSKedai!')">Pilih Pakej</button>
-            </div>
-            <div class="price-card animate">
-                <h3>🥇 Premium</h3>
-                <p class="price-desc">Untuk kedai besar</p>
-                <div class="price-amount">
-                    <span class="currency">RM</span>
-                    <span class="amount">100</span>
-                    <span class="period">/bulan</span>
-                </div>
-                <ul class="price-features">
-                    <li><span class="check">✓</span> Unlimited peranti</li>
-                    <li><span class="check">✓</span> Semua fungsi Pro</li>
-                    <li><span class="check">✓</span> Custom branding</li>
-                    <li><span class="check">✓</span> Unlimited staff</li>
-                    <li><span class="check">✓</span> Diskaun & promosi</li>
-                    <li><span class="check">✓</span> Support prioriti</li>
-                    <li><span class="check">✓</span> Setup percuma</li>
-                </ul>
-                <button class="btn-price btn-price-secondary" onclick="window.open('https://wa.me/60167388358?text=Saya%20minat%20Pakej%20Premium%20POSKedai!')">Pilih Pakej</button>
+                <button class="btn-price-main" onclick="window.open('https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!')">📱 Cuba Percuma 7 Hari</button>
+                <p class="price-note">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==================== COMPARISON ==================== -->
+<!-- ==================== HONEST COMPARISON ==================== -->
 <section class="comparison" id="comparison">
     <div class="section-container">
         <div class="section-header animate">
-            <div class="section-badge">📊 Perbandingan</div>
-            <h2>Kenapa Pilih <span>POSKedai?</span></h2>
-            <p>Bandingkan sendiri dengan sistem POS lain</p>
+            <div class="section-badge">📊 Bandingkan Sendiri</div>
+            <h2>Kenapa Peniaga Pilih <span>POSKedai?</span></h2>
+            <p>Fakta yang anda boleh semak sendiri</p>
         </div>
-        <div class="compare-table animate">
-            <div class="compare-row compare-header">
-                <span></span>
-                <span>POS Lain</span>
-                <span>🍽️ POSKedai</span>
+        <div class="compare-cards animate">
+            <div class="compare-card others">
+                <h3>😐 Sistem POS Biasa</h3>
+                <ul class="compare-list">
+                    <li><span class="ci">💸</span> Kena beli mesin/terminal khas — RM2,000 ke atas untuk mula</li>
+                    <li><span class="ci">📄</span> Ada kontrak 6-12 bulan — tak boleh berhenti sesuka hati</li>
+                    <li><span class="ci">⏳</span> Setup ambil masa 1-2 minggu</li>
+                    <li><span class="ci">🤯</span> Interface kompleks — staff ambil masa lama nak belajar</li>
+                    <li><span class="ci">🌐</span> Support dalam Bahasa Inggeris — susah nak communicate</li>
+                </ul>
             </div>
-            <div class="compare-row">
-                <span class="compare-label">Harga Bulanan</span>
-                <span class="compare-value">RM 79 - 199</span>
-                <span class="compare-value" style="color:#f97316;font-weight:800;">RM 30 - 100</span>
-            </div>
-            <div class="compare-row">
-                <span class="compare-label">Perlu Beli Mesin?</span>
-                <span class="compare-value compare-no">Ya (RM 2,000++)</span>
-                <span class="compare-value compare-yes">Tidak! ✓</span>
-            </div>
-            <div class="compare-row">
-                <span class="compare-label">Guna Phone/Tablet</span>
-                <span class="compare-value compare-no">Terhad</span>
-                <span class="compare-value compare-yes">Ya! ✓</span>
-            </div>
-            <div class="compare-row">
-                <span class="compare-label">Setup</span>
-                <span class="compare-value">1-2 minggu</span>
-                <span class="compare-value" style="color:#22c55e;">1-2 hari! ✓</span>
-            </div>
-            <div class="compare-row">
-                <span class="compare-label">Kontrak</span>
-                <span class="compare-value compare-no">6-12 bulan</span>
-                <span class="compare-value compare-yes">Tiada kontrak! ✓</span>
-            </div>
-            <div class="compare-row">
-                <span class="compare-label">Support Bahasa Melayu</span>
-                <span class="compare-value compare-no">Terhad</span>
-                <span class="compare-value compare-yes">100%! ✓</span>
+            <div class="compare-card poskedai">
+                <h3>POSKedai</h3>
+                <ul class="compare-list">
+                    <li><span class="ci">📱</span> <strong>Guna phone/tablet sendiri</strong> — tak perlu beli apa-apa mesin</li>
+                    <li><span class="ci">🆓</span> <strong>Tiada kontrak</strong> — bayar bulan ke bulan, berhenti bila-bila</li>
+                    <li><span class="ci">⚡</span> <strong>Setup dalam 1 hari</strong> — WhatsApp kami, esok dah boleh guna</li>
+                    <li><span class="ci">😊</span> <strong>Super simple</strong> — staff belajar dalam 15 minit</li>
+                    <li><span class="ci">🇲🇾</span> <strong>100% Bahasa Melayu</strong> — support pun dalam BM</li>
+                </ul>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==================== TESTIMONIALS ==================== -->
-<section class="testimonials" id="testimoni">
-    <div class="section-container">
-        <div class="section-header animate">
-            <div class="section-badge">💬 Testimoni</div>
-            <h2>Apa Kata <span>Pelanggan</span></h2>
-        </div>
-        <div class="testimonial-grid">
-            <div class="testimonial-card animate">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Dulu guna tulis tangan, selalu silap kira. Sekarang guna POSKedai, semua auto. Jualan pun nampak naik sebab tak bocor duit!"</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">PA</div>
-                    <div>
-                        <div class="testimonial-name">Pak Ali</div>
-                        <div class="testimonial-role">Kedai Nasi Campur Pak Ali</div>
-                    </div>
-                </div>
+<!-- ==================== GUARANTEE (replaces fake testimonials) ==================== -->
+<section class="guarantee" id="jaminan">
+    <div class="guarantee-container animate">
+        <div class="guarantee-shield">🛡️</div>
+        <h2>Jaminan <span>Tanpa Risiko</span></h2>
+        <p>Kami yakin anda akan suka POSKedai. Sebab tu kami bagi jaminan penuh — tak ada risiko untuk anda langsung.</p>
+        <div class="guarantee-grid">
+            <div class="guarantee-card">
+                <div class="gc-icon">🆓</div>
+                <h4>7 Hari Percuma</h4>
+                <p>Cuba semua fungsi secara percuma selama 7 hari. Tak perlu bayar apa-apa dulu.</p>
             </div>
-            <div class="testimonial-card animate">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Murah sangat! Sistem lain caj RM 100++, ni RM 30 je. Dan senang guna, staff saya belajar dalam 10 minit je."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">KS</div>
-                    <div>
-                        <div class="testimonial-name">Kak Siti</div>
-                        <div class="testimonial-role">Warung Kak Siti</div>
-                    </div>
-                </div>
+            <div class="guarantee-card">
+                <div class="gc-icon">🚫</div>
+                <h4>Tiada Kontrak</h4>
+                <p>Bayar bulan ke bulan sahaja. Nak berhenti? Boleh stop bila-bila masa. Tiada penalti.</p>
             </div>
-            <div class="testimonial-card animate">
-                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Best! Boleh tengok laporan jualan terus dari phone. Tak payah kira manual dah. Support pun laju, WhatsApp je terus reply."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">ER</div>
-                    <div>
-                        <div class="testimonial-name">En. Razak</div>
-                        <div class="testimonial-role">Restoran Selera Kampung</div>
-                    </div>
-                </div>
+            <div class="guarantee-card">
+                <div class="gc-icon">💬</div>
+                <h4>Support Penuh</h4>
+                <p>Ada masalah? WhatsApp kami terus. Kami bantu setup, ajar guna, dan selesaikan sebarang isu.</p>
             </div>
         </div>
     </div>
@@ -1051,7 +1065,7 @@
                     <span>Data saya selamat ke?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">Ya, sangat selamat! Data disimpan dalam Google Cloud — sama macam Gmail dan Google Drive anda. Backup automatik, takkan hilang.</div>
+                <div class="faq-answer">Ya, sangat selamat! Data disimpan dalam cloud yang secure. Backup automatik setiap hari, takkan hilang.</div>
             </div>
             <div class="faq-item animate">
                 <div class="faq-question" onclick="toggleFaq(this)">
@@ -1065,7 +1079,14 @@
                     <span>Berapa lama nak setup?</span>
                     <span class="faq-toggle">+</span>
                 </div>
-                <div class="faq-answer">1-2 hari je! Anda bagi senarai menu dan maklumat kedai, kami setupkan semuanya. Lepas tu kami ajar cara guna — 15 minit dah boleh mula!</div>
+                <div class="faq-answer">1 hari je! Anda bagi senarai menu dan maklumat kedai, kami setupkan semuanya. Lepas tu kami ajar cara guna — 15 minit dah boleh mula!</div>
+            </div>
+            <div class="faq-item animate">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Sesuai untuk kedai jenis apa?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">POSKedai dibina khas untuk F&B — gerai makan, restoran kecil, warung, cafe, food truck, dan food court. Apa-apa kedai yang jual makanan dan minuman!</div>
             </div>
         </div>
     </div>
@@ -1073,14 +1094,16 @@
 
 <!-- ==================== CTA ==================== -->
 <section class="cta" id="hubungi">
-    <h2>Sedia Nak Mudahkan<br>Pengurusan Kedai Anda?</h2>
-    <p>Cuba percuma 7 hari. Tak suka? Berhenti bila-bila. Tiada risiko langsung!</p>
+    <h2>Cuba Percuma 7 Hari.<br><span>Tak Suka? Tak Perlu Bayar.</span></h2>
+    <p>Tiada risiko langsung. WhatsApp kami sekarang, esok kedai anda dah ada sistem POS sendiri.</p>
+    <div class="cta-price">RM30/bulan</div>
+    <p class="cta-price-note">Semua fungsi termasuk. Tiada caj tersembunyi.</p>
     <div class="cta-buttons">
-        <a href="https://wa.me/60167388358?text=Saya%20berminat%20nak%20cuba%20POSKedai!%20Boleh%20bagi%20free%20trial?" class="btn-cta-white">
-            📱 WhatsApp Kami Sekarang
+        <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-cta-orange">
+            📱 Cuba Percuma 7 Hari — WhatsApp Sekarang
         </a>
-        <a href="https://pos-kedai-demo.netlify.app/" class="btn-cta-outline" target="_blank">
-            👁️ Lihat Demo
+        <a href="https://pos-kedai-demo.netlify.app/" class="btn-cta-ghost" target="_blank">
+            👁️ Lihat Demo Dulu
         </a>
     </div>
 </section>
@@ -1112,7 +1135,10 @@
 </footer>
 
 <!-- ==================== WHATSAPP FLOAT ==================== -->
-<a href="https://wa.me/60167388358?text=Hai!%20Saya%20nak%20tahu%20lebih%20lanjut%20tentang%20POSKedai" class="wa-float" target="_blank">💬</a>
+<a href="https://wa.me/60167388358?text=Hai!%20Saya%20nak%20tahu%20tentang%20POSKedai" class="wa-float" target="_blank">
+    <span class="wa-icon">💬</span>
+    <span>WhatsApp Kami</span>
+</a>
 
 <!-- ==================== SCRIPTS ==================== -->
 <script>
@@ -1138,7 +1164,6 @@ function handleScrollAnimation() {
 window.addEventListener('scroll', handleScrollAnimation);
 window.addEventListener('load', handleScrollAnimation);
 
-// Close mobile nav when link clicked
 document.querySelectorAll('.nav-links a').forEach(function(link) {
     link.addEventListener('click', function() {
         document.getElementById('navLinks').classList.remove('show');
