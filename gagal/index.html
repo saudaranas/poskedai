@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayaran Tidak Berjaya — POSKedai</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Plus Jakarta Sans',sans-serif;
+            color:#1e293b;min-height:100vh;
+            background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 50%,#e2e8f0 100%);
+            display:flex;flex-direction:column;align-items:center;
+            padding:40px 20px;
+        }
+
+        .container{max-width:600px;width:100%;}
+
+        /* Logo */
+        .logo{text-align:center;margin-bottom:32px;}
+        .logo a{font-weight:900;font-size:1.5rem;color:#f97316;text-decoration:none;}
+        .logo a span{color:#1e293b;}
+
+        /* Main Card */
+        .card{
+            background:#fff;border-radius:24px;
+            box-shadow:0 20px 60px rgba(0,0,0,0.08);
+            overflow:hidden;animation:fadeInUp 0.6s ease;
+        }
+
+        /* Red header */
+        .card-header{
+            background:linear-gradient(135deg,#f59e0b,#d97706);
+            padding:40px 32px;text-align:center;color:#fff;
+        }
+        .card-icon{
+            width:80px;height:80px;border-radius:50%;
+            background:rgba(255,255,255,0.2);
+            display:flex;align-items:center;justify-content:center;
+            font-size:2.5rem;margin:0 auto 16px;
+        }
+        .card-header h1{font-size:1.6rem;font-weight:900;margin-bottom:8px;}
+        .card-header p{font-size:0.95rem;opacity:0.9;}
+
+        /* Body */
+        .card-body{padding:32px;}
+
+        /* Reasons */
+        .section-title{
+            font-size:0.8rem;font-weight:700;color:#f97316;
+            text-transform:uppercase;letter-spacing:1px;
+            margin-bottom:16px;
+        }
+        .reasons{
+            background:#fffbeb;border:1px solid #fde68a;
+            border-radius:14px;padding:20px;margin-bottom:28px;
+        }
+        .reasons p{
+            font-size:0.9rem;color:#92400e;font-weight:600;
+            margin-bottom:12px;
+        }
+        .reasons ul{list-style:none;}
+        .reasons ul li{
+            font-size:0.85rem;color:#78716c;
+            padding:5px 0;display:flex;align-items:center;gap:8px;
+        }
+
+        /* Action buttons */
+        .actions{
+            display:flex;flex-direction:column;gap:12px;
+            margin-bottom:28px;
+        }
+        .btn-retry{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;
+            padding:16px 32px;border-radius:50px;
+            font-weight:700;font-size:1rem;
+            text-decoration:none;
+            box-shadow:0 8px 25px rgba(249,115,22,0.35);
+            transition:all 0.3s;
+        }
+        .btn-retry:hover{
+            transform:translateY(-3px);
+            box-shadow:0 12px 35px rgba(249,115,22,0.45);
+        }
+        .btn-wa{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            background:#25D366;color:#fff;
+            padding:16px 32px;border-radius:50px;
+            font-weight:700;font-size:1rem;
+            text-decoration:none;
+            box-shadow:0 8px 25px rgba(37,211,102,0.25);
+            transition:all 0.3s;
+        }
+        .btn-wa:hover{
+            transform:translateY(-3px);
+            box-shadow:0 12px 35px rgba(37,211,102,0.35);
+        }
+        .btn-trial{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            background:#fff;color:#64748b;
+            padding:16px 32px;border-radius:50px;
+            font-weight:700;font-size:0.95rem;
+            text-decoration:none;
+            border:2px solid #e2e8f0;
+            transition:all 0.3s;
+        }
+        .btn-trial:hover{
+            border-color:#f97316;color:#f97316;
+            transform:translateY(-2px);
+        }
+
+        /* Divider */
+        .divider{height:1px;background:#f1f5f9;margin:4px 0 24px;}
+
+        /* Reassurance */
+        .reassure{
+            background:#f0fdf4;border:1px solid #bbf7d0;
+            border-radius:14px;padding:20px;text-align:center;
+        }
+        .reassure p{
+            font-size:0.88rem;color:#166534;line-height:1.6;
+        }
+        .reassure strong{font-weight:800;}
+
+        /* Footer */
+        .card-footer{
+            text-align:center;padding:0 32px 32px;
+        }
+        .card-footer p{
+            font-size:0.8rem;color:#94a3b8;line-height:1.6;
+        }
+        .card-footer a{color:#f97316;font-weight:600;text-decoration:none;}
+        .card-footer a:hover{text-decoration:underline;}
+
+        @keyframes fadeInUp{
+            from{opacity:0;transform:translateY(30px);}
+            to{opacity:1;transform:translateY(0);}
+        }
+
+        @media(max-width:600px){
+            body{padding:20px 16px;}
+            .card-header{padding:32px 24px;}
+            .card-header h1{font-size:1.4rem;}
+            .card-body{padding:24px;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Logo -->
+    <div class="logo">
+        <a href="https://saudaranas.github.io/poskedai/">POS<span>Kedai</span></a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card">
+
+        <!-- Header -->
+        <div class="card-header">
+            <div class="card-icon">⚠️</div>
+            <h1>Bayaran Tidak Berjaya</h1>
+            <p>Jangan risau — tiada caj dikenakan</p>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            <!-- Reasons -->
+            <div class="section-title">Kenapa ini berlaku?</div>
+            <div class="reasons">
+                <p>Bayaran mungkin gagal disebabkan:</p>
+                <ul>
+                    <li>🏦 Baki akaun bank tidak mencukupi</li>
+                    <li>📱 Sesi online banking tamat tempoh (timeout)</li>
+                    <li>🌐 Internet terputus semasa proses bayaran</li>
+                    <li>🔒 Transaksi disekat oleh bank anda</li>
+                    <li>❌ Bayaran dibatalkan sebelum selesai</li>
+                </ul>
+            </div>
+
+            <!-- Actions -->
+            <div class="section-title">Apa yang anda boleh buat</div>
+            <div class="actions">
+                <a href="https://saudaranas.github.io/poskedai/" class="btn-retry">
+                    🔄 Cuba Bayar Semula
+                </a>
+                <a href="https://wa.me/60167388358?text=Hai%2C%20bayaran%20POSKedai%20saya%20tidak%20berjaya.%20Boleh%20bantu%3F" class="btn-wa" target="_blank">
+                    💬 WhatsApp Kami Untuk Bantuan
+                </a>
+                <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-trial">
+                    📱 Cuba Percuma 7 Hari Dulu
+                </a>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Reassurance -->
+            <div class="reassure">
+                <p><strong>Tiada caj dikenakan.</strong> Bayaran yang gagal tidak akan ditolak dari akaun anda. Anda boleh cuba semula bila-bila masa, atau WhatsApp kami jika perlukan bantuan.</p>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            <p>Perlukan bantuan? <a href="https://wa.me/60167388358">WhatsApp kami</a> — kami sedia membantu.</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
