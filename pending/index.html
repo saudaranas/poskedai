@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayaran Sedang Diproses — POSKedai</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Plus Jakarta Sans',sans-serif;
+            color:#1e293b;min-height:100vh;
+            background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 50%,#bfdbfe 100%);
+            display:flex;flex-direction:column;align-items:center;
+            padding:40px 20px;
+        }
+
+        .container{max-width:600px;width:100%;}
+
+        .logo{text-align:center;margin-bottom:32px;}
+        .logo a{font-weight:900;font-size:1.5rem;color:#f97316;text-decoration:none;}
+        .logo a span{color:#1e293b;}
+
+        .card{
+            background:#fff;border-radius:24px;
+            box-shadow:0 20px 60px rgba(0,0,0,0.08);
+            overflow:hidden;animation:fadeInUp 0.6s ease;
+        }
+
+        /* Blue header */
+        .card-header{
+            background:linear-gradient(135deg,#3b82f6,#2563eb);
+            padding:40px 32px;text-align:center;color:#fff;
+        }
+        .card-icon{
+            width:80px;height:80px;border-radius:50%;
+            background:rgba(255,255,255,0.2);
+            display:flex;align-items:center;justify-content:center;
+            font-size:2.5rem;margin:0 auto 16px;
+            animation:pulse 2s ease-in-out infinite;
+        }
+        .card-header h1{font-size:1.6rem;font-weight:900;margin-bottom:8px;}
+        .card-header p{font-size:0.95rem;opacity:0.9;}
+
+        .card-body{padding:32px;}
+
+        .section-title{
+            font-size:0.8rem;font-weight:700;color:#3b82f6;
+            text-transform:uppercase;letter-spacing:1px;
+            margin-bottom:16px;
+        }
+
+        /* Status box */
+        .status-box{
+            background:#eff6ff;border:2px solid #bfdbfe;
+            border-radius:16px;padding:24px;margin-bottom:28px;
+            text-align:center;
+        }
+        .status-box .spinner{
+            width:40px;height:40px;border-radius:50%;
+            border:4px solid #bfdbfe;border-top-color:#3b82f6;
+            animation:spin 1s linear infinite;
+            margin:0 auto 16px;
+        }
+        .status-box h3{
+            font-size:1.05rem;font-weight:800;color:#1e40af;
+            margin-bottom:8px;
+        }
+        .status-box p{
+            font-size:0.88rem;color:#64748b;line-height:1.6;
+        }
+
+        /* What to know */
+        .info-cards{
+            display:flex;flex-direction:column;gap:12px;
+            margin-bottom:28px;
+        }
+        .info-card{
+            display:flex;gap:14px;align-items:flex-start;
+            background:#f8fafc;border-radius:12px;padding:16px;
+        }
+        .info-card-icon{
+            font-size:1.3rem;flex-shrink:0;margin-top:2px;
+        }
+        .info-card h4{font-size:0.9rem;font-weight:700;margin-bottom:4px;}
+        .info-card p{font-size:0.82rem;color:#64748b;line-height:1.5;}
+
+        .divider{height:1px;background:#f1f5f9;margin:4px 0 24px;}
+
+        /* Actions */
+        .actions{
+            display:flex;flex-direction:column;gap:12px;
+            margin-bottom:24px;
+        }
+        .btn-wa{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            background:#25D366;color:#fff;
+            padding:16px 32px;border-radius:50px;
+            font-weight:700;font-size:1rem;
+            text-decoration:none;
+            box-shadow:0 8px 25px rgba(37,211,102,0.25);
+            transition:all 0.3s;
+        }
+        .btn-wa:hover{
+            transform:translateY(-3px);
+            box-shadow:0 12px 35px rgba(37,211,102,0.35);
+        }
+        .btn-home{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            background:#fff;color:#64748b;
+            padding:16px 32px;border-radius:50px;
+            font-weight:700;font-size:0.95rem;
+            text-decoration:none;
+            border:2px solid #e2e8f0;
+            transition:all 0.3s;
+        }
+        .btn-home:hover{
+            border-color:#3b82f6;color:#3b82f6;
+            transform:translateY(-2px);
+        }
+
+        /* Reassurance */
+        .reassure{
+            background:#f0fdf4;border:1px solid #bbf7d0;
+            border-radius:14px;padding:20px;text-align:center;
+        }
+        .reassure p{
+            font-size:0.88rem;color:#166534;line-height:1.6;
+        }
+        .reassure strong{font-weight:800;}
+
+        .card-footer{
+            text-align:center;padding:0 32px 32px;
+        }
+        .card-footer p{
+            font-size:0.8rem;color:#94a3b8;line-height:1.6;
+        }
+        .card-footer a{color:#3b82f6;font-weight:600;text-decoration:none;}
+        .card-footer a:hover{text-decoration:underline;}
+
+        @keyframes fadeInUp{
+            from{opacity:0;transform:translateY(30px);}
+            to{opacity:1;transform:translateY(0);}
+        }
+        @keyframes pulse{
+            0%,100%{transform:scale(1);}
+            50%{transform:scale(1.05);}
+        }
+        @keyframes spin{
+            to{transform:rotate(360deg);}
+        }
+
+        @media(max-width:600px){
+            body{padding:20px 16px;}
+            .card-header{padding:32px 24px;}
+            .card-header h1{font-size:1.4rem;}
+            .card-body{padding:24px;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <a href="https://saudaranas.github.io/poskedai/">POS<span>Kedai</span></a>
+    </div>
+
+    <div class="card">
+
+        <div class="card-header">
+            <div class="card-icon">⏳</div>
+            <h1>Bayaran Sedang Diproses</h1>
+            <p>Sila tunggu sebentar — jangan tutup page ini</p>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Status -->
+            <div class="status-box">
+                <div class="spinner"></div>
+                <h3>Menunggu pengesahan dari bank anda</h3>
+                <p>Proses ini biasanya mengambil masa beberapa minit. Kadang-kadang boleh sampai 24 jam bergantung kepada bank.</p>
+            </div>
+
+            <!-- What to know -->
+            <div class="section-title">Apa yang anda perlu tahu</div>
+            <div class="info-cards">
+                <div class="info-card">
+                    <span class="info-card-icon">🚫</span>
+                    <div>
+                        <h4>Jangan bayar sekali lagi</h4>
+                        <p>Bayaran anda sudah dihantar ke bank. Jika anda bayar lagi, anda mungkin akan dicaj dua kali.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <span class="info-card-icon">📧</span>
+                    <div>
+                        <h4>Semak email anda</h4>
+                        <p>Anda akan terima email pengesahan sebaik sahaja bayaran berjaya diproses.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <span class="info-card-icon">🕐</span>
+                    <div>
+                        <h4>Biasanya selesai dalam beberapa minit</h4>
+                        <p>Kebanyakan bayaran FPX dan DuitNow diproses dalam masa 1-5 minit. Kad kredit mungkin ambil sedikit lebih lama.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <span class="info-card-icon">🏦</span>
+                    <div>
+                        <h4>Semak penyata bank anda</h4>
+                        <p>Jika duit sudah ditolak tapi belum terima pengesahan, WhatsApp kami dengan bukti bayaran.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Actions -->
+            <div class="section-title">Perlukan bantuan?</div>
+            <div class="actions">
+                <a href="https://wa.me/60167388358?text=Hai%2C%20bayaran%20POSKedai%20saya%20masih%20pending.%20Boleh%20semak%3F" class="btn-wa" target="_blank">
+                    💬 WhatsApp Kami — Kami Bantu Semak
+                </a>
+                <a href="https://saudaranas.github.io/poskedai/" class="btn-home">
+                    🏠 Kembali ke Laman Utama
+                </a>
+            </div>
+
+            <!-- Reassurance -->
+            <div class="reassure">
+                <p><strong>Jangan risau!</strong> Jika bayaran berjaya, kami akan hubungi anda melalui email atau WhatsApp untuk mulakan setup POSKedai anda. Jika gagal, duit akan dikembalikan ke akaun anda.</p>
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+            <p>Ada soalan? <a href="https://wa.me/60167388358">WhatsApp kami</a> bila-bila masa.</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
