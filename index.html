@@ -636,6 +636,63 @@
             text-align:center;font-size:0.8rem;
         }
 
+        /* ==================== PAYMENT MODAL ==================== */
+        .payment-overlay{
+            position:fixed;top:0;left:0;right:0;bottom:0;
+            background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+            z-index:9999;display:none;
+            justify-content:center;align-items:center;
+            padding:20px;
+            opacity:0;transition:opacity 0.3s ease;
+        }
+        .payment-overlay.show{display:flex;opacity:1;}
+        .payment-modal{
+            background:#fff;border-radius:24px;
+            width:100%;max-width:520px;
+            max-height:90vh;overflow-y:auto;
+            box-shadow:0 30px 80px rgba(0,0,0,0.25);
+            position:relative;
+            transform:translateY(20px);
+            transition:transform 0.3s ease;
+        }
+        .payment-overlay.show .payment-modal{transform:translateY(0);}
+        .payment-modal-header{
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            padding:24px 28px;border-radius:24px 24px 0 0;
+            color:#fff;display:flex;justify-content:space-between;align-items:center;
+        }
+        .payment-modal-header h3{font-size:1.1rem;font-weight:800;}
+        .payment-modal-header p{font-size:0.8rem;opacity:0.85;margin-top:4px;}
+        .payment-modal-close{
+            background:rgba(255,255,255,0.2);border:none;
+            color:#fff;width:36px;height:36px;border-radius:50%;
+            font-size:1.2rem;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            transition:background 0.2s;flex-shrink:0;
+        }
+        .payment-modal-close:hover{background:rgba(255,255,255,0.35);}
+        .payment-modal-info{
+            padding:16px 28px;background:#fff7ed;
+            display:flex;justify-content:space-between;align-items:center;
+            border-bottom:1px solid #fed7aa;
+        }
+        .payment-modal-info .pmi-label{font-size:0.85rem;color:#64748b;font-weight:600;}
+        .payment-modal-info .pmi-amount{font-size:1.4rem;font-weight:900;color:#ea580c;}
+        .payment-modal-info .pmi-breakdown{font-size:0.7rem;color:#94a3b8;margin-top:2px;}
+        .payment-modal-body{padding:0 0 8px;}
+        .payment-modal-body #bcl-payment-form{min-height:400px;}
+        .payment-modal-footer{
+            padding:12px 28px 16px;text-align:center;
+            border-top:1px solid #f1f5f9;
+        }
+        .payment-modal-footer p{font-size:0.7rem;color:#94a3b8;}
+        .payment-modal-footer strong{color:#64748b;}
+        @media(max-width:600px){
+            .payment-modal{max-width:100%;border-radius:20px;}
+            .payment-modal-header{border-radius:20px 20px 0 0;padding:20px;}
+            .payment-modal-info{padding:12px 20px;}
+        }
+
         /* ==================== WHATSAPP FLOAT ==================== */
         .wa-float{
             position:fixed;bottom:24px;right:24px;z-index:90;
@@ -994,7 +1051,7 @@
                     <li><span class="check">✓</span> Support WhatsApp</li>
                 </ul>
                 <div class="price-buttons">
-                    <button class="btn-price-main" onclick="window.open('https://nucleusriver.bcl.my/form/poskedai?amount=80')">💳 Langgan Sekarang — RM80</button>
+                    <button class="btn-price-main" onclick="openPaymentModal()">💳 Langgan Sekarang — RM80</button>
                     <p class="price-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</p>
                     <button class="btn-price-trial" onclick="window.open('https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!')">📱 Atau cuba percuma 7 hari dulu</button>
                 </div>
@@ -1135,7 +1192,7 @@
     <div class="cta-price">RM30/bulan</div>
     <p class="cta-price-note">Setup RM50 (sekali sahaja) + RM30/bulan. Semua fungsi termasuk.</p>
     <div class="cta-buttons">
-        <a href="https://nucleusriver.bcl.my/form/poskedai?amount=80" class="btn-cta-orange">
+        <a href="javascript:void(0)" onclick="openPaymentModal()" class="btn-cta-orange">
             💳 Langgan Sekarang — RM80
         </a>
         <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-cta-ghost">
@@ -1176,6 +1233,32 @@
     <span>WhatsApp Kami</span>
 </a>
 
+<!-- ==================== PAYMENT MODAL ==================== -->
+<div class="payment-overlay" id="paymentModal">
+    <div class="payment-modal">
+        <div class="payment-modal-header">
+            <div>
+                <h3>💳 Langgan POSKedai</h3>
+                <p>Lengkapkan bayaran untuk mula guna POSKedai</p>
+            </div>
+            <button class="payment-modal-close" onclick="closePaymentModal()">&times;</button>
+        </div>
+        <div class="payment-modal-info">
+            <div>
+                <div class="pmi-label">Jumlah Bayaran</div>
+                <div class="pmi-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</div>
+            </div>
+            <div class="pmi-amount">RM80</div>
+        </div>
+        <div class="payment-modal-body">
+            <div id="bcl-payment-form" data-url="https://nucleusriver.bcl.my/embed/form/poskedai"></div>
+        </div>
+        <div class="payment-modal-footer">
+            <p>🔒 Bayaran selamat melalui <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></p>
+        </div>
+    </div>
+</div>
+
 <!-- ==================== SCRIPTS ==================== -->
 <script>
 window.addEventListener('scroll', function() {
@@ -1204,6 +1287,44 @@ document.querySelectorAll('.nav-links a').forEach(function(link) {
     link.addEventListener('click', function() {
         document.getElementById('navLinks').classList.remove('show');
     });
+});
+
+// Payment Modal
+function openPaymentModal() {
+    var modal = document.getElementById('paymentModal');
+    modal.style.display = 'flex';
+    // Trigger animation
+    requestAnimationFrame(function() {
+        modal.classList.add('show');
+    });
+    document.body.style.overflow = 'hidden';
+
+    // Load BCL embed script if not loaded
+    if (!document.getElementById('bcl-script')) {
+        var script = document.createElement('script');
+        script.id = 'bcl-script';
+        script.src = 'https://bcl.my/js/bc-encrypted-payment-embed.js';
+        document.body.appendChild(script);
+    }
+}
+
+function closePaymentModal() {
+    var modal = document.getElementById('paymentModal');
+    modal.classList.remove('show');
+    setTimeout(function() {
+        modal.style.display = 'none';
+    }, 300);
+    document.body.style.overflow = '';
+}
+
+// Close modal when clicking overlay
+document.getElementById('paymentModal').addEventListener('click', function(e) {
+    if (e.target === this) closePaymentModal();
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closePaymentModal();
 });
 </script>
 
