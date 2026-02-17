@@ -463,6 +463,16 @@
             flex-wrap:wrap;
         }
         .payment-badges strong{color:#64748b;}
+        .price-breakdown{
+            font-size:0.8rem;color:#94a3b8;margin:4px 0 12px;
+            font-weight:600;
+        }
+        .price-setup{
+            font-size:0.9rem;color:#64748b;font-weight:600;
+            margin-bottom:12px;
+            background:#f8fafc;padding:8px 16px;border-radius:8px;
+            display:inline-block;
+        }
         .price-note{
             font-size:0.8rem;color:#94a3b8;margin-top:16px;
             display:flex;align-items:center;justify-content:center;gap:6px;
@@ -971,6 +981,7 @@
                     <span class="amount">30</span>
                     <span class="period">/bulan</span>
                 </div>
+                <div class="price-setup">+ Yuran setup RM50 (sekali sahaja untuk customer baru)</div>
                 <div class="price-savings">💰 Jimat RM2,000++ — tak perlu beli mesin POS</div>
                 <ul class="price-features-single">
                     <li><span class="check">✓</span> Unlimited pesanan</li>
@@ -983,13 +994,14 @@
                     <li><span class="check">✓</span> Support WhatsApp</li>
                 </ul>
                 <div class="price-buttons">
-                    <button class="btn-price-main" onclick="window.open('LINK_BAYARCASH_ANDA')">💳 Langgan Sekarang — RM30/bulan</button>
+                    <button class="btn-price-main" onclick="window.open('https://nucleusriver.bcl.my/form/poskedai?amount=80')">💳 Langgan Sekarang — RM80</button>
+                    <p class="price-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</p>
                     <button class="btn-price-trial" onclick="window.open('https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!')">📱 Atau cuba percuma 7 hari dulu</button>
                 </div>
                 <p class="price-note">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
                 <div class="payment-badges">
                     <span>Bayaran selamat melalui:</span>
-                    <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong>
+                    <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong>
                 </div>
             </div>
         </div>
@@ -1121,10 +1133,10 @@
     <h2>Cuba Percuma 7 Hari.<br><span>Tak Suka? Tak Perlu Bayar.</span></h2>
     <p>Tiada risiko langsung. WhatsApp kami sekarang, esok kedai anda dah ada sistem POS sendiri.</p>
     <div class="cta-price">RM30/bulan</div>
-    <p class="cta-price-note">Semua fungsi termasuk. Tiada caj tersembunyi.</p>
+    <p class="cta-price-note">Setup RM50 (sekali sahaja) + RM30/bulan. Semua fungsi termasuk.</p>
     <div class="cta-buttons">
-        <a href="LINK_BAYARCASH_ANDA" class="btn-cta-orange">
-            💳 Langgan Sekarang — RM30/bulan
+        <a href="https://nucleusriver.bcl.my/form/poskedai?amount=80" class="btn-cta-orange">
+            💳 Langgan Sekarang — RM80
         </a>
         <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-cta-ghost">
             📱 Cuba Percuma 7 Hari Dulu
