@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POSKedai — Brand Assets v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --org: #f97316;
+  --org-d: #ea6c0a;
+  --org-pale: #fff7ed;
+  --org-light: #fed7aa;
+  --dark: #1c1917;
+  --white: #ffffff;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #111;
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.asset-card {
+  background: #1e1e1e;
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.download-btn {
+  background: var(--org);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 9px 20px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.download-btn:hover { background: #ea6c0a; transform: translateY(-1px); }
+.download-btn:active { transform: translateY(0); }
+.download-btn.loading { opacity: 0.7; pointer-events: none; }
+
+.download-btn-pp {
+  background: #fff;
+  color: var(--dark);
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 9px 20px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: background 0.15s;
+}
+.download-btn-pp:hover { background: #f5f5f5; }
+
+.section-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #444;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+/* ═══════════════════════════════════
+   PHONE MOCKUP
+═══════════════════════════════════ */
+.phone-mockup {
+  position: relative;
+  display: inline-block;
+}
+
+.phone-shell {
+  width: 130px;
+  height: 264px;
+  background: linear-gradient(160deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 28px;
+  padding: 10px 6px;
+  box-shadow:
+    0 0 0 1.5px #333,
+    0 20px 60px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+}
+
+.phone-shell::before {
+  content: '';
+  position: absolute;
+  top: 11px; left: 50%;
+  transform: translateX(-50%);
+  width: 36px; height: 8px;
+  background: #111;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+/* Side buttons */
+.phone-shell::after {
+  content: '';
+  position: absolute;
+  right: -3px; top: 60px;
+  width: 3px; height: 40px;
+  background: #333;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 50px 0 #333;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+}
+
+/* POS App UI inside phone */
+.app-topbar {
+  background: var(--org);
+  padding: 18px 8px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-topbar .app-logo {
+  font-size: 0.55rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.app-topbar .app-user {
+  font-size: 0.38rem;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.app-topbar .app-num {
+  font-size: 0.38rem;
+  background: rgba(0,0,0,0.2);
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.app-tabs {
+  background: #f9f9f9;
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.app-tab {
+  flex: 1;
+  text-align: center;
+  padding: 5px 0 4px;
+  font-size: 0.32rem;
+  color: #999;
+  font-weight: 700;
+}
+
+.app-tab.active {
+  color: var(--org);
+  border-bottom: 1.5px solid var(--org);
+}
+
+.app-tab .tab-icon { font-size: 0.5rem; display: block; }
+
+.app-search {
+  margin: 5px 6px;
+  background: #f3f3f3;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 0.3rem;
+  color: #bbb;
+  font-weight: 600;
+}
+
+.app-cats {
+  display: flex;
+  gap: 3px;
+  padding: 0 6px 4px;
+  overflow: hidden;
+}
+
+.app-cat {
+  background: #f3f3f3;
+  border-radius: 8px;
+  padding: 2px 5px;
+  font-size: 0.28rem;
+  color: #999;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.app-cat.active {
+  background: var(--org);
+  color: #fff;
+}
+
+.app-items {
+  padding: 0 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.app-item {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 7px;
+  padding: 5px;
+  position: relative;
+}
+
+.app-item.selected {
+  border-color: var(--org);
+  background: #fff7ed;
+}
+
+.app-item .qty-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 12px; height: 12px;
+  background: var(--org);
+  border-radius: 50%;
+  font-size: 0.28rem;
+  color: #fff;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.app-item .item-cat { font-size: 0.25rem; color: #bbb; font-weight: 600; }
+.app-item .item-name { font-size: 0.32rem; color: #333; font-weight: 800; }
+.app-item .item-price { font-size: 0.3rem; color: var(--org); font-weight: 700; }
+
+.app-cart {
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+  padding: 5px 6px;
+  margin-top: 4px;
+}
+
+.app-cart-title { font-size: 0.28rem; font-weight: 700; color: #555; margin-bottom: 3px; }
+
+.app-cart-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.app-cart-row span { font-size: 0.26rem; color: #666; font-weight: 600; }
+.app-cart-row .price { color: var(--org); font-weight: 700; }
+
+.app-total {
+  background: var(--org);
+  margin: 5px 6px 6px;
+  border-radius: 7px;
+  padding: 5px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-total .lbl { font-size: 0.28rem; color: rgba(255,255,255,0.8); font-weight: 700; }
+.app-total .amt { font-size: 0.42rem; color: #fff; font-weight: 900; }
+
+/* ═══════════════════════════════════
+   TABLET MOCKUP
+═══════════════════════════════════ */
+.tablet-shell {
+  width: 220px;
+  height: 165px;
+  background: linear-gradient(160deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow:
+    0 0 0 1.5px #333,
+    0 20px 60px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+}
+
+/* Home button */
+.tablet-shell::after {
+  content: '';
+  position: absolute;
+  right: -2px; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 24px;
+  background: #333;
+  border-radius: 0 2px 2px 0;
+}
+
+.tablet-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Tablet App UI — landscape layout */
+.tab-topbar {
+  background: var(--org);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tab-topbar .t-logo { font-size: 0.6rem; font-weight: 900; color: #fff; }
+.tab-topbar .t-user {
+  font-size: 0.38rem;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+.tab-topbar .t-num {
+  font-size: 0.38rem;
+  background: rgba(0,0,0,0.2);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.tab-body {
+  display: flex;
+  height: calc(100% - 26px);
+}
+
+.tab-menu {
+  flex: 1;
+  padding: 6px 8px;
+  border-right: 1px solid #eee;
+  overflow: hidden;
+}
+
+.tab-cats {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 5px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.tab-cat {
+  background: #f3f3f3;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.28rem;
+  color: #999;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.tab-cat.active { background: var(--org); color: #fff; }
+
+.tab-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+.tab-item {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 4px;
+  position: relative;
+}
+.tab-item.sel { border-color: var(--org); background: #fff7ed; }
+.tab-item .qb {
+  position: absolute;
+  top: -3px; right: -3px;
+  width: 10px; height: 10px;
+  background: var(--org);
+  border-radius: 50%;
+  font-size: 0.22rem;
+  color: #fff;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+}
+.tab-item .in { font-size: 0.26rem; color: #aaa; }
+.tab-item .nm { font-size: 0.3rem; color: #333; font-weight: 800; }
+.tab-item .pr { font-size: 0.28rem; color: var(--org); font-weight: 700; }
+
+.tab-cart {
+  width: 80px;
+  flex-shrink: 0;
+  padding: 6px 7px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-cart-title { font-size: 0.28rem; font-weight: 800; color: #333; margin-bottom: 4px; }
+
+.tab-cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+.tab-cart-item span { font-size: 0.24rem; color: #666; font-weight: 600; }
+.tab-cart-item .cp { color: var(--org); font-weight: 700; }
+
+.tab-divider { height: 1px; background: #eee; margin: 4px 0; }
+
+.tab-total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.tab-total-row span { font-size: 0.26rem; font-weight: 700; color: #333; }
+.tab-total-row .ta { color: var(--org); font-weight: 900; }
+
+.tab-btn {
+  background: var(--org);
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px 0;
+  text-align: center;
+  font-size: 0.28rem;
+  font-weight: 800;
+  margin-top: auto;
+}
+
+/* ═══════════════════════════════════
+   PROFILE PICTURE
+═══════════════════════════════════ */
+.profile-row { display: flex; gap: 32px; align-items: flex-end; flex-wrap: wrap; }
+.profile-wrap { text-align: center; }
+.profile-label { font-size: 0.58rem; color: #444; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; font-weight: 700; }
+
+.pp {
+  border-radius: 50%;
+  background: var(--org);
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  overflow: hidden; position: relative;
+  box-shadow: 0 8px 30px rgba(249,115,22,0.45);
+}
+.pp::before {
+  content: ''; position: absolute;
+  top: -18%; right: -18%; width: 52%; height: 52%;
+  background: rgba(255,255,255,0.18); border-radius: 50%;
+}
+.pp::after {
+  content: ''; position: absolute;
+  bottom: -20%; left: -12%; width: 50%; height: 50%;
+  background: rgba(0,0,0,0.09); border-radius: 50%;
+}
+.pp-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.pp-pos { font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+.pp-kedai { font-weight: 900; color: rgba(255,255,255,0.78); letter-spacing: -0.02em; }
+.pp-tag { font-weight: 700; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.07em; }
+
+.pp-180 { width:180px; height:180px; }
+.pp-180 .pp-pos { font-size: 2.1rem; }
+.pp-180 .pp-kedai { font-size: 2.1rem; }
+.pp-180 .pp-tag { font-size: 0.4rem; margin-top: 5px; }
+
+.pp-110 { width:110px; height:110px; }
+.pp-110 .pp-pos { font-size: 1.25rem; }
+.pp-110 .pp-kedai { font-size: 1.25rem; }
+.pp-110 .pp-tag { font-size: 0.26rem; margin-top: 3px; }
+
+.pp-60 { width:60px; height:60px; }
+.pp-60 .pp-pos { font-size: 0.68rem; }
+.pp-60 .pp-kedai { font-size: 0.68rem; }
+.pp-60 .pp-tag { display:none; }
+
+/* ═══════════════════════════════════
+   REUSABLE COMPONENTS
+═══════════════════════════════════ */
+.lt { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1; }
+.pos-orn { color: var(--org); }
+.ked-dark { color: var(--dark); }
+.ked-wht { color: rgba(255,255,255,0.82); }
+
+/* ═══════════════════════════════════
+   FB COVER 820×312
+═══════════════════════════════════ */
+.fb-cover {
+  width: 820px;
+  height: 312px;
+  background: var(--org-pale);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.fb-content {
+  flex: 1;
+  padding: 36px 44px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fb-logo-row { display: flex; align-items: center; }
+.fb-lt { font-size: 1.75rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1; }
+
+.fb-headline { font-size: 0.95rem; font-weight: 800; color: var(--dark); line-height: 1.35; }
+.fb-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+.fb-chip { background: var(--org); color: #fff; font-size: 0.58rem; font-weight: 700; padding: 4px 11px; border-radius: 20px; }
+.fb-sub { font-size: 0.62rem; color: #a8a29e; font-weight: 600; }
+
+.fb-mockups {
+  position: absolute;
+  right: -10px;
+  bottom: -20px;
+  display: flex;
+  align-items: flex-end;
+  gap: -10px;
+  z-index: 3;
+}
+
+.fb-price-chip {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--org);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  text-align: center;
+  z-index: 5;
+  box-shadow: 0 4px 20px rgba(249,115,22,0.4);
+}
+.fb-price-chip .a { font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.fb-price-chip .m { font-size: 0.55rem; font-weight: 700; opacity: 0.85; }
+.fb-price-chip .f { font-size: 0.5rem; font-weight: 700; opacity: 0.7; margin-top: 3px; }
+
+/* ═══════════════════════════════════
+   WHATSAPP BANNER
+═══════════════════════════════════ */
+.wa-banner {
+  width: 820px;
+  height: 240px;
+  background: linear-gradient(135deg, #1c1917 0%, #292524 55%, #1c1917 100%);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 52px;
+}
+
+.wa-accent { position:absolute; left:0; top:0; bottom:0; width:7px; background:var(--org); border-radius:14px 0 0 14px; }
+.wa-glow { position:absolute; right: 220px; top:50%; transform:translateY(-50%); width:300px; height:300px; background:radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 65%); border-radius:50%; }
+
+.wa-left { position:relative; z-index:2; flex: 1; }
+.wa-logo { font-size:2.8rem; font-weight:900; letter-spacing:-0.03em; line-height:1; margin-bottom:8px; }
+.wa-logo .p { color:var(--org); }
+.wa-logo .k { color:#fff; }
+.wa-sub { font-size:0.72rem; color:rgba(255,255,255,0.5); font-weight:600; margin-bottom:12px; }
+.wa-pills { display:flex; gap:7px; }
+.wa-pill { background:rgba(249,115,22,0.16); border:1px solid rgba(249,115,22,0.32); color:var(--org); font-size:0.58rem; font-weight:700; padding:4px 11px; border-radius:20px; }
+
+.wa-price-box {
+  position:relative; z-index:2;
+  text-align:right;
+  margin: 0 30px;
+}
+.wa-price-lbl { font-size:0.62rem; color:rgba(255,255,255,0.4); font-weight:600; }
+.wa-price-num { font-size:2.8rem; font-weight:900; color:var(--org); line-height:1; }
+.wa-cta { margin-top:10px; background:var(--org); color:#fff; font-size:0.58rem; font-weight:800; padding:7px 16px; border-radius:8px; text-transform:uppercase; letter-spacing:0.08em; display:inline-block; }
+
+.wa-mockups {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-right: -10px;
+}
+
+/* ═══════════════════════════════════
+   TELEGRAM BANNER
+═══════════════════════════════════ */
+.tg-banner {
+  width: 820px;
+  height: 268px;
+  background: var(--org-pale);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.tg-left {
+  background: var(--org);
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.tg-left::after { content:''; position:absolute; bottom:-50px; right:-50px; width:140px; height:140px; background:rgba(0,0,0,0.1); border-radius:50%; }
+
+.tg-logo { text-align:center; position:relative; z-index:2; }
+.tg-logo .p { font-size:2.4rem; font-weight:900; color:#fff; line-height:1; letter-spacing:-0.03em; }
+.tg-logo .k { font-size:2.4rem; font-weight:900; color:rgba(255,255,255,0.72); line-height:1; letter-spacing:-0.03em; }
+.tg-logo .dv { width:36px; height:2px; background:rgba(255,255,255,0.3); margin:6px auto; border-radius:2px; }
+.tg-logo .tg-tg { font-size:0.45rem; color:rgba(255,255,255,0.6); font-weight:700; text-transform:uppercase; letter-spacing:0.12em; margin-top:4px; }
+
+.tg-right {
+  flex:1;
+  padding: 28px 32px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+  position:relative;
+  overflow: hidden;
+}
+
+.tg-h { font-size:1rem; font-weight:900; color:var(--dark); line-height:1.28; }
+.tg-h span { color:var(--org); }
+.tg-d { font-size:0.67rem; color:#78716c; font-weight:600; line-height:1.5; }
+.tg-feats { display:flex; gap:5px; flex-wrap:wrap; margin-top:2px; }
+.tg-f { background:#fff; border:1.5px solid var(--org-light); color:var(--org); font-size:0.55rem; font-weight:700; padding:3px 9px; border-radius:20px; }
+
+.tg-mockups {
+  position: absolute;
+  right: -15px;
+  bottom: -20px;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* ═══════════════════════════════════
+   THREADS BANNER
+═══════════════════════════════════ */
+.th-banner {
+  width: 820px;
+  height: 268px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.th-bg {
+  position:absolute; inset:0;
+  background-color:var(--org-pale);
+  background-image:radial-gradient(circle, rgba(249,115,22,0.13) 1.5px, transparent 1.5px);
+  background-size:22px 22px;
+}
+.th-bar { position:absolute; bottom:0; left:0; right:0; height:5px; background:var(--org); }
+
+.th-left {
+  position: relative;
+  z-index: 2;
+  padding: 36px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  flex: 1;
+}
+
+.th-logo { font-size:3rem; font-weight:900; letter-spacing:-0.03em; line-height:1; }
+.th-logo .p { color:var(--org); }
+.th-logo .k { color:var(--dark); }
+.th-badge { background:var(--org); color:#fff; font-size:0.7rem; font-weight:800; padding:7px 20px; border-radius:30px; display:inline-block; letter-spacing:0.03em; }
+.th-sub { font-size:0.65rem; color:#78716c; font-weight:600; }
+
+.th-mockups {
+  position: absolute;
+  right: -10px;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ PROFILE PICTURE ═══ -->
+<div class="asset-card">
+  <div class="card-header">
+    <div class="section-title">Gambar Profil — WhatsApp · Telegram · FB · Threads</div>
+    <button class="download-btn-pp" onclick="downloadEl('pp-area', 'poskedai-profile-pic')">⬇ Download PNG</button>
+  </div>
+  <div class="profile-row" id="pp-area">
+    <div class="profile-wrap">
+      <div class="profile-label">Preview Besar</div>
+      <div class="pp pp-180">
+        <div class="pp-inner">
+          <div class="pp-pos">POS</div>
+          <div class="pp-kedai">Kedai</div>
+          <div class="pp-tag">RM30/Bulan · 🇲🇾</div>
+        </div>
+      </div>
+    </div>
+    <div class="profile-wrap">
+      <div class="profile-label">Preview Sederhana</div>
+      <div class="pp pp-110">
+        <div class="pp-inner">
+          <div class="pp-pos">POS</div>
+          <div class="pp-kedai">Kedai</div>
+          <div class="pp-tag">RM30/Bulan</div>
+        </div>
+      </div>
+    </div>
+    <div class="profile-wrap">
+      <div class="profile-label">Preview Kecil</div>
+      <div class="pp pp-60">
+        <div class="pp-inner">
+          <div class="pp-pos">POS</div>
+          <div class="pp-kedai">Kedai</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FB PAGE COVER ═══ -->
+<div class="asset-card">
+  <div class="card-header">
+    <div class="section-title">Facebook Page — Cover Photo (820×312)</div>
+    <button class="download-btn" onclick="downloadEl('fb-cover', 'poskedai-fb-cover')">⬇ Download PNG</button>
+  </div>
+  <div class="fb-cover" id="fb-cover">
+    <div class="fb-content">
+      <div class="fb-logo-row">
+        <span class="fb-lt pos-orn">POS</span><span class="fb-lt ked-dark">Kedai</span>
+      </div>
+      <div class="fb-headline">Sistem POS Kedai Makan<br>Paling Murah di Malaysia 🇲🇾</div>
+      <div class="fb-chips">
+        <span class="fb-chip">📱 Guna Phone Sendiri</span>
+        <span class="fb-chip">🚫 Tiada Kontrak</span>
+        <span class="fb-chip">⚡ Setup 1 Hari</span>
+      </div>
+      <div class="fb-sub">Cuba Percuma 7 Hari — Tak Perlu Kad Kredit</div>
+    </div>
+
+    <!-- Price badge top right -->
+    <div class="fb-price-chip">
+      <div class="a">RM30</div>
+      <div class="m">/bulan</div>
+      <div class="f">✓ 7 Hari Percuma</div>
+    </div>
+
+    <!-- Phone + Tablet mockups -->
+    <div class="fb-mockups" style="right:160px; bottom:-18px; position:absolute;">
+      <!-- Tablet -->
+      <div class="tablet-shell" style="transform: rotate(2deg) scale(0.88); transform-origin: bottom center;">
+        <div class="tablet-screen">
+          <div class="tab-topbar">
+            <span class="t-logo">POSKedai</span>
+            <span class="t-user">👤 Ahmad</span>
+            <span class="t-num">#12 14:30</span>
+          </div>
+          <div class="tab-body">
+            <div class="tab-menu">
+              <div class="tab-cats">
+                <span class="tab-cat active">🍽️ Semua</span>
+                <span class="tab-cat">🍚 Makanan</span>
+                <span class="tab-cat">🥤 Minuman</span>
+              </div>
+              <div class="tab-items">
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Makanan</div><div class="nm">Nasi Lemak</div><div class="pr">RM5.00</div></div>
+                <div class="tab-item sel"><div class="qb">1</div><div class="in">Makanan</div><div class="nm">Mee Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Roti Canai</div><div class="pr">RM1.50</div></div>
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Minuman</div><div class="nm">Teh Tarik</div><div class="pr">RM2.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Nasi Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Minuman</div><div class="nm">Milo Ais</div><div class="pr">RM3.00</div></div>
+              </div>
+            </div>
+            <div class="tab-cart">
+              <div class="tab-cart-title">🛒 Troli</div>
+              <div class="tab-cart-item"><span>Nasi Lemak ×2</span><span class="cp">RM10</span></div>
+              <div class="tab-cart-item"><span>Mee Goreng ×1</span><span class="cp">RM6</span></div>
+              <div class="tab-cart-item"><span>Teh Tarik ×2</span><span class="cp">RM4</span></div>
+              <div class="tab-divider"></div>
+              <div class="tab-total-row"><span>Jumlah</span><span class="ta">RM18</span></div>
+              <div class="tab-btn">✅ Hantar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Phone -->
+      <div class="phone-shell" style="transform: rotate(-3deg) scale(0.82); transform-origin: bottom center;">
+        <div class="phone-screen">
+          <div class="app-topbar">
+            <span class="app-logo">POSKedai</span>
+            <span class="app-user">👤 Ahmad</span>
+            <span class="app-num">#12</span>
+          </div>
+          <div class="app-tabs">
+            <div class="app-tab active"><span class="tab-icon">🛒</span>Pesanan</div>
+            <div class="app-tab"><span class="tab-icon">📋</span>Senarai</div>
+            <div class="app-tab"><span class="tab-icon">📊</span>Jualan</div>
+          </div>
+          <div class="app-search">🔍 Cari menu...</div>
+          <div class="app-cats">
+            <span class="app-cat active">Semua</span>
+            <span class="app-cat">Makanan</span>
+            <span class="app-cat">Minuman</span>
+          </div>
+          <div class="app-items">
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Makanan</div><div class="item-name">Nasi Lemak</div><div class="item-price">RM5.00</div></div>
+            <div class="app-item selected"><div class="qty-badge">1</div><div class="item-cat">Makanan</div><div class="item-name">Mee Goreng</div><div class="item-price">RM6.00</div></div>
+            <div class="app-item"><div class="item-cat">Makanan</div><div class="item-name">Roti Canai</div><div class="item-price">RM1.50</div></div>
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Minuman</div><div class="item-name">Teh Tarik</div><div class="item-price">RM2.00</div></div>
+          </div>
+          <div class="app-cart">
+            <div class="app-cart-title">🛒 Troli</div>
+            <div class="app-cart-row"><span>Nasi Lemak ×2</span><span class="price">RM10</span></div>
+            <div class="app-cart-row"><span>Mee Goreng ×1</span><span class="price">RM6</span></div>
+          </div>
+          <div class="app-total"><span class="lbl">JUMLAH</span><span class="amt">RM18.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHATSAPP CHANNEL ═══ -->
+<div class="asset-card">
+  <div class="card-header">
+    <div class="section-title">WhatsApp Channel — Cover</div>
+    <button class="download-btn" onclick="downloadEl('wa-banner', 'poskedai-whatsapp-cover')">⬇ Download PNG</button>
+  </div>
+  <div class="wa-banner" id="wa-banner">
+    <div class="wa-accent"></div>
+    <div class="wa-glow"></div>
+    <div class="wa-left">
+      <div class="wa-logo"><span class="p">POS</span><span class="k">Kedai</span></div>
+      <div class="wa-sub">Sistem POS Paling Mudah & Murah untuk Kedai Makan Malaysia</div>
+      <div class="wa-pills">
+        <span class="wa-pill">📱 Phone Sendiri</span>
+        <span class="wa-pill">🚫 Tiada Kontrak</span>
+        <span class="wa-pill">⚡ Setup 1 Hari</span>
+      </div>
+    </div>
+    <div class="wa-price-box">
+      <div class="wa-price-lbl">Hanya</div>
+      <div class="wa-price-num">RM30</div>
+      <div class="wa-price-lbl">/bulan</div>
+      <div class="wa-cta">Cuba 7 Hari Percuma</div>
+    </div>
+    <!-- Mockups -->
+    <div class="wa-mockups">
+      <div class="tablet-shell" style="transform: rotate(3deg) scale(0.72); transform-origin: bottom center;">
+        <div class="tablet-screen">
+          <div class="tab-topbar"><span class="t-logo">POSKedai</span><span class="t-user">👤 Ahmad</span><span class="t-num">#12 14:30</span></div>
+          <div class="tab-body">
+            <div class="tab-menu">
+              <div class="tab-cats"><span class="tab-cat active">🍽️ Semua</span><span class="tab-cat">🍚 Makanan</span><span class="tab-cat">🥤 Minuman</span></div>
+              <div class="tab-items">
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Makanan</div><div class="nm">Nasi Lemak</div><div class="pr">RM5.00</div></div>
+                <div class="tab-item sel"><div class="qb">1</div><div class="in">Makanan</div><div class="nm">Mee Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Roti Canai</div><div class="pr">RM1.50</div></div>
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Minuman</div><div class="nm">Teh Tarik</div><div class="pr">RM2.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Nasi Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Minuman</div><div class="nm">Milo Ais</div><div class="pr">RM3.00</div></div>
+              </div>
+            </div>
+            <div class="tab-cart">
+              <div class="tab-cart-title">🛒 Troli</div>
+              <div class="tab-cart-item"><span>Nasi Lemak ×2</span><span class="cp">RM10</span></div>
+              <div class="tab-cart-item"><span>Mee Goreng ×1</span><span class="cp">RM6</span></div>
+              <div class="tab-cart-item"><span>Teh Tarik ×2</span><span class="cp">RM4</span></div>
+              <div class="tab-divider"></div>
+              <div class="tab-total-row"><span>Jumlah</span><span class="ta">RM18</span></div>
+              <div class="tab-btn">✅ Hantar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-shell" style="transform: rotate(-4deg) scale(0.68); transform-origin: bottom center;">
+        <div class="phone-screen">
+          <div class="app-topbar"><span class="app-logo">POSKedai</span><span class="app-user">👤 Ahmad</span><span class="app-num">#12</span></div>
+          <div class="app-tabs">
+            <div class="app-tab active"><span class="tab-icon">🛒</span>Pesanan</div>
+            <div class="app-tab"><span class="tab-icon">📋</span>Senarai</div>
+            <div class="app-tab"><span class="tab-icon">📊</span>Jualan</div>
+          </div>
+          <div class="app-search">🔍 Cari menu...</div>
+          <div class="app-cats"><span class="app-cat active">Semua</span><span class="app-cat">Makanan</span><span class="app-cat">Minuman</span></div>
+          <div class="app-items">
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Makanan</div><div class="item-name">Nasi Lemak</div><div class="item-price">RM5.00</div></div>
+            <div class="app-item selected"><div class="qty-badge">1</div><div class="item-cat">Makanan</div><div class="item-name">Mee Goreng</div><div class="item-price">RM6.00</div></div>
+            <div class="app-item"><div class="item-cat">Makanan</div><div class="item-name">Roti Canai</div><div class="item-price">RM1.50</div></div>
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Minuman</div><div class="item-name">Teh Tarik</div><div class="item-price">RM2.00</div></div>
+          </div>
+          <div class="app-cart">
+            <div class="app-cart-title">🛒 Troli</div>
+            <div class="app-cart-row"><span>Nasi Lemak ×2</span><span class="price">RM10</span></div>
+            <div class="app-cart-row"><span>Mee Goreng ×1</span><span class="price">RM6</span></div>
+          </div>
+          <div class="app-total"><span class="lbl">JUMLAH</span><span class="amt">RM18.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TELEGRAM CHANNEL ═══ -->
+<div class="asset-card">
+  <div class="card-header">
+    <div class="section-title">Telegram Channel — Cover</div>
+    <button class="download-btn" onclick="downloadEl('tg-banner', 'poskedai-telegram-cover')">⬇ Download PNG</button>
+  </div>
+  <div class="tg-banner" id="tg-banner">
+    <div class="tg-left">
+      <div class="tg-logo">
+        <div class="p">POS</div>
+        <div class="dv"></div>
+        <div class="k">Kedai</div>
+        <div class="tg-tg">RM30/Bulan · 🇲🇾</div>
+      </div>
+    </div>
+    <div class="tg-right">
+      <div class="tg-h">Sistem POS Kedai Makan<br><span>Paling Murah</span> di Malaysia</div>
+      <div class="tg-d">Guna phone atau tablet yang anda sedia ada. Tak perlu beli mesin mahal. Setup 1 hari, staff belajar 15 minit.</div>
+      <div class="tg-feats">
+        <span class="tg-f">📱 Phone Sendiri</span>
+        <span class="tg-f">🚫 Tiada Kontrak</span>
+        <span class="tg-f">✅ 7 Hari Percuma</span>
+        <span class="tg-f">🇲🇾 Bahasa Melayu</span>
+      </div>
+    </div>
+    <!-- Mockups -->
+    <div class="tg-mockups">
+      <div class="tablet-shell" style="transform: rotate(3deg) scale(0.75); transform-origin: bottom center;">
+        <div class="tablet-screen">
+          <div class="tab-topbar"><span class="t-logo">POSKedai</span><span class="t-user">👤 Ahmad</span><span class="t-num">#12 14:30</span></div>
+          <div class="tab-body">
+            <div class="tab-menu">
+              <div class="tab-cats"><span class="tab-cat active">🍽️ Semua</span><span class="tab-cat">🍚 Makanan</span><span class="tab-cat">🥤 Minuman</span></div>
+              <div class="tab-items">
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Makanan</div><div class="nm">Nasi Lemak</div><div class="pr">RM5.00</div></div>
+                <div class="tab-item sel"><div class="qb">1</div><div class="in">Makanan</div><div class="nm">Mee Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Roti Canai</div><div class="pr">RM1.50</div></div>
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Minuman</div><div class="nm">Teh Tarik</div><div class="pr">RM2.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Nasi Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Minuman</div><div class="nm">Milo Ais</div><div class="pr">RM3.00</div></div>
+              </div>
+            </div>
+            <div class="tab-cart">
+              <div class="tab-cart-title">🛒 Troli</div>
+              <div class="tab-cart-item"><span>Nasi Lemak ×2</span><span class="cp">RM10</span></div>
+              <div class="tab-cart-item"><span>Mee Goreng ×1</span><span class="cp">RM6</span></div>
+              <div class="tab-cart-item"><span>Teh Tarik ×2</span><span class="cp">RM4</span></div>
+              <div class="tab-divider"></div>
+              <div class="tab-total-row"><span>Jumlah</span><span class="ta">RM18</span></div>
+              <div class="tab-btn">✅ Hantar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-shell" style="transform: rotate(-4deg) scale(0.7); transform-origin: bottom center;">
+        <div class="phone-screen">
+          <div class="app-topbar"><span class="app-logo">POSKedai</span><span class="app-user">👤 Ahmad</span><span class="app-num">#12</span></div>
+          <div class="app-tabs">
+            <div class="app-tab active"><span class="tab-icon">🛒</span>Pesanan</div>
+            <div class="app-tab"><span class="tab-icon">📋</span>Senarai</div>
+            <div class="app-tab"><span class="tab-icon">📊</span>Jualan</div>
+          </div>
+          <div class="app-search">🔍 Cari menu...</div>
+          <div class="app-cats"><span class="app-cat active">Semua</span><span class="app-cat">Makanan</span><span class="app-cat">Minuman</span></div>
+          <div class="app-items">
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Makanan</div><div class="item-name">Nasi Lemak</div><div class="item-price">RM5.00</div></div>
+            <div class="app-item selected"><div class="qty-badge">1</div><div class="item-cat">Makanan</div><div class="item-name">Mee Goreng</div><div class="item-price">RM6.00</div></div>
+            <div class="app-item"><div class="item-cat">Makanan</div><div class="item-name">Roti Canai</div><div class="item-price">RM1.50</div></div>
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Minuman</div><div class="item-name">Teh Tarik</div><div class="item-price">RM2.00</div></div>
+          </div>
+          <div class="app-cart">
+            <div class="app-cart-title">🛒 Troli</div>
+            <div class="app-cart-row"><span>Nasi Lemak ×2</span><span class="price">RM10</span></div>
+            <div class="app-cart-row"><span>Mee Goreng ×1</span><span class="price">RM6</span></div>
+          </div>
+          <div class="app-total"><span class="lbl">JUMLAH</span><span class="amt">RM18.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ THREADS HEADER ═══ -->
+<div class="asset-card">
+  <div class="card-header">
+    <div class="section-title">Threads — Profile Header</div>
+    <button class="download-btn" onclick="downloadEl('th-banner', 'poskedai-threads-cover')">⬇ Download PNG</button>
+  </div>
+  <div class="th-banner" id="th-banner">
+    <div class="th-bg"></div>
+    <div class="th-bar"></div>
+    <div class="th-left">
+      <div class="th-logo"><span class="p">POS</span><span class="k">Kedai</span></div>
+      <div class="th-badge">RM30/Bulan · Cuba Percuma 7 Hari 🎉</div>
+      <div class="th-sub">Sistem POS Paling Murah untuk Kedai Makan di Malaysia 🇲🇾</div>
+    </div>
+    <!-- Mockups -->
+    <div class="th-mockups">
+      <div class="tablet-shell" style="transform: rotate(3deg) scale(0.8); transform-origin: bottom center;">
+        <div class="tablet-screen">
+          <div class="tab-topbar"><span class="t-logo">POSKedai</span><span class="t-user">👤 Ahmad</span><span class="t-num">#12 14:30</span></div>
+          <div class="tab-body">
+            <div class="tab-menu">
+              <div class="tab-cats"><span class="tab-cat active">🍽️ Semua</span><span class="tab-cat">🍚 Makanan</span><span class="tab-cat">🥤 Minuman</span></div>
+              <div class="tab-items">
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Makanan</div><div class="nm">Nasi Lemak</div><div class="pr">RM5.00</div></div>
+                <div class="tab-item sel"><div class="qb">1</div><div class="in">Makanan</div><div class="nm">Mee Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Roti Canai</div><div class="pr">RM1.50</div></div>
+                <div class="tab-item sel"><div class="qb">2</div><div class="in">Minuman</div><div class="nm">Teh Tarik</div><div class="pr">RM2.00</div></div>
+                <div class="tab-item"><div class="in">Makanan</div><div class="nm">Nasi Goreng</div><div class="pr">RM6.00</div></div>
+                <div class="tab-item"><div class="in">Minuman</div><div class="nm">Milo Ais</div><div class="pr">RM3.00</div></div>
+              </div>
+            </div>
+            <div class="tab-cart">
+              <div class="tab-cart-title">🛒 Troli</div>
+              <div class="tab-cart-item"><span>Nasi Lemak ×2</span><span class="cp">RM10</span></div>
+              <div class="tab-cart-item"><span>Mee Goreng ×1</span><span class="cp">RM6</span></div>
+              <div class="tab-cart-item"><span>Teh Tarik ×2</span><span class="cp">RM4</span></div>
+              <div class="tab-divider"></div>
+              <div class="tab-total-row"><span>Jumlah</span><span class="ta">RM18</span></div>
+              <div class="tab-btn">✅ Hantar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-shell" style="transform: rotate(-4deg) scale(0.75); transform-origin: bottom center;">
+        <div class="phone-screen">
+          <div class="app-topbar"><span class="app-logo">POSKedai</span><span class="app-user">👤 Ahmad</span><span class="app-num">#12</span></div>
+          <div class="app-tabs">
+            <div class="app-tab active"><span class="tab-icon">🛒</span>Pesanan</div>
+            <div class="app-tab"><span class="tab-icon">📋</span>Senarai</div>
+            <div class="app-tab"><span class="tab-icon">📊</span>Jualan</div>
+          </div>
+          <div class="app-search">🔍 Cari menu...</div>
+          <div class="app-cats"><span class="app-cat active">Semua</span><span class="app-cat">Makanan</span><span class="app-cat">Minuman</span></div>
+          <div class="app-items">
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Makanan</div><div class="item-name">Nasi Lemak</div><div class="item-price">RM5.00</div></div>
+            <div class="app-item selected"><div class="qty-badge">1</div><div class="item-cat">Makanan</div><div class="item-name">Mee Goreng</div><div class="item-price">RM6.00</div></div>
+            <div class="app-item"><div class="item-cat">Makanan</div><div class="item-name">Roti Canai</div><div class="item-price">RM1.50</div></div>
+            <div class="app-item selected"><div class="qty-badge">2</div><div class="item-cat">Minuman</div><div class="item-name">Teh Tarik</div><div class="item-price">RM2.00</div></div>
+          </div>
+          <div class="app-cart">
+            <div class="app-cart-title">🛒 Troli</div>
+            <div class="app-cart-row"><span>Nasi Lemak ×2</span><span class="price">RM10</span></div>
+            <div class="app-cart-row"><span>Mee Goreng ×1</span><span class="price">RM6</span></div>
+          </div>
+          <div class="app-total"><span class="lbl">JUMLAH</span><span class="amt">RM18.00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function downloadEl(id, filename) {
+  const el = document.getElementById(id);
+  const btn = event.target;
+  btn.textContent = '⏳ Sedang proses...';
+  btn.classList.add('loading');
+
+  try {
+    const canvas = await html2canvas(el, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null,
+      logging: false
+    });
+
+    const link = document.createElement('a');
+    link.download = filename + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    btn.textContent = '✅ Berjaya!';
+    setTimeout(() => {
+      btn.textContent = '⬇ Download PNG';
+      btn.classList.remove('loading');
+    }, 2000);
+  } catch(e) {
+    btn.textContent = '⬇ Download PNG';
+    btn.classList.remove('loading');
+    alert('Ralat. Cuba refresh dan cuba semula.');
+  }
+}
+</script>
+</body>
+</html>
