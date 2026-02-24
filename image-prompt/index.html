@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POSKedai — Image Prompt Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --or:#f97316;--ord:#ea580c;--orl:#fff7ed;
+  --gr:#10b981;--grd:#059669;--grl:#ecfdf5;
+  --bl:#3b82f6;--bll:#eff6ff;
+  --dk:#0f172a;--dk2:#1e293b;--dk3:#334155;
+  --gy:#64748b;--gyl:#94a3b8;--gylt:#e2e8f0;
+  --bg:#f8fafc;--wh:#ffffff;
+  --fd:'Sora',sans-serif;--fb:'DM Sans',sans-serif;
+}
+body{font-family:var(--fb);background:var(--bg);color:var(--dk);min-height:100vh}
+.hdr{background:linear-gradient(135deg,var(--dk),var(--dk2));padding:28px 32px 24px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(249,115,22,0.18),transparent 70%);border-radius:50%}
+.hdr-in{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:14px}
+.logo-badge{background:linear-gradient(135deg,var(--or),var(--ord));color:#fff;font-family:var(--fd);font-weight:900;font-size:1rem;padding:6px 14px;border-radius:8px}
+.logo-sub{color:rgba(255,255,255,0.55);font-size:0.82rem}
+.hdr-h1{font-family:var(--fd);font-weight:900;font-size:clamp(1.5rem,3.5vw,2.1rem);color:#fff;letter-spacing:-0.5px;line-height:1.2;margin-bottom:8px}
+.hdr-h1 span{color:var(--or)}
+.hdr-p{color:rgba(255,255,255,0.55);font-size:0.82rem}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:600}
+
+/* STYLE GUIDE */
+.sg{max-width:1100px;margin:22px auto 0;padding:0 22px}
+.card{background:var(--wh);border-radius:16px;padding:18px 22px;border:1.5px solid var(--gylt);margin-bottom:16px}
+.card-t{font-family:var(--fd);font-weight:800;font-size:0.95rem;color:var(--dk);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.sg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.sg-item{background:var(--bg);border-radius:9px;padding:10px 12px;border:1px solid var(--gylt)}
+.sg-lbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--gyl);margin-bottom:3px}
+.sg-val{font-size:0.8rem;font-weight:600;color:var(--dk2);line-height:1.4}
+.base-box{background:linear-gradient(135deg,#0f172a,#1a0505);border-radius:12px;padding:16px 18px;border:1px solid rgba(249,115,22,0.2)}
+.base-lbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--or);margin-bottom:7px}
+.base-box pre{font-size:0.78rem;color:rgba(255,255,255,0.8);line-height:1.65;white-space:pre-wrap;font-family:'Courier New',monospace}
+.tip-blue{background:var(--bll);border-radius:10px;padding:11px 14px;border:1px solid rgba(59,130,246,0.15);font-size:0.78rem;color:var(--dk2);line-height:1.55;margin-top:10px}
+code{background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:4px;font-size:0.75rem}
+
+/* CONTROLS */
+.ctrl{max-width:1100px;margin:16px auto 0;padding:0 22px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.ctrl-lbl{font-size:0.7rem;font-weight:700;color:var(--gy);text-transform:uppercase;letter-spacing:0.5px}
+.fb{padding:6px 14px;border-radius:20px;border:1.5px solid var(--gylt);background:var(--wh);font-size:0.75rem;font-weight:600;cursor:pointer;font-family:var(--fb);color:var(--gy);transition:all 0.2s}
+.fb:hover{border-color:var(--or);color:var(--or)}
+.fb.active{background:var(--dk);color:#fff;border-color:var(--dk)}
+.fb.t.active{background:var(--bl);border-color:var(--bl);color:#fff}
+.fb.m.active{background:var(--or);border-color:var(--or);color:#fff}
+.fb.b.active{background:var(--grd);border-color:var(--grd);color:#fff}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:14px 22px 80px}
+.sec-hdr{display:flex;align-items:center;gap:10px;margin:22px 0 12px;flex-wrap:wrap}
+.sec-hdr h2{font-family:var(--fd);font-weight:800;font-size:0.95rem;color:var(--dk)}
+.sec-line{flex:1;height:1px;background:var(--gylt)}
+.ftag{padding:3px 11px;border-radius:20px;font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.4px}
+.ftag.t{background:var(--bll);color:var(--bl)}
+.ftag.m{background:var(--orl);color:var(--ord)}
+.ftag.b{background:var(--grl);color:var(--grd)}
+
+/* PROMPT CARD */
+.pc{background:var(--wh);border-radius:14px;border:1.5px solid var(--gylt);margin-bottom:12px;overflow:hidden;transition:box-shadow 0.2s}
+.pc:hover{box-shadow:0 8px 28px rgba(0,0,0,0.07)}
+.pc-hdr{padding:13px 17px 11px;border-bottom:1px solid var(--bg);display:flex;align-items:flex-start;gap:9px;flex-wrap:wrap}
+.pnum{background:var(--dk);color:#fff;font-family:var(--fd);font-weight:800;font-size:0.72rem;padding:3px 9px;border-radius:7px;white-space:nowrap;flex-shrink:0}
+.pmeta{flex:1;min-width:0}
+.ptitle{font-weight:700;font-size:0.86rem;color:var(--dk);line-height:1.35}
+.ptags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.ptag{font-size:0.62rem;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--bg);color:var(--gy)}
+.pb{padding:15px 17px}
+.ps{margin-bottom:13px}
+.ps:last-child{margin-bottom:0}
+.ps-lbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.7px;color:var(--gyl);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.ps-lbl::after{content:'';flex:1;height:1px;background:var(--gylt)}
+
+/* PROMPT BOX */
+.pbox{background:#0f172a;border-radius:9px;padding:13px 15px;position:relative;border:1px solid #1e293b}
+.pbox pre{font-size:0.75rem;color:#cbd5e1;line-height:1.65;white-space:pre-wrap;word-break:break-word;font-family:'Courier New',monospace}
+.pbox .cbtn{position:absolute;top:9px;right:9px;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.25);color:var(--or);padding:3px 9px;border-radius:5px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all 0.15s}
+.pbox .cbtn:hover{background:var(--or);color:#fff}
+.pbox .cbtn.ok{background:var(--grd);border-color:var(--grd);color:#fff}
+
+/* TEXT OVERLAY BOX */
+.tob{background:linear-gradient(135deg,#fff7ed,#fffcf7);border:1.5px solid rgba(249,115,22,0.15);border-radius:10px;padding:13px 15px}
+.tr{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px dashed var(--gylt)}
+.tr:last-child{border-bottom:none;padding-bottom:0}
+.tr-lbl{font-size:0.6rem;font-weight:800;color:var(--ord);background:var(--orl);padding:2px 7px;border-radius:5px;white-space:nowrap;flex-shrink:0;min-width:82px;text-align:center;margin-top:1px}
+.tr-txt{font-size:0.81rem;color:var(--dk2);font-weight:600;line-height:1.45}
+.tr-sub{font-size:0.7rem;color:var(--gy);margin-top:1px;font-weight:400}
+
+/* TIPS BOX */
+.tipbox{background:var(--grl);border:1px solid rgba(16,185,129,0.15);border-radius:9px;padding:11px 14px;font-size:0.77rem;color:var(--dk2);line-height:1.55}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--dk);color:#fff;padding:9px 18px;border-radius:20px;font-size:0.8rem;font-weight:600;z-index:9999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--grd)}
+
+@media(max-width:600px){
+  .hdr,.sg,.ctrl,.main{padding-left:14px;padding-right:14px}
+  .hdr{padding:18px 14px}
+  .pbox pre{font-size:0.7rem}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="logo"><div class="logo-badge">POSKedai</div><span class="logo-sub">× Image Prompt Guide</span></div>
+    <div class="hdr-h1">Prompts Poster <span>Siap Pakai</span><br>untuk Semua 20 Posts</div>
+    <div class="hdr-p">Pakai di Midjourney, ChatGPT Image, Adobe Firefly atau Canva AI • Text overlay untuk tambah di Canva</div>
+    <div class="pills"><span class="pill">🤖 20 Image Prompts</span><span class="pill">✍️ Text Overlay Setiap Post</span><span class="pill">📋 Copy Seklik</span><span class="pill">💡 Tips Design</span></div>
+  </div>
+</div>
+
+<div class="sg">
+  <div class="card">
+    <div class="card-t">🎨 Style Guide — Ikut Poster Asal</div>
+    <div class="sg-grid">
+      <div class="sg-item"><div class="sg-lbl">Model</div><div class="sg-val">Wanita Melayu berhijab, 25-35 tahun, natural smile</div></div>
+      <div class="sg-item"><div class="sg-lbl">Setting</div><div class="sg-val">Gerai/kedai makan Malaysia, suasana warm & cozy</div></div>
+      <div class="sg-item"><div class="sg-lbl">Lighting</div><div class="sg-val">Soft natural light, warm golden tone, bukan harsh</div></div>
+      <div class="sg-item"><div class="sg-lbl">Warna</div><div class="sg-val">Orange + Cream + White (ikut brand POSKedai)</div></div>
+      <div class="sg-item"><div class="sg-lbl">Device</div><div class="sg-val">Smartphone/tablet tunjuk POSKedai UI</div></div>
+      <div class="sg-item"><div class="sg-lbl">Nisbah</div><div class="sg-val">4:5 (Feed) atau 9:16 (Stories/TikTok)</div></div>
+      <div class="sg-item"><div class="sg-lbl">Kualiti</div><div class="sg-val">Photorealistic, commercial photography, no AI look</div></div>
+      <div class="sg-item"><div class="sg-lbl">Penting</div><div class="sg-val">Tiada teks dalam gambar — tambah sendiri di Canva</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-t">🔧 BASE PROMPT — Tambah di HUJUNG setiap prompt</div>
+    <div class="base-box">
+      <div class="base-lbl">📋 Copy dan tampal di hujung setiap prompt:</div>
+      <pre>photorealistic commercial photography, Malaysian Malay woman in hijab and apron, warm natural lighting, small food stall or kedai makan background, orange and cream color palette, professional product photography, sharp focus, high resolution, no text, no watermark --ar 4:5 --style raw --v 6</pre>
+    </div>
+    <div class="tip-blue">💡 <strong>Tips:</strong> Stories/TikTok → tukar <code>--ar 4:5</code> kepada <code>--ar 9:16</code>. Gambar nampak terlalu AI? Tambah: <code>shot on Sony A7R, 85mm lens, f/1.8, bokeh background</code>. Untuk ChatGPT Image, buang parameter <code>--ar --style --v</code> dan tulis nisbah dalam ayat.</div>
+  </div>
+</div>
+
+<div class="ctrl">
+  <span class="ctrl-lbl">Filter:</span>
+  <button class="fb active" onclick="fil('all',this)">Semua</button>
+  <button class="fb t" onclick="fil('t',this)">🔵 TOFU</button>
+  <button class="fb m" onclick="fil('m',this)">🟠 MOFU</button>
+  <button class="fb b" onclick="fil('b',this)">🟢 BOFU</button>
+</div>
+
+<div class="main" id="main"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const D=[
+{n:"Post 01",f:"t",d:"24 Feb (Isnin)",pl:["FB Page","IG","Threads"],ti:"Hook — Masalah tulis order atas kertas",
+pr:`A tired and frustrated Malaysian female restaurant worker in hijab and beige apron, sitting at a wooden table in a dim small food stall. She is surrounded by messy handwritten order papers, crumpled receipts, and an old calculator. She holds her head with one hand looking stressed. Warm dim background lighting. Authentic Malaysian warung atmosphere. Props: stacks of paper, ballpoint pen, old receipts scattered everywhere.`,
+to:[{l:"HEADLINE",t:"Masih tulis order atas kertas?",s:"Font bold hitam, 44-48pt, atas"},{l:"SUBHEADLINE",t:"Duit bocor. Silap order. Pening kira.",s:"Font medium kelabu gelap, 22pt"},{l:"BODY",t:"Ada cara mudah — guna phone yang dah ada.",s:"Regular 18pt"},{l:"CTA",t:"Follow untuk tahu lebih →",s:"Button oren, teks putih, bawah"}],
+tip:"Letak gambar sebelah kanan, teks sebelah kiri dengan background putih separa transparent. Kertas bertaburan = visual metaphor masalah."},
+
+{n:"Post 02",f:"t",d:"24 Feb (Isnin)",pl:["TikTok Stories"],ti:"POV: Tukang masak salah baca order",
+pr:`Close-up of a confused Malaysian male cook in white chef uniform, squinting and holding a crumpled handwritten order note very close to his face trying to read bad handwriting. Expression of pure confusion. Commercial kitchen background with woks, utensils, and steam visible. Warm orange kitchen lighting. Cinematic vertical crop. Authentic Malaysian kopitiam kitchen atmosphere.`,
+to:[{l:"POV TEXT",t:"POV: Tukang masak cuba baca order korang...",s:"Atas, putih bold, drop shadow"},{l:"PUNCHLINE",t:"Dah masak baru sedar salah 🤦",s:"Tengah besar, kelakar"},{l:"CTA",t:"Korang pernah? Comment 👇",s:"Bawah sekali"}],
+tip:"Vertical 9:16 untuk Stories/TikTok. Muka mesti ada ekspresi jelas — confused atau frustrated. Sesuai sebagai thumbnail video."},
+
+{n:"Post 03",f:"t",d:"24 Feb (Isnin)",pl:["WhatsApp Channel"],ti:"Warm intro channel",
+pr:`Friendly and approachable Malaysian woman in hijab and casual orange apron, smiling warmly and genuinely at camera. She stands behind a small food stall counter with nasi lemak and Malaysian food visible. Holds a smartphone casually at her side. Welcoming body language, slight forward lean. Soft warm morning light. Clean and inviting atmosphere.`,
+to:[{l:"GREETING",t:"Hai! 👋 Selamat datang!",s:"Friendly, oren atau hitam"},{l:"CHANNEL",t:"Channel Rasmi POSKedai",s:"Sederhana di bawah greeting"},{l:"TAGLINE",t:"Tips & tools untuk peniaga Malaysia 🇲🇾",s:"Kecil italik bawah"}],
+tip:"Tone warm dan friendly, bukan salesy. Model kelihatan seperti rakan perniagaan, bukan jurualan."},
+
+{n:"Post 04",f:"t",d:"25 Feb (Selasa)",pl:["FB Page"],ti:"Engagement poll — duit tak sama catatan",
+pr:`Split composition photorealistic image: Left side shows a frustrated middle-aged Malaysian man in kopiah counting cash with worried expression, papers and receipts scattered everywhere on his restaurant table. Right side shows the same man smiling, relaxed, looking at his phone with clean organized table. Sharp visual contrast between chaos and calm. Warm food stall background for both sides.`,
+to:[{l:"SOALAN",t:"Berapa kali seminggu duit tak sama catatan?",s:"Bold hitam atas tengah"},{l:"OPTION A",t:"A) Hampir setiap hari 😩",s:"Kotak rounded 4 pilihan"},{l:"OPTION B",t:"B) 2-3 kali seminggu",s:""},{l:"OPTION C",t:"C) Sekali dua je",s:""},{l:"OPTION D",t:"D) Jarang, alhamdulillah 😊",s:""},{l:"CTA",t:"Comment jawapan korang 👇",s:"Oren paling bawah"}],
+tip:"Design macam quiz card. 4 option dalam kotak masing-masing. Background putih atau cream. Kena invite interaction."},
+
+{n:"Post 05",f:"t",d:"25 Feb (Selasa)",pl:["IG Stories","TikTok Stories"],ti:"3 tanda kedai perlu POS — slide story",
+pr:`An overwhelmed Malaysian female cashier in hijab at a small busy food stall, multiple customers queuing, hands full, looking stressed while trying to manage handwritten orders. Long queue visible behind her. Papers everywhere. Her face shows multitasking stress. Warm chaotic food stall atmosphere. Vertical 9:16 format. Busy lunch hour energy.`,
+to:[{l:"TITLE",t:"3 Tanda Kedai Anda PERLU Sistem POS",s:"Header bold besar"},{l:"TANDA 1",t:"1️⃣ Staff selalu silap order",s:"Slide berasingan kalau carousel"},{l:"TANDA 2",t:"2️⃣ Tak tahu jualan sehingga malam",s:""},{l:"TANDA 3",t:"3️⃣ Duit laci tak sama catatan",s:""},{l:"CTA",t:"Ada 2 atau lebih? Link in bio →",s:"Button oren bawah"}],
+tip:"Boleh 3 slides berasingan untuk carousel Stories. Setiap slide = 1 pain point. Warna berbeza: merah, kuning, oren."},
+
+{n:"Post 06",f:"t",d:"25 Feb (Selasa)",pl:["Telegram Channel"],ti:"Educational — masalah tak tahu jualan sebenar",
+pr:`Overhead flat lay shot of a small restaurant owner's wooden workspace: an open notebook with incomplete sales tallies and crossed-out numbers, an old calculator, scattered receipts and bills, coins, crumpled banknotes, a ballpoint pen, and a face-down smartphone. Slightly dim warm lighting suggesting end of stressful day. Moody and authentic. Clean flat lay composition.`,
+to:[{l:"HEADLINE",t:"Masalah #1 Peniaga Kedai Makan Malaysia",s:"Bold impactful atas tengah"},{l:"QUOTE",t:'"Saya tak tahu SEBENARNYA berapa saya buat hari ni"',s:"Quote style font italik dalam kotak"},{l:"HOOK",t:"Baca caption untuk tahu penyelesaiannya ↑",s:"Kecil di bawah"}],
+tip:"Flat lay overhead sesuai untuk Telegram yang text-heavy. Image = visual hook untuk caption panjang."},
+
+// MOFU
+{n:"Post 07",f:"m",d:"26 Feb (Rabu)",pl:["FB Page","Threads"],ti:"Comparison — POSKedai vs POS biasa",
+pr:`A confident and smiling Malaysian female restaurant owner in hijab and apron stands center frame, holding a modern smartphone showing a clean POS dashboard. Background split: left side shows dark cluttered scene with bulky POS terminals, stacks of contracts and red price tags showing RM2000. Right side shows bright clean scene with just a phone and green checkmarks. She looks empowered and in control.`,
+to:[{l:"HEADLINE",t:"POSKedai vs Sistem POS Lama",s:"Bold tengah atas"},{l:"KIRI LAMA",t:"❌ RM2,000+ ❌ Kontrak ❌ 2 minggu setup",s:"Background merah muda, teks merah"},{l:"KANAN BARU",t:"✅ Phone sendiri ✅ Tiada kontrak ✅ 1 hari je",s:"Background hijau muda, teks hijau"},{l:"HARGA",t:"Hanya RM30/bulan",s:"Badge oren besar bawah"}],
+tip:"Comparison table 2 kolum. Merah untuk lama, hijau/oren untuk POSKedai. Model di tengah sebagai anchor visual."},
+
+{n:"Post 08",f:"m",d:"26 Feb (Rabu)",pl:["IG Stories"],ti:"Demo 60 saat — phone mockup",
+pr:`A focused Malaysian woman in hijab holding a smartphone at eye level, showing a clear clean POS app interface on the screen. She stands in a warm-lit food stall. Her expression is confident and professional. Phone screen clearly visible showing order list and menu items. Background is softly blurred kedai makan. Professional tech product photography. Vertical 9:16.`,
+to:[{l:"HEADLINE",t:"⚡ 60 Saat: Order → Resit Siap",s:"Bold putih atas"},{l:"TIMELINE",t:"0:15 Pilih menu → 0:30 Confirm → 0:55 Siap ✅",s:"Timeline kecil tengah"},{l:"STAT",t:"Staff belajar dalam 15 MINIT",s:"Highlight bold oren"},{l:"CTA",t:"Cuba demo percuma → link bio",s:"Button bawah"}],
+tip:"Tambah elemen speed lines atau motion blur di tepi untuk kesan fast. Phone screen boleh mockup guna Canva phone frame."},
+
+{n:"Post 09",f:"m",d:"26 Feb (Rabu)",pl:["WhatsApp Channel"],ti:"FAQ — Perlu beli mesin baru?",
+pr:`A reassuring Malaysian man in neat casual wear, hands open in a welcoming gesture, standing next to a simple clean table with only a smartphone on it. No POS terminal, no hardware, no clutter. Light clean background, soft white wall or minimal food stall setting. Expression is friendly and reassuring, like saying 'don't worry'. Natural daylight.`,
+to:[{l:"FAQ LABEL",t:"Soalan Paling Popular",s:"Kecil header"},{l:"SOALAN",t:'"Perlu beli mesin baru tak?"',s:"Besar bold italik"},{l:"JAWAPAN",t:"TIDAK! Guna phone yang ada ✅",s:"Bold hijau impactful"},{l:"INFO",t:"📱 Smartphone + 🌐 Internet = Cukup!",s:"Kecil bawah jawapan"}],
+tip:"FAQ card design. Clean minimal. Background putih + accent oren. Font besar untuk jawapan sebab ia surprising."},
+
+{n:"Post 10",f:"m",d:"27 Feb (Khamis)",pl:["FB Page"],ti:"Testimonial — peniaga jimat RM150/bulan",
+pr:`A genuinely happy and satisfied Malaysian man in his 40s wearing kopiah and casual batik shirt, sitting at his food stall counter with a big authentic smile. He holds a smartphone showing POS dashboard. Background shows a clean organized small restaurant with customers. He looks prosperous, content and trustworthy. Warm natural lighting. Testimonial framing.`,
+to:[{l:"QUOTE",t:'"Dulu RM180 sebulan. Sekarang RM30 je. Lagi senang pulak tu."',s:"Speech bubble besar italik"},{l:"NAMA",t:"— Encik Hafiz, Warung Nasi Lemak KL",s:"Kecil di bawah quote"},{l:"BADGE",t:"Jimat RM150/bulan 💰",s:"Badge hijau atau oren menonjol"},{l:"CTA",t:"Cuba 14 hari percuma →",s:"Button bawah"}],
+tip:"Tambah bintang rating ⭐⭐⭐⭐⭐, quote marks besar, dan photo avatar border. Trustworthy dan warm."},
+
+{n:"Post 11",f:"m",d:"27 Feb (Khamis)",pl:["TikTok Stories","IG Stories"],ti:"Behind the scenes — setup 1 hari",
+pr:`Before and after vertical split: Top section shows a phone screen with a friendly WhatsApp conversation, setup request being sent. Bottom section shows a happy Malaysian female food stall owner in hijab, smiling and confidently using a new POS system on her phone at her organized stall. Arrow connecting the two scenes. Warm light throughout. Before-after narrative. 9:16 vertical format.`,
+to:[{l:"HEADER",t:"Setup POSKedai = 1 Hari Je ☕",s:"Bold atas"},{l:"STEP 1",t:"Korang: WhatsApp senarai menu",s:"Step labels kecil"},{l:"STEP 2",t:"Kami: Setup semua dalam 24 jam",s:""},{l:"STEP 3",t:"Korang: Terus ambil order! ✅",s:""},{l:"CTA",t:"DM atau WhatsApp kami →",s:"Button oren bawah"}],
+tip:"Before/after timeline visual. Tambah progress bar atau panah. Mudah difahami dalam 3 saat."},
+
+{n:"Post 12",f:"m",d:"27 Feb (Khamis)",pl:["Telegram Channel"],ti:"Feature spotlight — laporan jualan automatik",
+pr:`A satisfied Malaysian woman in hijab and restaurant uniform, sitting at a small desk in her food stall after closing time, smiling while studying her smartphone which shows colorful sales charts and revenue analytics. Warm evening lighting. The phone screen glows showing bar charts, numbers, and graphs. She looks pleased and in full control of her business data. Professional but approachable.`,
+to:[{l:"FEATURE TAG",t:"Fungsi #1 Paling Disukai",s:"Badge kecil atas"},{l:"HEADLINE",t:"Laporan Jualan Automatik 📊",s:"Bold besar"},{l:"STATS",t:"Harian • Mingguan • Bulanan",s:"Kecil bawah headline"},{l:"BENEFIT",t:"Tahu jualan real-time walaupun tak ada kat kedai",s:"Sederhana italik"},{l:"CTA",t:"Reply 'DEMO' untuk video tutorial",s:"Bawah"}],
+tip:"Tambah elemen chart atau dashboard screenshot sebagai prop. Tunjuk 'control' dan 'data insight' sebagai perasaan."},
+
+// BOFU
+{n:"Post 13",f:"b",d:"28 Feb (Jumaat)",pl:["FB Page","IG","Threads"],ti:"⭐ OFFER LAUNCH — Mac Mula Mudah",
+pr:`Celebratory commercial photography: A joyful Malaysian female food stall owner in hijab and bright orange apron, holding her smartphone up triumphantly with a huge genuine smile. Behind her the food stall looks busy and successful. Golden bokeh and light flares in background suggesting celebration and success. Phone screen glows warmly. The energy is: I made the right decision. Main promotional poster energy.`,
+to:[{l:"ALERT",t:"🚨 TAWARAN KHAS — TERHAD!",s:"Merah kecil paling atas"},{l:"NAMA TAWARAN",t:"MAC MULA MUDAH",s:"SANGAT besar bold, hitam atau oren"},{l:"ITEM 1",t:"🎁 Trial 14 Hari (bukan 7)",s:"Checklist item"},{l:"ITEM 2",t:"🎁 Setup PERCUMA (jimat RM50)",s:""},{l:"HARGA LAMA",t:"~~RM80~~",s:"Dipalang garisan merah tebal"},{l:"HARGA BARU",t:"RM30 je!",s:"SANGAT besar hijau atau oren"},{l:"SCARCITY",t:"⚠️ 10 SLOT SAHAJA • Tamat 1 Mac",s:"Kecil merah urgent"},{l:"CTA",t:"WhatsApp 'SAYA NAK SLOT MAC' →",s:"Button besar oren paling bawah"}],
+tip:"POST PALING PENTING. Tambah starburst badge 'PERCUMA', price tag lama vs baru, dan countdown visual. Warna: oren + hitam + putih."},
+
+{n:"Post 14",f:"b",d:"28 Feb (Jumaat)",pl:["TikTok Stories"],ti:"Countdown urgency — price slash visual",
+pr:`Dramatic close-up of a price slash moment: A bright red price tag showing RM80 with a bold thick red line dramatically crossing through it. Below it, a glowing orange new price tag showing RM30. A hand just finished making the slash with a marker. High contrast dramatic lighting on white or dark background. Urgency and deal-cutting energy. Sharp commercial photography.`,
+to:[{l:"OLD PRICE",t:"~~RM80~~",s:"Besar, dipalang merah tebal"},{l:"NEW PRICE",t:"RM30 je!",s:"Sangat besar oren bold"},{l:"TIMER",t:"⏰ Tamat 1 Mac tengah malam",s:"Merah urgent"},{l:"CTA",t:"DM sekarang sebelum slot habis 🔥",s:"Putih bold bawah"}],
+tip:"High drama visual. Maximum contrast. Tambah countdown timer atau hourglass. Background merah gelap atau hitam untuk urgency."},
+
+{n:"Post 15",f:"b",d:"28 Feb (Jumaat)",pl:["WhatsApp Channel"],ti:"Exclusive subscriber offer",
+pr:`Intimate and warm scene: A Malaysian woman in hijab sitting in a cozy small cafe, reading her phone with a knowing and delighted smile, as if just received exclusive good news. The atmosphere is warm and private. Soft bokeh background suggests exclusivity. She looks like she's in on a special secret. Warm amber lighting. Genuine joy expression.`,
+to:[{l:"EXCLUSIVE",t:"🔒 SUBSCRIBER SAHAJA",s:"Badge eksklusif kecil atas"},{l:"HEADLINE",t:"Korang dapat tahu dulu 🤫",s:"Bold warm conversational"},{l:"TAWARAN",t:"Setup PERCUMA + Trial 14 hari + RM30 je",s:"Checklist ringkas"},{l:"LIMIT",t:"10 slot • Tamat 1 Mac",s:"Merah kecil"},{l:"CTA",t:"'CHANNEL SUBSCRIBER - SLOT MAC'",s:"Bold jelas bawah"}],
+tip:"Tone eksklusif dan intimate. Macam memberitahu kawan baik. Design lebih personal, kurang 'corporate announcement'."},
+
+{n:"Post 16",f:"b",d:"28 Feb (Jumaat)",pl:["Telegram Channel"],ti:"Double exclusive — Telegram member",
+pr:`Bold and exciting announcement: A sharp-looking Malaysian male entrepreneur in smart casual wear, holding up a golden envelope or phone showing a VIP notification. The background is a clean professional food business environment. Mood: you have been specially selected. Dramatic directional lighting. Gold and orange accent colors. Premium feel.`,
+to:[{l:"TOP BADGE",t:"🔴 EKSKLUSIF — TELEGRAM MEMBER",s:"Merah paling atas"},{l:"BONUS",t:"+ Training 1-on-1 FREE (nilai RM50)",s:"Hijau bold"},{l:"JUMLAH JIMAT",t:"Jimat RM100 bulan pertama!",s:"Besar oren atau emas"},{l:"SLOT",t:"5 slot Telegram sahaja",s:"Kecil urgent"},{l:"CTA",t:"'TELEGRAM MEMBER - SLOT MAC'",s:"Bawah jelas"}],
+tip:"Gunakan warna emas/gold untuk elemen eksklusif. Lebih premium berbanding post lain. Tambah badge 'VIP' atau 'Member Sahaja'."},
+
+{n:"Post 17",f:"b",d:"1 Mac (Sabtu)",pl:["FB Page","IG","Threads"],ti:"HARI TERAKHIR — FOMO maksimum",
+pr:`Dramatic urgency scene: A large beautiful hourglass with only a few grains of sand remaining at the top, placed dramatically on a food stall counter. Malaysian food and stall visible in warm but tense background. The hourglass glows with warm red-orange light. Beside it a phone shows '2 slots remaining'. Cinematic dramatic side lighting. Red and orange dominant. Maximum urgency.`,
+to:[{l:"URGENT HEADER",t:"⏰ HARI TERAKHIR!",s:"SANGAT besar merah terang atas tengah"},{l:"SLOT COUNT",t:"Tinggal 2 SLOT SAHAJA!",s:"Bold oren besar"},{l:"REMINDER",t:"Setup PERCUMA + Trial 14 hari + RM30 je",s:"Checklist ringkas hijau tick"},{l:"DEADLINE",t:"Tamat 12 malam ini ⚠️",s:"Merah urgent"},{l:"CTA",t:"WhatsApp: 'SAYA NAK SLOT TERAKHIR' →",s:"Button besar merah atau oren"}],
+tip:"POST PALING URGENT. Warna merah dominan. Tambah: timer visual, countdown besar, hourglass, 'LAST 2 SLOTS' counter. Maximum FOMO design."},
+
+{n:"Post 18",f:"b",d:"1 Mac (Sabtu)",pl:["TikTok Stories","IG Stories"],ti:"3 Stories sepanjang hari — pagi/tengahari/petang",
+pr:`Three vertical story scenes combined: Morning scene with soft sunrise light through food stall window, a Malaysian woman in hijab looking hopeful at her phone. Midday scene showing busy lunch rush energy, same woman looking excited checking updates. Evening scene with dramatic red-orange sunset through window, she looks urgent and focused. Progressive emotional arc from hopeful to urgent.`,
+to:[{l:"PAGI 🌅",t:"12 JAM LAGI — Setup percuma + RM30 je",s:"Cerah hopeful"},{l:"TENGAHARI ☀️",t:"6 slot diambil. 4 TINGGAL!",s:"Energetik update live"},{l:"PETANG 🌆",t:"LAST CALL — 2 slot. Tamat malam ini!",s:"Merah sangat urgent"},{l:"CTA SEMUA",t:"wa.me/60167388358",s:"Konsisten setiap story"}],
+tip:"Buat 3 gambar berasingan dengan lighting berbeza. Post pada masa berbeza: 8am, 12pm, 6pm. Emotional arc: harapan → teruja → urgent."},
+
+{n:"Post 19",f:"b",d:"1 Mac (Sabtu)",pl:["WhatsApp Channel"],ti:"LAST CALL — CTA direct, pendek, urgent",
+pr:`Minimal dramatic close-up: A hand holding a smartphone with WhatsApp chat visible, the message typed reads 'SAYA NAK' with finger about to press send. Red notification badge visible at top. Urgent warm red-orange cinematic lighting. Background blurred food stall environment. Everything else stripped away. Focus entirely on the single action of sending the message.`,
+to:[{l:"TOP",t:"🔴 LAST CALL 🔴",s:"Merah besar atas"},{l:"TAWARAN",t:"Setup PERCUMA + 14 hari + RM30",s:"Ringkas bold"},{l:"SLOT",t:"2 slot tinggal",s:"Merah urgent"},{l:"ACTION",t:"Taip 'SAYA NAK' → wa.me/60167388358",s:"Jelas besar bawah"}],
+tip:"Paling minimal dan direct. Putih + merah + hitam. Mesej pendek tapi impactful. Jangan over-design post terakhir ini."},
+
+{n:"Post 20",f:"b",d:"1 Mac (Sabtu)",pl:["Telegram Channel"],ti:"Final reminder — terima kasih tone",
+pr:`Warm grateful farewell scene: A Malaysian male entrepreneur in smart casual batik shirt, standing at the entrance of his successful small restaurant, looking back with a warm genuine smile, holding his phone to his chest. The restaurant behind him is warm, well-lit and looks thriving. Golden hour light creating a beautiful final scene. Tone: gratitude, success, and closure. Hopeful and warm.`,
+to:[{l:"FINAL",t:"⚠️ FINAL REMINDER",s:"Kecil atas"},{l:"HEADLINE",t:"Peluang ni tutup malam ini",s:"Bold sederhana"},{l:"OFFER",t:"Trial 14 hari + Setup FREE + Training + RM30 je",s:"Checklist hijau"},{l:"LINK",t:"wa.me/60167388358",s:"Bold oren tengah"},{l:"TERIMA KASIH",t:"Terima kasih kerana follow kami 🙏",s:"Kecil warm bawah sekali"}],
+tip:"Tone terakhir mesti ada gratitude dan warmth, bukan pressure. Gambar yang convey 'peluang baik sedang berlalu' — bukan desperate selling."}
+];
+
+const BASE=`\n\n[BASE PROMPT] photorealistic commercial photography, Malaysian Malay woman in hijab and apron, warm natural lighting, small food stall or kedai makan background, orange and cream color palette, professional product photography, sharp focus, high resolution, no text, no watermark --ar 4:5 --style raw --v 6`;
+
+const FL={t:"🔵 TOFU",m:"🟠 MOFU",b:"🟢 BOFU"};
+const FD={t:"24-25 Feb — Sedar & Tarik Perhatian",m:"26-27 Feb — Pertimbangkan & Percaya",b:"28 Feb-1 Mac — Beli & Konversi"};
+const FI={t:"📘",m:"📙",b:"📗"};
+let af="all";
+
+function render(){
+  const c=document.getElementById('main');c.innerHTML='';
+  ['t','m','b'].forEach(f=>{
+    const items=D.filter(p=>af==='all'?p.f===f:p.f===f&&p.f===af);
+    if(!items.length)return;
+    const sh=document.createElement('div');sh.className='sec-hdr';
+    sh.innerHTML=`<h2>${FI[f]} ${FD[f]}</h2><span class="ftag ${f}">${FL[f]}</span><div class="sec-line"></div>`;
+    c.appendChild(sh);
+    items.forEach((item,i)=>{
+      const card=document.createElement('div');card.className='pc';
+      card.innerHTML=`
+      <div class="pc-hdr">
+        <span class="pnum">${item.n}</span>
+        <div class="pmeta">
+          <div class="ptitle">${item.ti}</div>
+          <div class="ptags">${item.pl.map(p=>`<span class="ptag">${p}</span>`).join('')}<span class="ptag">${item.d}</span></div>
+        </div>
+        <span class="ftag ${item.f}">${FL[item.f]}</span>
+      </div>
+      <div class="pb">
+        <div class="ps">
+          <div class="ps-lbl">🤖 Image Prompt — Copy & Pakai di AI Generator</div>
+          <div class="pbox">
+            <pre id="pr-${i}">${item.pr}${BASE}</pre>
+            <button class="cbtn" id="cb-${i}" onclick="cp(${i})">Copy Prompt</button>
+          </div>
+        </div>
+        <div class="ps">
+          <div class="ps-lbl">✍️ Text Overlay untuk Canva</div>
+          <div class="tob">
+            ${item.to.map(t=>`<div class="tr"><span class="tr-lbl">${t.l}</span><div><div class="tr-txt">${t.t}</div>${t.s?`<div class="tr-sub">${t.s}</div>`:''}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="ps">
+          <div class="ps-lbl">💡 Tips Design</div>
+          <div class="tipbox">📌 ${item.tip}</div>
+        </div>
+      </div>`;
+      c.appendChild(card);
+    });
+  });
+}
+
+function fil(type,btn){
+  af=type==='t'||type==='m'||type==='b'?type:'all';
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');render();
+}
+
+function cp(i){
+  const el=document.getElementById(`pr-${i}`);
+  const btn=document.getElementById(`cb-${i}`);
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    btn.classList.add('ok');btn.textContent='✓ Copied!';
+    toast('✅ Prompt disalin!','ok');
+    setTimeout(()=>{btn.classList.remove('ok');btn.textContent='Copy Prompt';},2000);
+  });
+}
+
+function toast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+render();
+</script>
+</body>
+</html>
