@@ -379,6 +379,204 @@
             .cta h2{font-size:1.8rem;}.mockup-float{display:none;}
             .wa-float span{display:none;}.wa-float{padding:16px;border-radius:50%;width:56px;height:56px;justify-content:center;}
         }
+
+        /* ==================== POPUP STYLES ==================== */
+        *, *::before, *::after { box-sizing: border-box; }
+        :root {
+            --orange:      #E8621A;
+            --orange-hov:  #D4521A;
+            --orange-bg:   #FEF3EC;
+            --orange-bd:   #FDDCCC;
+            --orange-glow: rgba(232,98,26,0.15);
+            --navy:        #1E2D40;
+            --body-c:      #4A5568;
+            --muted:       #718096;
+            --light:       #A0AEC0;
+            --p-white:     #FFFFFF;
+            --p-border:    #EDE8E0;
+            --p-green:     #25D366;
+            --p-green-hov: #1EBE58;
+            --p-shadow:    0 24px 64px rgba(30,45,64,0.16), 0 4px 16px rgba(30,45,64,0.08);
+            --p-radius:    14px;
+        }
+        .p-overlay {
+            position: fixed; inset: 0;
+            background: rgba(30,45,64,0.55);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 16px; z-index: 99999;
+            opacity: 0; pointer-events: none;
+            transition: opacity .25s ease;
+        }
+        .p-overlay.active { opacity: 1; pointer-events: all; }
+        .p-modal {
+            background: var(--p-white);
+            border: 1px solid var(--p-border);
+            border-radius: 24px;
+            width: 100%; max-width: 460px;
+            box-shadow: var(--p-shadow);
+            overflow: hidden;
+            transform: translateY(24px) scale(.96);
+            transition: transform .32s cubic-bezier(.34,1.45,.64,1);
+        }
+        .p-overlay.active .p-modal { transform: translateY(0) scale(1); }
+        .p-accent { height: 4px; background: linear-gradient(90deg, var(--orange), #F97316, #FBBF24); }
+        .p-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: center; }
+        .p-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--orange-bg); color: var(--orange);
+            font-size: 12px; font-weight: 700;
+            padding: 5px 12px; border-radius: 99px;
+            border: 1px solid var(--orange-bd);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .p-badge-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--orange);
+            animation: p-pulse 1.8s ease-in-out infinite;
+        }
+        @keyframes p-pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.5;transform:scale(1.35);} }
+        .p-close {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: #F7F4F0; border: none;
+            color: var(--muted); font-size: 16px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all .15s; line-height: 1;
+        }
+        .p-close:hover { background: #EDE8E0; color: var(--navy); }
+        .p-progress-wrap { padding: 16px 24px 0; }
+        .p-progress-meta {
+            display: flex; justify-content: space-between;
+            font-size: 11px; font-weight: 600; color: var(--muted);
+            margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .p-progress-meta .p-pct { color: var(--orange); font-weight: 700; }
+        .p-progress-track { height: 6px; background: #F0EBE3; border-radius: 99px; overflow: hidden; }
+        .p-progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--orange), #F97316);
+            border-radius: 99px; transition: width .45s cubic-bezier(.4,0,.2,1);
+        }
+        .p-dots { display: flex; gap: 5px; justify-content: center; padding: 10px 24px 0; }
+        .p-dot { height: 5px; width: 20px; border-radius: 99px; background: #EDE8E0; transition: all .3s cubic-bezier(.4,0,.2,1); }
+        .p-dot.active { background: var(--orange); width: 32px; }
+        .p-dot.done { background: var(--orange-bd); }
+        .p-body { padding: 20px 24px 24px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .p-step { display: none; animation: p-slideIn .28s ease forwards; }
+        .p-step.active { display: block; }
+        @keyframes p-slideIn { from{opacity:0;transform:translateX(18px);} to{opacity:1;transform:translateX(0);} }
+        .p-step.back-anim { animation: p-slideBack .28s ease forwards; }
+        @keyframes p-slideBack { from{opacity:0;transform:translateX(-18px);} to{opacity:1;transform:translateX(0);} }
+        .p-step-title { font-size: 18px; font-weight: 800; color: var(--navy); line-height: 1.3; margin-bottom: 4px; }
+        .p-step-sub { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+        .p-options { display: grid; gap: 8px; }
+        .p-opt {
+            display: flex; align-items: center; gap: 12px;
+            background: #FDFAF7; border: 1.5px solid var(--p-border);
+            border-radius: 12px; padding: 12px 14px;
+            cursor: pointer; transition: all .18s; user-select: none;
+        }
+        .p-opt:hover { border-color: var(--orange-bd); background: var(--orange-bg); }
+        .p-opt.selected { border-color: var(--orange); background: var(--orange-bg); box-shadow: 0 0 0 3px var(--orange-glow); }
+        .p-opt-icon {
+            font-size: 20px; width: 38px; height: 38px;
+            background: var(--p-white); border: 1px solid var(--p-border); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .18s;
+        }
+        .p-opt.selected .p-opt-icon { background: var(--orange-bg); border-color: var(--orange-bd); }
+        .p-opt-label { font-size: 13.5px; font-weight: 600; color: var(--navy); flex: 1; }
+        .p-opt-check {
+            width: 20px; height: 20px; border: 2px solid var(--p-border); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .18s;
+        }
+        .p-opt.selected .p-opt-check { background: var(--orange); border-color: var(--orange); }
+        .p-opt.selected .p-opt-check::after { content:'✓'; color:#fff; font-size:11px; font-weight:800; }
+        .p-field { margin-bottom: 12px; }
+        .p-field label { display:block; font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; }
+        .p-field-wrap { position: relative; }
+        .p-f-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:15px; pointer-events:none; }
+        .p-field input {
+            width:100%; padding:12px 14px 12px 40px;
+            background:#FDFAF7; border:1.5px solid var(--p-border);
+            border-radius:10px; color:var(--navy);
+            font-family:'Plus Jakarta Sans', sans-serif; font-size:14px; font-weight:500;
+            outline:none; transition:all .18s;
+        }
+        .p-field input::placeholder { color:#C4B8A8; font-weight:400; }
+        .p-field input:focus { border-color:var(--orange); background:var(--p-white); box-shadow:0 0 0 3px var(--orange-glow); }
+        .p-btn-row { display:flex; gap:8px; margin-top:18px; }
+        .p-btn-back {
+            flex:0 0 auto; padding:12px 16px;
+            background:#F7F4F0; border:1.5px solid var(--p-border); border-radius:10px;
+            color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif; font-size:13px; font-weight:600;
+            cursor:pointer; transition:all .15s;
+        }
+        .p-btn-back:hover { background:#EDE8E0; color:var(--navy); }
+        .p-btn-next {
+            flex:1; padding:13px;
+            background:var(--orange); border:none; border-radius:10px;
+            color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-size:14px; font-weight:800;
+            cursor:pointer; transition:all .18s;
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            box-shadow:0 4px 14px rgba(232,98,26,0.3);
+        }
+        .p-btn-next:hover:not(:disabled) { background:var(--orange-hov); transform:translateY(-1px); box-shadow:0 8px 20px rgba(232,98,26,0.4); }
+        .p-btn-next:disabled { opacity:.4; cursor:not-allowed; box-shadow:none; transform:none; }
+        .p-btn-arrow { transition:transform .2s; }
+        .p-btn-next:not(:disabled):hover .p-btn-arrow { transform:translateX(3px); }
+        .p-spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:p-spin .6s linear infinite; display:none; }
+        @keyframes p-spin { to{transform:rotate(360deg);} }
+        .p-btn-next.loading .p-spinner { display:block; }
+        .p-btn-next.loading .p-btn-text { display:none; }
+        .p-ty-wrap { text-align:center; padding:4px 0; }
+        .p-ty-icon {
+            width:68px; height:68px; border-radius:50%;
+            background:linear-gradient(135deg, var(--orange-bg), #FFF7ED);
+            border:2px solid var(--orange-bd);
+            display:flex; align-items:center; justify-content:center;
+            font-size:30px; margin:0 auto 14px;
+            animation:p-popIn .4s cubic-bezier(.34,1.56,.64,1) .05s both;
+        }
+        @keyframes p-popIn { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
+        .p-ty-title { font-size:20px; font-weight:800; color:var(--navy); margin-bottom:6px; font-family:'Plus Jakarta Sans',sans-serif; }
+        .p-ty-name { color:var(--orange); }
+        .p-ty-sub { font-size:13px; color:var(--body-c); line-height:1.6; margin-bottom:10px; font-family:'Plus Jakarta Sans',sans-serif; }
+        .p-saved-badge {
+            display:inline-flex; align-items:center; gap:5px;
+            font-size:11px; font-weight:700; color:#15803D;
+            background:#DCFCE7; border:1px solid #86EFAC;
+            border-radius:99px; padding:4px 12px; margin-bottom:14px;
+            font-family:'Plus Jakarta Sans',sans-serif;
+        }
+        .p-ty-detail {
+            font-size:12px; color:var(--muted); line-height:1.7;
+            background:var(--orange-bg); border:1px solid var(--orange-bd);
+            border-radius:10px; padding:10px 14px; margin-bottom:16px; text-align:left;
+            font-family:'Plus Jakarta Sans',sans-serif;
+        }
+        .p-ty-detail strong { color:var(--navy); display:block; margin-bottom:4px; }
+        .p-wa-btn {
+            width:100%; padding:14px;
+            background:var(--p-green); border:none; border-radius:10px;
+            color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800;
+            cursor:pointer; text-decoration:none;
+            display:flex; align-items:center; justify-content:center; gap:10px;
+            transition:all .18s; box-shadow:0 4px 16px rgba(37,211,102,0.3);
+        }
+        .p-wa-btn:hover { background:var(--p-green-hov); transform:translateY(-1px); box-shadow:0 8px 24px rgba(37,211,102,0.4); }
+        .p-wa-personal {
+            display:block; width:100%; padding:12px;
+            background:transparent; border:1.5px solid #EDE8E0; border-radius:10px;
+            color:var(--muted); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:600;
+            cursor:pointer; text-decoration:none; text-align:center;
+            transition:all .18s; margin-top:8px;
+        }
+        .p-wa-personal:hover { border-color:var(--orange); color:var(--orange); }
+        .p-skip { display:block; margin-top:12px; font-size:12px; color:var(--light); cursor:pointer; transition:color .15s; text-align:center; font-family:'Plus Jakarta Sans',sans-serif; }
+        .p-skip:hover { color:var(--muted); }
+        .p-privacy { font-size:11px; color:#C4B8A8; text-align:center; margin-top:14px; line-height:1.5; font-family:'Plus Jakarta Sans',sans-serif; }
+        .p-err { font-size:12px; color:#DC2626; margin-top:5px; font-weight:500; display:none; font-family:'Plus Jakarta Sans',sans-serif; }
+        .p-err.show { display:block; }
+        @media(max-height:680px){ .p-modal{max-height:95vh;overflow-y:auto;} }
     </style>
 </head>
 <body>
@@ -391,7 +589,8 @@
             <a href="#cara">Cara Guna</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
-            <a href="#hubungi" class="nav-cta">Cuba Percuma 7 Hari</a>
+            <!-- ✅ Nav CTA buka popup -->
+            <a href="javascript:void(0)" onclick="openPopup()" class="nav-cta">Cuba Percuma 7 Hari</a>
         </div>
         <button class="nav-mobile" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
     </div>
@@ -405,7 +604,8 @@
             <p class="hero-sub">Guna phone atau tablet yang anda sedia ada. Tak perlu beli mesin mahal.</p>
             <p>Setup dalam 1 hari, staff belajar dalam 15 minit. Sistem POS yang dibina khas untuk gerai, restoran kecil, cafe, dan warung makan di Malaysia.</p>
             <div class="hero-buttons">
-                <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-hero btn-hero-primary">📱 Cuba Percuma 7 Hari</a>
+                <!-- ✅ DIUBAH: buka popup -->
+                <a href="javascript:void(0)" onclick="openPopup()" class="btn-hero btn-hero-primary">📱 Cuba Percuma 7 Hari</a>
                 <a href="https://saudaranas.github.io/demo-pos-kedai/" class="btn-hero btn-hero-secondary" target="_blank">👁️ Lihat Demo</a>
             </div>
             <div class="hero-trust">
@@ -508,7 +708,8 @@
                 <div class="price-buttons">
                     <button class="btn-price-main" onclick="openPaymentModal()">💳 Langgan Sekarang — RM80</button>
                     <p class="price-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</p>
-                    <button class="btn-price-trial" onclick="window.open('https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!')">📱 Atau cuba percuma 7 hari dulu</button>
+                    <!-- ✅ DIUBAH: buka popup -->
+                    <button class="btn-price-trial" onclick="openPopup()">📱 Atau cuba percuma 7 hari dulu</button>
                 </div>
                 <p class="price-note">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
                 <div class="payment-badges"><span>Bayaran selamat melalui:</span> <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></div>
@@ -562,7 +763,8 @@
     <p class="cta-price-note">Setup RM50 (sekali sahaja) + RM30/bulan. Semua fungsi termasuk.</p>
     <div class="cta-buttons">
         <a href="javascript:void(0)" onclick="openPaymentModal()" class="btn-cta-orange">💳 Langgan Sekarang — RM80</a>
-        <a href="https://wa.me/60167388358?text=Saya%20nak%20cuba%20percuma%20POSKedai%207%20hari!" class="btn-cta-ghost">📱 Cuba Percuma 7 Hari Dulu</a>
+        <!-- ✅ DIUBAH: buka popup -->
+        <a href="javascript:void(0)" onclick="openPopup()" class="btn-cta-ghost">📱 Cuba Percuma 7 Hari Dulu</a>
     </div>
 </section>
 
@@ -583,7 +785,7 @@
         <div class="footer-links">
             <h4>Hubungi</h4>
             <a href="https://wa.me/60167388358">📱 WhatsApp</a>
-            <a href="mailto:hello@poskedai.com">📧 hello@poskedai.com</a>
+            <a href="/cdn-cgi/l/email-protection#e78f828b8b88a79788948c8283868ec984888a">📧 <span class="__cf_email__" data-cfemail="39515c5555567949564a525c5d5850175a5654">[email&#160;protected]</span></a>
             <a href="#">📍 Malaysia</a>
         </div>
     </div>
@@ -596,6 +798,7 @@
     <span class="wa-icon">💬</span><span>WhatsApp Kami</span>
 </a>
 
+<!-- Payment Modal (original) -->
 <div class="payment-overlay" id="paymentModal">
     <div class="payment-modal">
         <div class="payment-modal-header"><div><h3>💳 Langgan POSKedai</h3><p>Lengkapkan bayaran untuk mula guna POSKedai</p></div><button class="payment-modal-close" onclick="closePaymentModal()">&times;</button></div>
@@ -605,7 +808,136 @@
     </div>
 </div>
 
-<script>
+<!-- ✅ POPUP LEAD CAPTURE -->
+<div class="p-overlay" id="p-overlay" onclick="handlePOverlayClick(event)">
+<div class="p-modal">
+  <div class="p-accent"></div>
+  <div class="p-header">
+    <div class="p-badge"><span class="p-badge-dot"></span>🎁 Cuba Percuma 7 Hari</div>
+    <button class="p-close" onclick="closePopup()">✕</button>
+  </div>
+  <div class="p-progress-wrap">
+    <div class="p-progress-meta">
+      <span id="p-prog-label">Langkah 1 dari 4</span>
+      <span class="p-pct" id="p-prog-pct">25%</span>
+    </div>
+    <div class="p-progress-track"><div class="p-progress-fill" id="p-progress-fill" style="width:25%"></div></div>
+  </div>
+  <div class="p-dots">
+    <div class="p-dot active" id="p-dot-0"></div>
+    <div class="p-dot" id="p-dot-1"></div>
+    <div class="p-dot" id="p-dot-2"></div>
+    <div class="p-dot" id="p-dot-3"></div>
+  </div>
+  <div class="p-body">
+
+    <!-- Step 1: Jenis Kedai -->
+    <div class="p-step active" id="p-step-0">
+      <div class="p-step-title">Kedai anda jenis apa? 🍽️</div>
+      <div class="p-step-sub">Bantu kami setup sistem yang paling sesuai untuk anda.</div>
+      <div class="p-options" id="p-opts-0">
+        <div class="p-opt" data-val="Gerai Makan / Warung" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">🏪</div><span class="p-opt-label">Gerai Makan / Warung</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Restoran / Kedai Makan" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">🍛</div><span class="p-opt-label">Restoran / Kedai Makan</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Cafe / Kedai Kopi" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">☕</div><span class="p-opt-label">Cafe / Kedai Kopi</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Food Truck / Bazaar" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">🚚</div><span class="p-opt-label">Food Truck / Bazaar</span><div class="p-opt-check"></div></div>
+      </div>
+      <div class="p-btn-row">
+        <button class="p-btn-next" id="p-next-0" onclick="pGoNext(1)" disabled>
+          <span class="p-btn-text">Seterusnya <span class="p-btn-arrow">→</span></span><span class="p-spinner"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Cara Urus -->
+    <div class="p-step" id="p-step-1">
+      <div class="p-step-title">Macam mana anda urus pesanan sekarang? 📝</div>
+      <div class="p-step-sub">Tiada jawapan yang salah — kami nak faham situasi anda.</div>
+      <div class="p-options" id="p-opts-1">
+        <div class="p-opt" data-val="Tulis tangan / kertas" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">✍️</div><span class="p-opt-label">Tulis tangan / kertas</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Kalkulator + hafal" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">🧮</div><span class="p-opt-label">Kalkulator + hafal je</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Guna aplikasi lain" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">📱</div><span class="p-opt-label">Guna aplikasi lain</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Langsung tiada sistem" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">🤷</div><span class="p-opt-label">Langsung tiada sistem</span><div class="p-opt-check"></div></div>
+      </div>
+      <div class="p-btn-row">
+        <button class="p-btn-back" onclick="pGoBack(0)">← Balik</button>
+        <button class="p-btn-next" id="p-next-1" onclick="pGoNext(2)" disabled>
+          <span class="p-btn-text">Seterusnya <span class="p-btn-arrow">→</span></span><span class="p-spinner"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Pengalaman POS -->
+    <div class="p-step" id="p-step-2">
+      <div class="p-step-title">Pernah guna sistem POS sebelum ni? 🖥️</div>
+      <div class="p-step-sub">Ini bantu kami tentukan tahap sokongan yang anda perlukan.</div>
+      <div class="p-options" id="p-opts-2">
+        <div class="p-opt" data-val="Tak pernah — pertama kali" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">🆕</div><span class="p-opt-label">Tak pernah — pertama kali</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Pernah — tapi terlalu mahal" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">💸</div><span class="p-opt-label">Pernah — tapi terlalu mahal</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Pernah — tapi terlalu susah" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">😵</div><span class="p-opt-label">Pernah — tapi terlalu susah</span><div class="p-opt-check"></div></div>
+        <div class="p-opt" data-val="Masih guna — nak tukar je" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">🔄</div><span class="p-opt-label">Masih guna — nak tukar je</span><div class="p-opt-check"></div></div>
+      </div>
+      <div class="p-btn-row">
+        <button class="p-btn-back" onclick="pGoBack(1)">← Balik</button>
+        <button class="p-btn-next" id="p-next-2" onclick="pGoNext(3)" disabled>
+          <span class="p-btn-text">Seterusnya <span class="p-btn-arrow">→</span></span><span class="p-spinner"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 4: Form -->
+    <div class="p-step" id="p-step-3">
+      <div class="p-step-title">Hampir siap! Bagi maklumat anda 🎉</div>
+      <div class="p-step-sub">Kami akan setup percubaan 7 hari anda dalam masa 24 jam.</div>
+      <div class="p-field">
+        <label>Nama Anda</label>
+        <div class="p-field-wrap"><span class="p-f-icon">👤</span><input type="text" id="p-f-name" placeholder="Contoh: Ahmad bin Ali" oninput="pValidateForm()"></div>
+        <div class="p-err" id="p-err-name">Sila masukkan nama anda.</div>
+      </div>
+      <div class="p-field">
+        <label>Nombor WhatsApp</label>
+        <div class="p-field-wrap"><span class="p-f-icon">📱</span><input type="tel" id="p-f-wa" placeholder="Contoh: 0123456789" oninput="pValidateForm()"></div>
+        <div class="p-err" id="p-err-wa">Sila masukkan nombor WhatsApp yang sah.</div>
+      </div>
+      <div class="p-field">
+        <label>Emel <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(Pilihan)</span></label>
+        <div class="p-field-wrap"><span class="p-f-icon">📧</span><input type="email" id="p-f-email" placeholder="Contoh: ahmad@gmail.com" oninput="pValidateForm()"></div>
+        <div class="p-err" id="p-err-email">Format emel tidak sah.</div>
+      </div>
+      <div class="p-btn-row">
+        <button class="p-btn-back" onclick="pGoBack(2)">← Balik</button>
+        <button class="p-btn-next" id="p-next-3" onclick="pSubmitForm()" disabled>
+          <span class="p-btn-text">Mula Cuba Percuma! 🚀</span><span class="p-spinner"></span>
+        </button>
+      </div>
+      <p class="p-privacy">🔒 Maklumat anda selamat & sulit. Tidak dikongsi kepada pihak lain.</p>
+    </div>
+
+    <!-- Step 5: Thank You -->
+    <div class="p-step" id="p-step-4">
+      <div class="p-ty-wrap">
+        <div class="p-ty-icon">🎉</div>
+        <div class="p-saved-badge">✅ Data disimpan dalam Google Sheets</div>
+        <div class="p-ty-title">Terima kasih, <span class="p-ty-name" id="p-ty-name"></span>!</div>
+        <div class="p-ty-sub">Permohonan anda telah berjaya dihantar. Kami akan hubungi anda dalam masa <strong>24 jam</strong>.</div>
+        <div class="p-ty-detail" id="p-ty-detail"></div>
+        <a class="p-wa-btn" id="p-wa-link" href="https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          🔔 Sertai Channel POSKedai Sekarang
+        </a>
+        <a class="p-wa-personal" id="p-wa-personal-link" href="#" target="_blank">
+          💬 Atau terus WhatsApp kami untuk setup trial
+        </a>
+        <span class="p-skip" onclick="closePopup()">Tutup tetingkap ini</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+<!-- /POPUP LEAD CAPTURE -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ==================== ORIGINAL SCRIPTS ====================
 window.addEventListener('scroll', function() {
     var navbar = document.getElementById('navbar');
     if (window.scrollY > 50) navbar.classList.add('scrolled');
@@ -646,7 +978,117 @@ function closePaymentModal() {
     document.body.style.overflow = '';
 }
 document.getElementById('paymentModal').addEventListener('click', function(e) { if (e.target === this) closePaymentModal(); });
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePaymentModal(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closePaymentModal(); closePopup(); } });
+
+// ==================== POPUP LEAD CAPTURE ====================
+// ⚙️ TUKAR URL INI SELEPAS SETUP GOOGLE APPS SCRIPT
+const P_SHEET_URL    = 'https://script.google.com/macros/s/AKfycbyzQRGrDOJGSgjoxhhA2YK761-3NTLV3FctfmK8ezqL5zzwI0VBRRWlIsLXqWSY769Y/exec';
+const P_WA_NUM       = '60167388358';
+const P_CHANNEL_URL  = 'https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w';
+
+const pAns = { jenis:'', cara:'', pos:'', nama:'', wa:'', email:'' };
+
+function openPopup() {
+    document.getElementById('p-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closePopup() {
+    document.getElementById('p-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+function handlePOverlayClick(e) {
+    if (e.target === document.getElementById('p-overlay')) closePopup();
+}
+function pSelectOpt(el, idx) {
+    document.getElementById('p-opts-'+idx).querySelectorAll('.p-opt').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('p-next-'+idx).disabled = false;
+}
+function pUpdateProgress(idx) {
+    const pct = Math.round(((idx+1)/4)*100);
+    document.getElementById('p-progress-fill').style.width = pct+'%';
+    document.getElementById('p-prog-label').textContent = 'Langkah '+(idx+1)+' dari 4';
+    document.getElementById('p-prog-pct').textContent = pct+'%';
+    for(let i=0;i<4;i++){
+        const d=document.getElementById('p-dot-'+i);
+        d.className='p-dot'+(i<idx?' done':i===idx?' active':'');
+    }
+}
+function pGoNext(to) {
+    if(to===1) pAns.jenis = document.querySelector('#p-opts-0 .p-opt.selected')?.dataset.val;
+    if(to===2) pAns.cara  = document.querySelector('#p-opts-1 .p-opt.selected')?.dataset.val;
+    if(to===3) pAns.pos   = document.querySelector('#p-opts-2 .p-opt.selected')?.dataset.val;
+    pShowStep(to, false);
+}
+function pGoBack(to) { pShowStep(to, true); }
+function pShowStep(idx, isBack) {
+    document.querySelectorAll('.p-step').forEach(s=>s.classList.remove('active','back-anim'));
+    const t=document.getElementById('p-step-'+idx);
+    t.classList.add('active');
+    if(isBack) t.classList.add('back-anim');
+    if(idx<4) pUpdateProgress(idx);
+}
+function pValidateForm() {
+    const name  = document.getElementById('p-f-name').value.trim();
+    const wa    = document.getElementById('p-f-wa').value.trim().replace(/[\s\-]/g,'');
+    const email = document.getElementById('p-f-email').value.trim();
+    const ok = name.length>=2 && /^[0-9]{9,12}$/.test(wa) && (email===''||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    document.getElementById('p-next-3').disabled = !ok;
+}
+async function pSubmitForm() {
+    const name  = document.getElementById('p-f-name').value.trim();
+    const wa    = document.getElementById('p-f-wa').value.trim();
+    const email = document.getElementById('p-f-email').value.trim();
+    let ok=true;
+    if(name.length<2)                                    { pShowErr('p-err-name'); ok=false; } else pHideErr('p-err-name');
+    if(!/^[0-9]{9,12}$/.test(wa.replace(/[\s\-]/g,''))) { pShowErr('p-err-wa');   ok=false; } else pHideErr('p-err-wa');
+    if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ pShowErr('p-err-email');ok=false; } else pHideErr('p-err-email');
+    if(!ok) return;
+    pAns.nama=name; pAns.wa=wa; pAns.email=email;
+    const btn=document.getElementById('p-next-3');
+    btn.classList.add('loading'); btn.disabled=true;
+    const payload={
+        tarikh    : new Date().toLocaleString('ms-MY',{timeZone:'Asia/Kuala_Lumpur'}),
+        nama      : pAns.nama,
+        whatsapp  : pAns.wa,
+        emel      : pAns.email||'-',
+        jenisKedai: pAns.jenis,
+        caraUrus  : pAns.cara,
+        pengalaman: pAns.pos,
+        sumber    : 'Website – Popup'
+    };
+    try {
+        await fetch(P_SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    } catch(e){ console.warn('Sheets:',e); }
+    const msg=encodeURIComponent(
+        'Hai POSKedai! Saya nak cuba percuma 7 hari 🎉\n\n'+
+        '👤 Nama: '+pAns.nama+'\n'+
+        '📱 WhatsApp: '+pAns.wa+'\n'+
+        (pAns.email?'📧 Emel: '+pAns.email+'\n':'')+
+        '🍽️ Jenis Kedai: '+pAns.jenis+'\n'+
+        '📝 Cara Urus: '+pAns.cara+'\n'+
+        '🖥️ Pengalaman POS: '+pAns.pos+'\n\n'+
+        'Sila bantu setup ya! Terima kasih 🙏'
+    );
+    const waUrl='https://wa.me/'+P_WA_NUM+'?text='+msg;
+    document.getElementById('p-wa-link').href = P_CHANNEL_URL;
+    document.getElementById('p-wa-personal-link').href = waUrl;
+    document.getElementById('p-ty-name').textContent=name.split(' ')[0];
+    document.getElementById('p-ty-detail').innerHTML=
+        '<strong>📋 Ringkasan permohonan anda:</strong>'+
+        '🍽️ <b>'+pAns.jenis+'</b><br>'+
+        '📝 '+pAns.cara+'<br>'+
+        '🖥️ '+pAns.pos;
+    document.getElementById('p-progress-fill').style.width='100%';
+    document.getElementById('p-prog-label').textContent='Selesai! ✓';
+    document.getElementById('p-prog-pct').textContent='100%';
+    for(let i=0;i<4;i++) document.getElementById('p-dot-'+i).className='p-dot done';
+    btn.classList.remove('loading');
+    pShowStep(4, false);
+    setTimeout(()=>window.open(P_CHANNEL_URL,'_blank'), 1500);
+}
+function pShowErr(id){document.getElementById(id).classList.add('show');}
+function pHideErr(id){document.getElementById(id).classList.remove('show');}
 </script>
 
 </body>
