@@ -3,1094 +3,462 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POSKedai — Content Calendar</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<title>POSKedai — Content Calendar 30 Hari</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --orange:#f97316;--orange-dark:#ea580c;--orange-light:#fff7ed;--orange-mid:#fed7aa;
-  --green:#10b981;--green-dark:#059669;--green-light:#ecfdf5;
-  --blue:#3b82f6;--blue-light:#eff6ff;
-  --dark:#0f172a;--dark2:#1e293b;--dark3:#334155;
-  --gray:#64748b;--gray-light:#94a3b8;--gray-lighter:#e2e8f0;
-  --bg:#f8fafc;--white:#ffffff;
-  --font-display:'Sora',sans-serif;--font-body:'DM Sans',sans-serif;
-  --shadow-sm:0 2px 8px rgba(0,0,0,0.06);
-  --shadow:0 8px 32px rgba(0,0,0,0.08);
-  --shadow-lg:0 20px 60px rgba(0,0,0,0.12);
-  --radius:14px;--radius-lg:20px;--radius-xl:28px;
-}
-body{font-family:var(--font-body);background:var(--bg);color:var(--dark);min-height:100vh;overflow-x:hidden}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f2f2f2;color:#333;min-height:100vh}
+a{color:inherit;text-decoration:none}
 
-/* ===== HEADER ===== */
-.header{
-  background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,#1a0a00 100%);
-  padding:28px 32px 24px;
-  position:relative;overflow:hidden;
-}
-.header::before{
-  content:'';position:absolute;top:-60px;right:-60px;
-  width:300px;height:300px;
-  background:radial-gradient(circle,rgba(249,115,22,0.2),transparent 70%);
-  border-radius:50%;
-}
-.header::after{
-  content:'';position:absolute;bottom:-40px;left:20%;
-  width:200px;height:200px;
-  background:radial-gradient(circle,rgba(249,115,22,0.08),transparent 70%);
-  border-radius:50%;
-}
-.header-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
-.brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.brand-logo{
-  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
-  color:white;font-family:var(--font-display);font-weight:900;font-size:1.1rem;
-  padding:8px 16px;border-radius:10px;letter-spacing:-0.5px;
-}
-.brand-sep{color:rgba(255,255,255,0.2);font-size:1.2rem}
-.brand-title{color:rgba(255,255,255,0.7);font-size:0.85rem;font-weight:500}
-.header-headline{
-  font-family:var(--font-display);font-weight:900;
-  font-size:clamp(1.6rem,4vw,2.4rem);
-  color:white;letter-spacing:-1px;line-height:1.15;
-  margin-bottom:10px;
-}
-.header-headline span{color:var(--orange)}
-.header-meta{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.meta-pill{
-  background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,0.12);
-  color:rgba(255,255,255,0.85);
-  padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:600;
-}
-.offer-banner{
-  margin-top:16px;padding:12px 18px;
-  background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(249,115,22,0.05));
-  border:1px solid rgba(249,115,22,0.3);border-radius:12px;
-  color:var(--orange-mid);font-size:0.82rem;font-weight:600;
-  display:flex;align-items:center;gap:8px;
-}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#FF6B00,#ff9933);color:#fff;padding:20px 28px;box-shadow:0 4px 16px rgba(255,107,0,.3)}
+.hdr h1{font-size:1.35rem;font-weight:900;letter-spacing:-.3px}
+.hdr p{font-size:.82rem;opacity:.88;margin-top:4px}
 
-/* ===== FILTERS ===== */
-.controls{max-width:1200px;margin:24px auto;padding:0 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.filter-label{font-size:0.75rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-right:4px}
-.filter-btn{
-  padding:7px 16px;border-radius:20px;border:1.5px solid var(--gray-lighter);
-  background:var(--white);font-size:0.78rem;font-weight:600;cursor:pointer;
-  font-family:var(--font-body);color:var(--gray);transition:all 0.2s;
-}
-.filter-btn:hover{border-color:var(--orange);color:var(--orange)}
-.filter-btn.active{background:var(--dark);color:white;border-color:var(--dark)}
-.filter-btn.tofu.active{background:var(--blue);border-color:var(--blue);color:white}
-.filter-btn.mofu.active{background:var(--orange);border-color:var(--orange);color:white}
-.filter-btn.bofu.active{background:var(--green-dark);border-color:var(--green-dark);color:white}
-.copy-all-btn{
-  margin-left:auto;padding:8px 18px;border-radius:20px;
-  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
-  color:white;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;
-  font-family:var(--font-body);transition:all 0.2s;display:flex;align-items:center;gap:6px;
-}
-.copy-all-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,0.35)}
+/* LEGEND */
+.legend{display:flex;gap:18px;padding:12px 28px;background:#fff;border-bottom:1px solid #eee;flex-wrap:wrap;align-items:center}
+.li{display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:700}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.hint{margin-left:auto;font-size:.73rem;color:#bbb}
 
-/* ===== GRID ===== */
-.calendar-grid{max-width:1200px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+/* GRID */
+.section-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;padding-bottom:6px;border-bottom-width:2px;border-bottom-style:solid}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:28px}
+.wrap{max-width:1280px;margin:0 auto;padding:22px 28px}
 
-/* ===== CARD ===== */
-.content-card{
-  background:var(--white);border-radius:var(--radius-lg);
-  border:1.5px solid var(--gray-lighter);
-  box-shadow:var(--shadow-sm);
-  cursor:pointer;transition:all 0.25s;
-  position:relative;overflow:hidden;
-}
-.content-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-}
-.content-card.tofu::before{background:linear-gradient(90deg,var(--blue),#60a5fa)}
-.content-card.mofu::before{background:linear-gradient(90deg,var(--orange),#fb923c)}
-.content-card.bofu::before{background:linear-gradient(90deg,var(--green-dark),var(--green))}
-.content-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:transparent}
-.content-card.tofu:hover{box-shadow:0 8px 32px rgba(59,130,246,0.15)}
-.content-card.mofu:hover{box-shadow:0 8px 32px rgba(249,115,22,0.15)}
-.content-card.bofu:hover{box-shadow:0 8px 32px rgba(16,185,129,0.15)}
+/* CARD */
+.card{background:#fff;border-radius:14px;padding:16px;min-height:155px;cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;flex-direction:column;gap:8px}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(255,107,0,.18);border-color:#FF6B00}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.card-num{font-size:1.1rem;font-weight:900;color:#222}
+.card-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ftag{display:inline-block;font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:10px;width:fit-content}
+.card-theme{font-size:.75rem;color:#555;font-weight:600;line-height:1.45;flex:1}
+.card-plats{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+.card-plat{font-size:.65rem;background:#f5f5f5;border-radius:6px;padding:2px 6px;color:#888}
 
-.card-header{padding:14px 16px 12px;border-bottom:1px solid var(--bg)}
-.card-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.date-badge{
-  font-family:var(--font-display);font-weight:800;font-size:0.75rem;
-  color:var(--dark3);background:var(--bg);
-  padding:3px 10px;border-radius:8px;
-}
-.funnel-badge{
-  padding:3px 10px;border-radius:8px;font-size:0.68rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:0.5px;
-}
-.funnel-badge.tofu{background:var(--blue-light);color:var(--blue)}
-.funnel-badge.mofu{background:var(--orange-light);color:var(--orange-dark)}
-.funnel-badge.bofu{background:var(--green-light);color:var(--green-dark)}
-.platform-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
-.platform-tag{
-  font-size:0.65rem;font-weight:600;padding:2px 8px;border-radius:6px;
-  background:var(--bg);color:var(--gray);
-}
-.card-idea{padding:12px 16px 14px}
-.card-idea p{font-size:0.82rem;color:var(--dark2);line-height:1.55;font-weight:500}
-.card-footer{
-  padding:10px 16px;border-top:1px solid var(--bg);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.visual-hint{font-size:0.7rem;color:var(--gray-light);font-style:italic;flex:1}
-.click-hint{font-size:0.7rem;color:var(--gray-light);display:flex;align-items:center;gap:4px;white-space:nowrap}
-.click-hint svg{width:12px;height:12px;opacity:0.5}
+/* MODAL OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:999;overflow-y:auto;padding:24px 16px;justify-content:center;align-items:flex-start}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:860px;margin:auto;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.35)}
 
-/* ===== MODAL ===== */
-.modal-overlay{
-  display:none;position:fixed;inset:0;z-index:1000;
-  background:rgba(15,23,42,0.6);backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  align-items:center;justify-content:center;padding:16px;
-}
-.modal-overlay.show{display:flex}
-.modal{
-  background:var(--white);border-radius:var(--radius-xl);
-  width:100%;max-width:640px;max-height:90vh;
-  overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:var(--shadow-lg);
-  animation:modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes modalIn{from{opacity:0;transform:scale(0.93) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal-top-bar{height:4px;flex-shrink:0}
-.modal-top-bar.tofu{background:linear-gradient(90deg,var(--blue),#60a5fa)}
-.modal-top-bar.mofu{background:linear-gradient(90deg,var(--orange),#fb923c)}
-.modal-top-bar.bofu{background:linear-gradient(90deg,var(--green-dark),var(--green))}
-.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--gray-lighter);flex-shrink:0}
-.modal-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
-.modal-title{font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:var(--dark);line-height:1.3}
-.modal-platforms{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
-.modal-platform-tag{
-  font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:8px;
-  background:var(--bg);color:var(--gray);
-}
-.modal-body{padding:20px 24px;overflow-y:auto;flex:1}
-.section-label{
-  font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;
-  color:var(--gray-light);margin-bottom:10px;display:flex;align-items:center;gap:6px;
-}
-.section-label::after{content:'';flex:1;height:1px;background:var(--gray-lighter)}
-.caption-box{
-  background:var(--bg);border-radius:12px;padding:18px;
-  font-size:0.86rem;line-height:1.75;color:var(--dark2);
-  white-space:pre-wrap;word-break:break-word;
-  border:1px solid var(--gray-lighter);
-  margin-bottom:20px;position:relative;
-}
-.caption-box.highlight{
-  background:linear-gradient(135deg,#fff7ed,#fffbf5);
-  border-color:rgba(249,115,22,0.2);
-}
-.visual-box{
-  background:linear-gradient(135deg,var(--dark),var(--dark2));
-  border-radius:12px;padding:16px;margin-bottom:16px;
-}
-.visual-box-title{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
-.visual-box p{font-size:0.83rem;color:rgba(255,255,255,0.85);line-height:1.6}
-.hashtag-box{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
-.hashtag{
-  font-size:0.75rem;font-weight:600;padding:4px 10px;border-radius:8px;
-  background:var(--blue-light);color:var(--blue);cursor:pointer;transition:all 0.15s;
-}
-.hashtag:hover{background:var(--blue);color:white}
-.cta-box{
-  background:linear-gradient(135deg,var(--orange),var(--orange-dark));
-  border-radius:12px;padding:14px 18px;color:white;margin-bottom:16px;
-}
-.cta-box-label{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;opacity:0.8;margin-bottom:4px}
-.cta-box p{font-size:0.85rem;font-weight:600;line-height:1.5}
-.modal-footer{
-  padding:14px 24px;border-top:1px solid var(--gray-lighter);
-  display:flex;gap:8px;flex-shrink:0;background:var(--white);
-}
-.btn-copy{
-  flex:1;padding:11px;border-radius:10px;
-  background:var(--dark);color:white;
-  border:none;font-size:0.82rem;font-weight:700;cursor:pointer;
-  font-family:var(--font-body);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;
-}
-.btn-copy:hover{background:var(--dark2)}
-.btn-copy.copied{background:var(--green-dark)}
-.btn-close-modal{
-  padding:11px 20px;border-radius:10px;
-  background:var(--bg);color:var(--gray);
-  border:1.5px solid var(--gray-lighter);font-size:0.82rem;font-weight:600;cursor:pointer;
-  font-family:var(--font-body);transition:all 0.2s;
-}
-.btn-close-modal:hover{background:var(--gray-lighter)}
+/* MODAL HEADER */
+.mhdr{background:linear-gradient(135deg,#FF6B00,#ff9933);color:#fff;padding:20px 26px;display:flex;justify-content:space-between;align-items:flex-start}
+.mhdr-info h2{font-size:1.1rem;font-weight:800}
+.mhdr-info p{font-size:.8rem;opacity:.85;margin-top:4px}
+.xbtn{background:rgba(255,255,255,.22);border:none;color:#fff;font-size:1.15rem;width:34px;height:34px;border-radius:50%;cursor:pointer;flex-shrink:0;margin-left:12px;display:flex;align-items:center;justify-content:center;line-height:1}
+.xbtn:hover{background:rgba(255,255,255,.38)}
 
-/* ===== DAY HEADERS ===== */
-.day-header{
-  grid-column:1/-1;padding:8px 0 4px;
-  display:flex;align-items:center;gap:12px;
-}
-.day-header h3{
-  font-family:var(--font-display);font-weight:800;font-size:0.95rem;color:var(--dark);
-}
-.day-header-line{flex:1;height:1px;background:var(--gray-lighter)}
-.day-count{font-size:0.72rem;color:var(--gray-light);font-weight:600}
+/* TABS */
+.ptabs{display:flex;border-bottom:2px solid #f0f0f0;background:#fafafa;overflow-x:auto}
+.ptab{padding:12px 18px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;border-bottom:3px solid transparent;white-space:nowrap;color:#aaa;background:transparent;font-family:inherit;transition:all .15s}
+.ptab.act{border-bottom-color:#FF6B00;color:#FF6B00;background:#fff}
+.ptab:hover{color:#FF6B00}
 
-/* ===== PROGRESS BAR ===== */
-.progress-section{max-width:1200px;margin:0 auto 0;padding:0 24px 0}
-.progress-bar{
-  background:var(--gray-lighter);border-radius:20px;height:6px;overflow:hidden;margin-bottom:6px;
-}
-.progress-fill{
-  height:100%;border-radius:20px;
-  background:linear-gradient(90deg,var(--blue),var(--orange),var(--green-dark));
-  transition:width 0.5s ease;
-}
-.progress-labels{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--gray-light);font-weight:600}
+/* TAB CONTENT */
+.tc{display:none;padding:20px 24px;animation:fi .2s ease}
+.tc.act{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== STATS BAR ===== */
-.stats-bar{
-  max-width:1200px;margin:0 auto 20px;padding:0 24px;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
-}
-.stat-item{
-  background:var(--white);border-radius:12px;padding:14px;
-  border:1.5px solid var(--gray-lighter);text-align:center;
-}
-.stat-num{font-family:var(--font-display);font-weight:900;font-size:1.4rem;color:var(--dark)}
-.stat-num.orange{color:var(--orange)}
-.stat-num.blue{color:var(--blue)}
-.stat-num.green{color:var(--green-dark)}
-.stat-lbl{font-size:0.68rem;color:var(--gray-light);font-weight:600;margin-top:2px}
+/* CONTENT SECTIONS */
+.sec{margin-bottom:16px}
+.sec-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:#c0c0c0;font-weight:700;margin-bottom:7px}
+.cbox{background:#f8f8f8;border-left:4px solid #FF6B00;border-radius:0 10px 10px 0;padding:14px 16px;font-size:.85rem;line-height:1.85;white-space:pre-wrap;word-break:break-word;font-family:'Segoe UI',sans-serif}
+.pbox{background:#fdf5ff;border-left:4px solid #9c27b0;border-radius:0 10px 10px 0;padding:14px 16px;font-size:.78rem;line-height:1.75;font-family:'Courier New',monospace;white-space:pre-wrap;word-break:break-word;color:#4a148c}
+.ctabox{background:#fff8f0;border:1.5px dashed #FF6B00;border-radius:10px;padding:12px 14px;font-size:.83rem;color:#e65100;font-weight:600}
+.cbtn{margin-top:8px;padding:7px 14px;border:none;border-radius:8px;font-size:.75rem;cursor:pointer;font-weight:700;font-family:inherit;transition:background .2s}
+.cbtn-orange{background:#FF6B00;color:#fff}
+.cbtn-orange:hover{background:#e05c00}
+.cbtn-purple{background:#9c27b0;color:#fff}
+.cbtn-purple:hover{background:#7b1fa2}
+.cbtn.ok{background:#4CAF50 !important;color:#fff}
 
-/* ===== RESPONSIVE ===== */
+/* BOTTOM CTA */
+.cta-bar{background:linear-gradient(135deg,#FF6B00,#ff9933);border-radius:16px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.cta-bar h3{color:#fff;font-weight:800;font-size:.95rem}
+.cta-bar p{color:rgba(255,255,255,.85);font-size:.78rem;margin-top:3px}
+.cta-chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.2);color:#fff;padding:8px 16px;border-radius:10px;font-size:.78rem;font-weight:700}
+
 @media(max-width:700px){
-  .header{padding:20px 16px}
-  .controls{padding:0 16px}
-  .calendar-grid{padding:0 16px 60px;grid-template-columns:1fr}
-  .stats-bar{grid-template-columns:repeat(2,1fr);padding:0 16px}
-  .progress-section{padding:0 16px}
-  .modal{max-width:100%;max-height:95vh}
-  .modal-header{padding:16px 18px 14px}
-  .modal-body{padding:16px 18px}
-  .modal-footer{padding:12px 18px}
+  .wrap{padding:14px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .legend{padding:10px 14px;gap:10px}
+  .hdr{padding:16px 14px}
+  .tc{padding:14px 16px}
+  .hint{display:none}
 }
-
-/* ===== TOAST ===== */
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);
-  background:var(--dark);color:white;padding:10px 20px;border-radius:20px;
-  font-size:0.82rem;font-weight:600;z-index:9999;
-  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;
-  white-space:nowrap;
-}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{background:var(--green-dark)}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="brand">
-      <div class="brand-logo">POSKedai</div>
-      <span class="brand-sep">×</span>
-      <span class="brand-title">Content Marketing Planner</span>
-    </div>
-    <div class="header-headline">Pelan Content Digital <span>24 Feb — 1 Mac</span></div>
-    <div class="header-meta">
-      <span class="meta-pill">🎯 Sasaran: 40 Customer</span>
-      <span class="meta-pill">📱 6 Platform</span>
-      <span class="meta-pill">📝 20 Posts</span>
-      <span class="meta-pill">⏱️ 6 Hari</span>
-    </div>
-    <div class="offer-banner">
-      🔥 Offer: <strong>MAC MULA MUDAH</strong> — Trial 14 hari + Setup PERCUMA + Bayar RM30 je | Terhad 10 slot
+<!-- HEADER -->
+<div class="hdr">
+  <h1>📅 POSKedai Content Calendar 30 Hari</h1>
+  <p>TOFU → MOFU → BOFU · FB Page · Telegram · WA Channel · Affiliate · Klik mana-mana kad untuk full content</p>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="li"><div class="dot" style="background:#4CAF50"></div><span style="color:#2e7d32;font-weight:800">🌱 TOFU</span><span style="color:#bbb;font-weight:400">— Awareness</span></div>
+  <div class="li"><div class="dot" style="background:#2196F3"></div><span style="color:#1565c0;font-weight:800">🔥 MOFU</span><span style="color:#bbb;font-weight:400">— Consideration</span></div>
+  <div class="li"><div class="dot" style="background:#FF6B00"></div><span style="color:#e65100;font-weight:800">💰 BOFU</span><span style="color:#bbb;font-weight:400">— Conversion</span></div>
+  <div class="hint">💡 Klik kad untuk full content + prompt visual</div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="wrap">
+  <div class="section-label" style="color:#FF6B00;border-bottom-color:#FF6B00">📅 Hari 1–10 · Fasa 1 — TOFU: Tarik Perhatian & Bina Kefahaman</div>
+  <div class="grid" id="grid1"></div>
+
+  <div class="section-label" style="color:#1565c0;border-bottom-color:#2196F3">📅 Hari 11–20 · Fasa 2 — MOFU: Bina Kepercayaan & Engage Lebih Dalam</div>
+  <div class="grid" id="grid2"></div>
+
+  <div class="section-label" style="color:#e65100;border-bottom-color:#FF6B00">📅 Hari 21–30 · Fasa 3 — BOFU: Tutup Jualan & Retarget</div>
+  <div class="grid" id="grid3"></div>
+
+  <div class="cta-bar">
+    <div><h3>✅ Content Calendar 30 Hari Lengkap!</h3><p>120 content pieces · 4 platform · TOFU + MOFU + BOFU funnel</p></div>
+    <div class="cta-chips">
+      <div class="chip">📘 FB Page</div>
+      <div class="chip">📣 Telegram</div>
+      <div class="chip">💬 WA Channel</div>
+      <div class="chip">🤝 Affiliate</div>
     </div>
   </div>
 </div>
-
-<div class="progress-section" style="margin-top:20px;margin-bottom:16px">
-  <div class="progress-bar">
-    <div class="progress-fill" style="width:100%"></div>
-  </div>
-  <div class="progress-labels">
-    <span>🔵 TOFU (24-25 Feb)</span>
-    <span>🟠 MOFU (26-27 Feb)</span>
-    <span>🟢 BOFU (28 Feb - 1 Mac)</span>
-  </div>
-</div>
-
-<div class="stats-bar">
-  <div class="stat-item"><div class="stat-num blue">6</div><div class="stat-lbl">Posts TOFU</div></div>
-  <div class="stat-item"><div class="stat-num orange">6</div><div class="stat-lbl">Posts MOFU</div></div>
-  <div class="stat-item"><div class="stat-num green">8</div><div class="stat-lbl">Posts BOFU</div></div>
-  <div class="stat-item"><div class="stat-num">20</div><div class="stat-lbl">Total Posts</div></div>
-</div>
-
-<div class="controls">
-  <span class="filter-label">Filter:</span>
-  <button class="filter-btn active" onclick="filterCards('all',this)">Semua</button>
-  <button class="filter-btn tofu" onclick="filterCards('tofu',this)">🔵 TOFU</button>
-  <button class="filter-btn mofu" onclick="filterCards('mofu',this)">🟠 MOFU</button>
-  <button class="filter-btn bofu" onclick="filterCards('bofu',this)">🟢 BOFU</button>
-  <button class="filter-btn" onclick="filterCards('fb',this)">FB</button>
-  <button class="filter-btn" onclick="filterCards('ig',this)">IG</button>
-  <button class="filter-btn" onclick="filterCards('tiktok',this)">TikTok</button>
-  <button class="filter-btn" onclick="filterCards('whatsapp',this)">WhatsApp</button>
-  <button class="filter-btn" onclick="filterCards('telegram',this)">Telegram</button>
-</div>
-
-<div class="calendar-grid" id="calendarGrid"></div>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <div class="modal-top-bar" id="modalTopBar"></div>
-    <div class="modal-header">
-      <div class="modal-meta">
-        <span class="date-badge" id="modalDate"></span>
-        <span class="funnel-badge" id="modalFunnel"></span>
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="mhdr">
+      <div class="mhdr-info">
+        <h2 id="modal-title">—</h2>
+        <p id="modal-sub">—</p>
       </div>
-      <div class="modal-title" id="modalTitle"></div>
-      <div class="modal-platforms" id="modalPlatforms"></div>
+      <button class="xbtn" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-footer">
-      <button class="btn-copy" id="btnCopy" onclick="copyCaption()">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Copy Caption
-      </button>
-      <button class="btn-close-modal" onclick="closeModal()">Tutup</button>
-    </div>
+    <div class="ptabs" id="ptabs"></div>
+    <div id="tcwrap"></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
 <script>
-// ================================================================
-// FULL CONTENT DATA
-// ================================================================
-const CONTENT = [
-  // ======================== 24 FEB — ISNIN ========================
-  {
-    date: "24 Feb", day: "Isnin", funnel: "tofu",
-    platforms: ["FB Page", "IG", "Threads"],
-    idea: "Hook pain point — masalah tulis order atas kertas, kira salah",
-    visual: "Gambar kertas penuh tulisan order vs screen phone yang bersih. Tambah teks besar: 'Masih buat ni?' Guna contrast tinggi.",
-    caption: `Korang masih tulis order atas kertas?
-
-Lepas tu kena baca balik tulisan sendiri yang dah macam doktor buat... 😅
-
-Hujung hari kira duit — tak sama dengan catatan.
-Staff dapur masak benda lain sebab tersalah baca tulisan.
-Customer tunggu lama sebab order tercicir.
-
-Ni bukan nasib malang. Ni masalah SISTEM.
-
-Ramai peniaga kedai makan kat Malaysia masih bergantung pada:
-📝 Tulis order atas kertas
-🧮 Kira guna kalkulator
-💸 Hitung jualan dari kepala sendiri
-
-Dan akibatnya?
-→ Duit bocor tak perasan
-→ Silap order, customer complaint
-→ Tak tahu menu mana sebenarnya laris
-
-Ada cara lain. Cara yang lebih mudah, lebih murah, dan boleh mula HARI NI — guna phone yang korang dah ada.
-
-Ikuti page ni untuk tahu lebih lanjut 👇
-
-#POSKedai #KedaiMakan #PeniagaMakanan #GeraiFoodMalaysia #SistemPOS #WarungMakan`,
-    hashtags: ["#POSKedai", "#KedaiMakan", "#PeniagaMakanan", "#GeraiFoodMalaysia", "#SistemPOS", "#WarungMakan"],
-    cta: "Follow page ini untuk tahu lebih lanjut 👇"
-  },
-  {
-    date: "24 Feb", day: "Isnin", funnel: "tofu",
-    platforms: ["TikTok Stories"],
-    idea: "POV: Tukang masak salah baca tulisan tangan order",
-    visual: "Video pendek atau Stories 3-panel: Panel 1 — tulisan order yang comot. Panel 2 — dapur masak benda lain. Panel 3 — customer muka tak puas hati.",
-    caption: `POV: Tukang masak salah baca tulisan tangan order...
-
-Dah siap masak baru sedar salah 🤦
-
-Nasib baik ada penyelesaian dia.
-
-Korang pernah hadapi situasi macam ni? Comment di bawah 👇
-
-#KedaiMakan #POSKedai #GeraiFoodMalaysia #fyp #viral #kedaimakan`,
-    hashtags: ["#KedaiMakan", "#POSKedai", "#GeraiFoodMalaysia", "#fyp", "#viral"],
-    cta: "Comment 'PERNAH' kalau korang faham betul situasi ni 😂"
-  },
-  {
-    date: "24 Feb", day: "Isnin", funnel: "tofu",
-    platforms: ["WhatsApp Channel"],
-    idea: "Intro warm channel — story format tentang masalah peniaga",
-    visual: "Text-based story. Guna emoji untuk break paragraf. Tone macam kawan cerita, bukan jualan.",
-    caption: `Hai semua! 👋
-
-Selamat datang ke channel POSKedai!
-
-Kami kat sini untuk bantu peniaga kedai makan Malaysia run bisnes dengan lebih mudah dan lebih untung.
-
-Hari ni nak tanya soalan jujur:
-
-Bila korang kira duit hujung hari, berapa kali dalam seminggu duit tu tak sama dengan catatan jualan?
-
-Kalau jawapan korang "selalu" atau "selalu jugak" — korang tidak keseorangan.
-
-Ini masalah yang kami dengar dari ramai peniaga. Dan ada penyelesaian mudahnya.
-
-Follow channel ni, kami share tips, cara, dan tools yang sebenar-benar membantu 🙌
-
-— Team POSKedai`,
-    hashtags: [],
-    cta: "Reply channel ini dengan emoji 🙋 kalau korang nak tips lebih!"
-  },
-
-  // ======================== 25 FEB — SELASA ========================
-  {
-    date: "25 Feb", day: "Selasa", funnel: "tofu",
-    platforms: ["FB Page"],
-    idea: "Engagement post — tanya berapa kali duit tak sama catatan",
-    visual: "Gambar grafik simple: Kalkulator vs Telefon. Atau infografik: '3 Masalah Utama Peniaga Kedai Makan'. Buat dalam Canva, warna bold.",
-    caption: `Soalan jujur untuk semua peniaga kedai makan 👇
-
-Berapa kali SEMINGGU korang kira duit hujung hari... tapi tak sama dengan jualan yang dicatat?
-
-A) Hampir setiap hari 😩
-B) 2-3 kali seminggu
-C) Sekali dua je
-D) Alhamdulillah, jarang berlaku
-
-Comment huruf korang di bawah!
-
-Sebab kami nak faham betul-betul masalah korang sebelum tunjuk penyelesaian yang paling sesuai.
-
-P/s: Tak ada jawapan betul atau salah. Yang penting jujur 😊
-
-#POSKedai #PeniagaMakanan #KedaiMakanMalaysia #SoalanUntukPeniaga`,
-    hashtags: ["#POSKedai", "#PeniagaMakanan", "#KedaiMakanMalaysia"],
-    cta: "Comment huruf jawapan korang! A / B / C / D"
-  },
-  {
-    date: "25 Feb", day: "Selasa", funnel: "tofu",
-    platforms: ["IG Stories", "TikTok Stories"],
-    idea: "3 tanda kedai anda perlu sistem POS sekarang",
-    visual: "3-panel slide story. Setiap panel: nombor besar + tanda + ilustrasi ringkas. Warna: hitam + oren. Swipe up / link in bio.",
-    caption: `3 Tanda Kedai Makan Anda PERLU Sistem POS Sekarang 👆
-
-1️⃣ Staff selalu silap order — atau korang kena repeat balik order berkali-kali setiap hari
-
-2️⃣ Tak tahu berapa sebenarnya jualan hari ni sampai dah hujung hari — dan kira manual berjam-jam
-
-3️⃣ Bila tengok duit dalam laci vs catatan — mesti ada beza dan korang tak tahu kenapa
-
-Kalau 2 atau lebih kena pada korang — ada cara mudah nak selesaikan semua ni sekaligus.
-
-Link in bio untuk cuba percuma 🔗
-
-#POSKedai #SistemPOS #KedaiMakan #TipsPeniaga #GeraiFoodMalaysia`,
-    hashtags: ["#POSKedai", "#SistemPOS", "#KedaiMakan", "#TipsPeniaga", "#GeraiFoodMalaysia"],
-    cta: "Link in bio — cuba demo percuma sekarang 🔗"
-  },
-  {
-    date: "25 Feb", day: "Selasa", funnel: "tofu",
-    platforms: ["Telegram Channel"],
-    idea: "Educational content panjang — masalah #1 peniaga: tak tahu jualan sebenar",
-    visual: "Text content sahaja. Format elok dengan spacing. Guna bullet points dan nombor.",
-    caption: `MASALAH #1 PENIAGA KEDAI MAKAN MALAYSIA 🇲🇾
-
-Baca sampai habis — ini penting.
-
-Kami dah bercakap dengan ratusan peniaga. Dan satu masalah yang hampir semua ada:
-
-"Saya tak tahu SEBENARNYA berapa saya buat hari ni"
-
-Bunyi simple, tapi impaknya besar.
-
-Bila korang tak tahu jualan sebenar:
-→ Tak boleh detect kalau ada duit yang hilang
-→ Tak tahu menu mana patut dipromote lebih
-→ Tak boleh buat keputusan bisnes yang tepat
-→ Senang kena tipu kalau ada staff yang tidak jujur
-
-Peniaga yang berjaya tahu SETIAP SEN yang masuk dan keluar. Real-time.
-
-Dulu, benda ni hanya untuk kedai besar yang boleh bayar RM2,000+ untuk mesin POS.
-
-Sekarang? 
-
-Dengan POSKedai — korang boleh tengok laporan jualan live dari phone, dengan harga RM30 sebulan.
-
-Tak perlu mesin baru. Tak perlu technical knowledge. Setup dalam 1 hari.
-
-Korang nak tahu lebih lanjut? Reply mesej ni dengan "NAK TAHU" 👇`,
-    hashtags: [],
-    cta: "Reply dengan 'NAK TAHU' untuk info lebih lanjut 👇"
-  },
-
-  // ======================== 26 FEB — RABU ========================
-  {
-    date: "26 Feb", day: "Rabu", funnel: "mofu",
-    platforms: ["FB Page", "Threads"],
-    idea: "Perbandingan POSKedai vs Sistem POS biasa — comparison post",
-    visual: "Infografik comparison 2 column: 'POS Biasa' vs 'POSKedai'. Warna merah untuk biasa, hijau/oren untuk POSKedai. Buat dalam Canva.",
-    caption: `POSKedai vs Sistem POS Biasa — Beza dia besar gila 👇
-
-SISTEM POS BIASA:
-❌ Kena beli mesin/terminal — RM2,000 ke atas
-❌ Ada kontrak 6-12 bulan
-❌ Setup ambil masa 1-2 minggu
-❌ Interface kompleks, staff pening
-❌ Support dalam English je
-❌ Bayar RM100-200 sebulan
-
-POSKedai:
-✅ Guna phone/tablet yang dah ada — RM0 tambahan
-✅ Tiada kontrak, bayar bulan ke bulan
-✅ Setup dalam 1 HARI sahaja
-✅ Super simple — staff belajar dalam 15 minit
-✅ 100% Bahasa Melayu, support pun BM
-✅ Hanya RM30 sebulan
-
-Jimat lebih RM2,000 untuk mula.
-Jimat lebih RM70-170 setiap bulan.
-
-Dan hasilnya sama — malah lebih mudah.
-
-Korang rasa mana yang lebih masuk akal untuk kedai anda? 👇
-
-#POSKedai #SistemPOS #KedaiMakan #PeniagaMalaysia #TipsNiaga`,
-    hashtags: ["#POSKedai", "#SistemPOS", "#KedaiMakan", "#PeniagaMalaysia", "#TipsNiaga"],
-    cta: "Komen pendapat korang di bawah! Atau DM untuk tahu lebih lanjut 💬"
-  },
-  {
-    date: "26 Feb", day: "Rabu", funnel: "mofu",
-    platforms: ["IG Stories"],
-    idea: "Demo 60 saat — dari ambil order sampai resit siap",
-    visual: "Screen recording demo live POSKedai. Tambah text overlay dan background musik yang energetic. Paling powerful kalau tunjuk SPEED.",
-    caption: `Demo 60 saat: Dari ambil order sampai resit siap ⚡
-
-Tengok betapa mudah dan cepatnya staff kami handle order:
-
-0:05 — Buka sistem, dah login
-0:15 — Pilih menu, tambah ke troli
-0:25 — Input meja dan cara bayar
-0:40 — Confirm pesanan
-0:55 — Resit auto generate, ready hantar ke dapur ✅
-
-15 MINIT je untuk ajar staff baru.
-
-Nak cuba sendiri? Link demo di bio 🔗
-
-#POSKedai #DemoLive #SistemPOS #KedaiMakan #CafeKL #GeraiFoodMalaysia #fyp`,
-    hashtags: ["#POSKedai", "#DemoLive", "#SistemPOS", "#KedaiMakan", "#fyp"],
-    cta: "Cuba demo percuma di link bio 🔗"
-  },
-  {
-    date: "26 Feb", day: "Rabu", funnel: "mofu",
-    platforms: ["WhatsApp Channel"],
-    idea: "FAQ: Perlu beli mesin baru? — jawab soalan paling popular",
-    visual: "Text format. Q&A style. Guna emoji sebagai visual separator.",
-    caption: `FAQ: Soalan yang paling ramai tanya kami 👇
-
-❓ "Perlu beli mesin atau hardware baru tak?"
-
-Jawapannya: TIDAK! 
-
-Korang cuma perlukan:
-📱 Smartphone atau tablet yang dah ada
-🌐 Sambungan internet (data phone pun ok!)
-🧠 15 minit untuk belajar cara guna
-
-Tu je. Seriously.
-
-Buka Chrome atau Safari, masukkan link kami — dah boleh guna terus. Tak perlu install app pun.
-
-❓ "Kalau internet putus macam mana?"
-
-Sistem perlu internet untuk simpan data. Tapi data 4G/5G sudah lebih dari cukup. Kalau internet putus sekejap, catat manual dulu dan masukkan balik nanti.
-
-❓ "Data saya selamat ke?"
-
-Ya, sangat selamat! Data disimpan dalam Google Sheets yang secure. Backup automatik setiap masa. Tak akan hilang.
-
-Ada soalan lain? Reply channel ni terus! 😊
-
-— Team POSKedai`,
-    hashtags: [],
-    cta: "Ada soalan lain? Reply channel ini terus! 😊"
-  },
-
-  // ======================== 27 FEB — KHAMIS ========================
-  {
-    date: "27 Feb", day: "Khamis", funnel: "mofu",
-    platforms: ["FB Page"],
-    idea: "Testimonial/case study — peniaga jimat RM200/bulan",
-    visual: "Quote card dengan gambar atau avatar peniaga. Background oren dengan quote dalam kotak putih. Nama: Encik Hafiz, Warung Nasi Lemak Kampung Baru.",
-    caption: `"Dulu saya bayar RM180 sebulan untuk sistem POS lama. Sekarang RM30 je. Dan lebih senang pulak tu." — Encik Hafiz, Warung Nasi Lemak Kampung Baru 🍛
-
-Encik Hafiz dulu guna sistem POS yang perlukan terminal mahal.
-
-Masalahnya?
-→ Kena bayar maintenance fee setiap bulan
-→ Staff selalu kena hubungi support yang lambat balas
-→ Interface dalam English, staff tercari-cari
-
-Selepas beralih ke POSKedai:
-✅ Bayar RM30 je sebulan (jimat RM150!)
-✅ Staff belajar dalam 1 jam pertama
-✅ Laporan jualan dalam Bahasa Melayu, mudah faham
-✅ Support respond dalam masa sejam via WhatsApp
-
-"Yang paling saya suka? Bila saya boleh tengok jualan real-time dari phone walaupun saya tak ada kat kedai."
-
-Ini bukan pengiklanan. Ini pengalaman sebenar peniaga macam korang.
-
-Nak try? Link di bio 🔗
-
-#POSKedai #Testimonial #KedaiMakan #PeniagaMalaysia #SistemPOS`,
-    hashtags: ["#POSKedai", "#Testimonial", "#KedaiMakan", "#PeniagaMalaysia"],
-    cta: "DM kami atau link di bio untuk cuba percuma 🔗"
-  },
-  {
-    date: "27 Feb", day: "Khamis", funnel: "mofu",
-    platforms: ["TikTok Stories", "IG Stories"],
-    idea: "Behind the scenes — setup POSKedai dalam 1 hari",
-    visual: "Time-lapse atau montage: WhatsApp masuk → team setup → sistem siap → peniaga guna. Guna musik trending. Tambah caption di setiap step.",
-    caption: `Setup POSKedai = 1 hari je. Kami yang buat semua ☕
-
-Step 1 (Anda): WhatsApp kami dengan nama kedai + senarai menu
-Step 2 (Kami): Setup sistem, input semua menu, customize settings
-Step 3 (Kami): Test dan pastikan semua berfungsi
-Step 4 (Kami): Ajar korang cara guna — 15 minit je
-Step 5 (Korang): MULA GUNA dan terus ambil order! ✅
-
-Korang duduk relax, kami yang settlekan.
-
-Esok kedai korang dah ada sistem POS sendiri.
-
-Nak mula? DM atau WhatsApp kami sekarang 👇
-
-#POSKedai #SetupMudah #KedaiMakan #SistemPOS #GeraiFoodMalaysia #fyp`,
-    hashtags: ["#POSKedai", "#SetupMudah", "#KedaiMakan", "#SistemPOS", "#fyp"],
-    cta: "DM atau WhatsApp kami untuk start setup hari ni 🚀"
-  },
-  {
-    date: "27 Feb", day: "Khamis", funnel: "mofu",
-    platforms: ["Telegram Channel"],
-    idea: "Feature spotlight — laporan jualan automatik",
-    visual: "Screenshot atau screen recording dashboard jualan POSKedai. Highlight angka-angka penting.",
-    caption: `FUNGSI #1 yang peniaga paling suka dalam POSKedai 📊
-
-Laporan Jualan Automatik.
-
-Dulu: Kira manual. Tulis dalam buku. Ambil masa 30-60 minit sehari.
-
-Sekarang dengan POSKedai:
-
-📅 HARIAN — Tekan sekali, nampak:
-• Jumlah jualan hari ni
-• Berapa pesanan selesai vs batal
-• Menu mana paling laris
-• Breakdown bayaran (tunai/QR/transfer)
-
-📊 MINGGUAN — Trend 7 hari, tahu hari mana paling sibuk
-
-📆 BULANAN — Overview lengkap, export jadi CSV untuk rekod
-
-Dan semua ni update REAL-TIME.
-
-Peniaga yang guna POSKedai cakap ini yang paling mereka suka — sebab untuk pertama kali dalam hidup, mereka betul-betul tahu bisnes mereka macam mana berjalan.
-
-Nak tengok demo laporan ni? Reply "DEMO" dan kami hantar video 📹
-
-— Team POSKedai`,
-    hashtags: [],
-    cta: "Reply 'DEMO' untuk tengok video demonstrasi laporan jualan 📹"
-  },
-
-  // ======================== 28 FEB — JUMAAT ========================
-  {
-    date: "28 Feb", day: "Jumaat", funnel: "bofu",
-    platforms: ["FB Page", "IG", "Threads"],
-    idea: "OFFER LAUNCH — Tawaran Mac Mula Mudah",
-    visual: "GAMBAR PROMO KHAS — Design cantik dengan: Tajuk besar 'MAC MULA MUDAH', harga lama dipalang (RM80) dan harga baru (RM30), countdown '10 SLOT SAHAJA'. Warna oren/hitam. Wajib buat untuk post ini.",
-    caption: `🚨 TAWARAN KHAS — MAC MULA MUDAH
-
-Kami tahu. RM80 untuk mula tu rasa berat sikit kalau masih belum sure.
-
-Sebab tu kami buat keputusan ni:
-
-Mulai 28 Feb hingga 1 Mac 2025 — HANYA untuk 10 slot pertama:
-
-🎁 Trial 14 HARI (dari 7 hari — DOUBLE!)
-🎁 Setup PERCUMA (biasanya RM50)
-💰 Bayar RM30 je untuk mula (jimat RM50!)
-⚠️ Terhad 10 slot sahaja
-
-Ini bermakna:
-• Korang test sistem selama 2 minggu penuh
-• Kami setup segalanya — korang tak perlu buat apa-apa
-• Kalau tak suka, tak perlu bayar lagi. Tiada kontrak.
-• Kalau suka, bayar RM30/bulan. Itu je.
-
-Cara nak dapatkan tawaran ni:
-
-1️⃣ WhatsApp kami: wa.me/60167388358
-2️⃣ Tulis: "SAYA NAK SLOT MAC"
-3️⃣ Kami reply dan setup dalam 24 jam
-
-Slot akan diisi mengikut urutan mesej diterima.
-
-⏰ Tawaran tamat: 1 Mac 2025, 12 tengah malam
-
-#POSKedai #TawaranKhas #MacMulaMudah #KedaiMakan #SistemPOS #PeniagaMalaysia #GeraiFoodMalaysia`,
-    hashtags: ["#POSKedai", "#TawaranKhas", "#MacMulaMudah", "#KedaiMakan", "#SistemPOS", "#PeniagaMalaysia"],
-    cta: "WhatsApp sekarang: wa.me/60167388358 — Tulis 'SAYA NAK SLOT MAC' 🔥"
-  },
-  {
-    date: "28 Feb", day: "Jumaat", funnel: "bofu",
-    platforms: ["TikTok Stories"],
-    idea: "Countdown urgency — harga asal vs harga promosi",
-    visual: "Stories dengan countdown timer visual. Panel 1: Harga biasa dipalang. Panel 2: Harga promo. Panel 3: CTA urgent. Guna warna merah untuk urgency.",
-    caption: `⏰ Tawaran ni tamat 1 Mac — ESOK!
-
-Harga biasa: RM80 untuk mula
-~~RM80~~ → RM30 je!
-
-Ini yang korang jimat:
-✅ Setup PERCUMA (biasanya RM50)
-✅ Trial 14 hari (double dari biasa)
-
-10 slot je. First come first served.
-
-DM sekarang atau dah terlepas 🔥
-
-#POSKedai #TawaranKhas #KedaiMakan #fyp #GeraiFoodMalaysia`,
-    hashtags: ["#POSKedai", "#TawaranKhas", "#KedaiMakan", "#fyp"],
-    cta: "DM sekarang sebelum slot habis! 🔥"
-  },
-  {
-    date: "28 Feb", day: "Jumaat", funnel: "bofu",
-    platforms: ["WhatsApp Channel"],
-    idea: "Exclusive offer untuk subscriber channel sahaja",
-    visual: "Text announcement dengan emoji bold. Guna format yang jelas dan mudah baca.",
-    caption: `📢 PENGUMUMAN KHAS untuk subscriber channel POSKedai!
-
-Korang dapat tahu dulu sebelum kami announce kat tempat lain.
-
-TAWARAN MAC MULA MUDAH — bermula HARI NI:
-
-✅ Trial 14 HARI (bukan 7 hari macam biasa)
-✅ Setup PERCUMA — jimat RM50
-💰 Bayar RM30 je untuk mula
-
-Terhad 10 slot. Tamat 1 Mac tengah malam.
-
-Cara nak claim:
-→ WhatsApp: wa.me/60167388358
-→ Tulis: "CHANNEL SUBSCRIBER - SLOT MAC"
-
-Sebab korang subscriber channel kami, korang ada keutamaan 🙏
-
-Sebarkan kepada rakan peniaga yang perlukan sistem POS jugak!
-
-— Team POSKedai ❤️`,
-    hashtags: [],
-    cta: "WhatsApp sekarang: wa.me/60167388358 — Tulis 'CHANNEL SUBSCRIBER - SLOT MAC'"
-  },
-  {
-    date: "28 Feb", day: "Jumaat", funnel: "bofu",
-    platforms: ["Telegram Channel"],
-    idea: "Double offer exclusive untuk Telegram member",
-    visual: "Text announcement. Guna format bold dan clear.",
-    caption: `🔴 TAWARAN EKSKLUSIF — MEMBER TELEGRAM SAHAJA
-
-Korang dapat tawaran LEBIH BAIK dari yang kami announce kat tempat lain:
-
-PAKEJ TELEGRAM EKSKLUSIF:
-✅ Trial 14 hari (bukan 7 hari)
-✅ Setup PERCUMA (jimat RM50)
-✅ 1 bulan pertama RM30 (jimat RM50 vs harga biasa RM80)
-🎁 BONUS: Sesi training 1-on-1 via video call (30 minit) — nilai RM50, FREE untuk member channel!
-
-Total jimat: RM100 untuk bulan pertama.
-
-Terhad 5 slot untuk Telegram member. (5 lagi untuk channel lain)
-
-Cara claim:
-→ Klik link: wa.me/60167388358
-→ Tulis: "TELEGRAM MEMBER - SLOT MAC"
-
-First come first served. Slot akan habis cepat.
-
-⏰ Tamat: 1 Mac 2025, 12 tengah malam
-
-— Team POSKedai`,
-    hashtags: [],
-    cta: "Klik wa.me/60167388358 — Tulis 'TELEGRAM MEMBER - SLOT MAC'"
-  },
-
-  // ======================== 1 MAC — SABTU ========================
-  {
-    date: "1 Mac", day: "Sabtu", funnel: "bofu",
-    platforms: ["FB Page", "IG", "Threads"],
-    idea: "HARI TERAKHIR — FOMO + urgency, counter slot",
-    visual: "Grafik countdown: '⏰ HARI TERAKHIR'. Counter slot: 'Tinggal 2 slot lagi!'. Warna merah untuk urgency tinggi. Background gelap untuk contrast.",
-    caption: `⏰ HARI TERAKHIR — Tawaran Mac Mula Mudah tamat TENGAH MALAM ini!
-
-Update: Dah 8 slot diambil. Tinggal 2 slot sahaja lagi.
-
-Kalau korang masih pagar, ini masa untuk buat keputusan.
-
-Sebab selepas tengah malam:
-❌ Setup kembali ke harga asal RM50
-❌ Trial kembali ke 7 hari (bukan 14)
-❌ Harga permulaan jadi RM80 semula
-
-Apa yang korang dapat kalau DM sekarang:
-✅ Trial 14 hari — test betul-betul dulu
-✅ Setup PERCUMA — kami buat segalanya
-✅ Mulakan dengan RM30 je
-✅ Tiada kontrak, berhenti bila-bila
-
-2 slot. Siapa cepat, dia dapat.
-
-WhatsApp: wa.me/60167388358
-Tulis: "SAYA NAK SLOT TERAKHIR"
-
-#POSKedai #HariTerakhir #TawaranKhas #KedaiMakan #SistemPOS #LastCall`,
-    hashtags: ["#POSKedai", "#HariTerakhir", "#TawaranKhas", "#KedaiMakan", "#SistemPOS", "#LastCall"],
-    cta: "WhatsApp SEKARANG: wa.me/60167388358 — '2 slot tinggal!' ⏰"
-  },
-  {
-    date: "1 Mac", day: "Sabtu", funnel: "bofu",
-    platforms: ["TikTok Stories", "IG Stories"],
-    idea: "Multiple stories sepanjang hari — pagi/tengahari/petang countdown",
-    visual: "3 stories berbeza: Pagi (countdown 12 jam), Tengahari (update slot), Petang (LAST CALL dengan warna merah terang).",
-    caption: `🌅 PAGI — 12 JAM LAGI:
-Selamat pagi! Hari ni HARI TERAKHIR tawaran Mac Mula Mudah.
-Setup percuma + Trial 14 hari + RM30 je untuk mula.
-Masih ada slot — tapi tak lama lagi habis ⏰
-
----
-
-☀️ TENGAHARI — UPDATE SLOT:
-6 slot dah diambil. Tinggal 4 lagi!
-Korang yang masih tunggu — jangan sampai menyesal malam ni.
-DM sekarang sebelum terlambat 🔥
-
----
-
-🌆 PETANG — LAST CALL:
-Malam ni pukul 12 — tawaran tutup.
-Dah 8 slot pergi. 2 TINGGAL.
-Ini mesej terakhir kami. Selepas ni, harga biasa balik.
-WhatsApp: wa.me/60167388358 ⚠️`,
-    hashtags: ["#POSKedai", "#LastCall", "#KedaiMakan", "#fyp", "#TawaranKhas"],
-    cta: "DM atau WhatsApp sekarang — LAST CALL! ⚠️"
-  },
-  {
-    date: "1 Mac", day: "Sabtu", funnel: "bofu",
-    platforms: ["WhatsApp Channel"],
-    idea: "LAST CALL — CTA direct WhatsApp",
-    visual: "Text pendek, bold, urgent. Jangan terlalu panjang. Kuasa ada pada kesimplenan.",
-    caption: `🔴 LAST CALL 🔴
-
-Tawaran Mac Mula Mudah tutup TENGAH MALAM ini.
-
-Setup PERCUMA + Trial 14 hari + RM30 je.
-
-2 slot tinggal.
-
-Hantar "SAYA NAK" ke:
-👉 wa.me/60167388358
-
-Selepas tengah malam, harga biasa balik.
-
-Ini mesej terakhir. 🙏
-
-— Team POSKedai`,
-    hashtags: [],
-    cta: "Hantar 'SAYA NAK' ke wa.me/60167388358 sekarang! 🔴"
-  },
-  {
-    date: "1 Mac", day: "Sabtu", funnel: "bofu",
-    platforms: ["Telegram Channel"],
-    idea: "Final reminder — urgency maksimum",
-    visual: "Text ringkas dan bold. Guna CAPS untuk urgency. CTA crystal clear.",
-    caption: `FINAL REMINDER ⚠️
-
-Tawaran Telegram Eksklusif:
-✅ Trial 14 hari
-✅ Setup PERCUMA
-✅ Bonus training 1-on-1
-💰 RM30 je untuk mula
-
-= NILAI RM100 PERCUMA
-
-Tamat 12 MALAM INI.
-
-3 slot Telegram tinggal.
-
-Klik sekarang: wa.me/60167388358
-Tulis: "TELEGRAM MEMBER - SLOT MAC"
-
-Esok dah tak ada offer ni lagi.
-
-Selamat malam, dan terima kasih kerana follow channel kami 🙏
-
-— Team POSKedai`,
-    hashtags: [],
-    cta: "wa.me/60167388358 — 'TELEGRAM MEMBER - SLOT MAC' ⚠️"
-  }
+// ─────────── DATA ───────────
+const FM = {
+  tofu: {label:'🌱 TOFU', sub:'Awareness', bg:'#e8f5e9', color:'#2e7d32', dot:'#4CAF50'},
+  mofu: {label:'🔥 MOFU', sub:'Consideration', bg:'#e3f2fd', color:'#1565c0', dot:'#2196F3'},
+  bofu: {label:'💰 BOFU', sub:'Conversion', bg:'#fff3e0', color:'#e65100', dot:'#FF6B00'}
+};
+const PL = [
+  {k:'fb',  icon:'📘', label:'FB Page'},
+  {k:'tg',  icon:'📣', label:'Telegram'},
+  {k:'wa',  icon:'💬', label:'WA Channel'},
+  {k:'aff', icon:'🤝', label:'Affiliate'}
 ];
 
-// ================================================================
-// RENDER
-// ================================================================
-const DAYS = ["24 Feb (Isnin)", "25 Feb (Selasa)", "26 Feb (Rabu)", "27 Feb (Khamis)", "28 Feb (Jumaat)", "1 Mac (Sabtu)"];
-const DAY_KEYS = ["24 Feb", "25 Feb", "26 Feb", "27 Feb", "28 Feb", "1 Mac"];
-let activeFilter = 'all';
-let currentContent = null;
+const DAYS = [
+  {day:1, theme:'Masalah Kertas & Pen', funnel:'tofu',
+   fb:{f:'tofu',fmt:'📸 Image Post',
+    cap:`😤 Situasi yang semua pemilik kedai makan faham...
 
-function getPlatformEmoji(p) {
-  const map = { "FB Page": "📘 FB Page", "IG": "📷 IG", "IG Stories": "📷 IG Stories", "TikTok Stories": "🎵 TikTok Stories", "WhatsApp Channel": "💬 WhatsApp Channel", "Telegram Channel": "✈️ Telegram Channel", "Threads": "🧵 Threads" };
-  return map[p] || p;
-}
+Pukul 7 malam. Kedai penuh. Dapur tengah sibuk.
 
-function renderGrid() {
-  const grid = document.getElementById('calendarGrid');
-  grid.innerHTML = '';
-  
-  DAY_KEYS.forEach((dayKey, idx) => {
-    const dayContent = CONTENT.filter(c => c.date === dayKey);
-    const filtered = dayContent.filter(c => {
-      if (activeFilter === 'all') return true;
-      if (['tofu','mofu','bofu'].includes(activeFilter)) return c.funnel === activeFilter;
-      const plLower = c.platforms.map(p => p.toLowerCase());
-      return plLower.some(p => p.includes(activeFilter));
-    });
-    if (!filtered.length) return;
+Lepas tu?
+❌ Meja 3 dapat makanan meja 5
+❌ Customer dah tunggu 30 minit tapi order tak masuk
+❌ Hujung malam kira duit — RM50 hilang entah ke mana
 
-    // Day header
-    const header = document.createElement('div');
-    header.className = 'day-header';
-    header.innerHTML = `<h3>${DAYS[idx]}</h3><div class="day-header-line"></div><span class="day-count">${filtered.length} post</span>`;
-    grid.appendChild(header);
+Familiar? Komen "PERNAH" bawah 👇
+Tag kawan peniaga yang pernah alami benda ni!
 
-    // Cards
-    filtered.forEach((item, i) => {
-      const globalIdx = CONTENT.indexOf(item);
-      const card = document.createElement('div');
-      card.className = `content-card ${item.funnel}`;
-      card.style.animationDelay = `${i * 0.05}s`;
-      card.onclick = () => openModal(globalIdx);
-      card.innerHTML = `
-        <div class="card-header">
-          <div class="card-top">
-            <span class="date-badge">${item.date} (${item.day})</span>
-            <span class="funnel-badge ${item.funnel}">${item.funnel.toUpperCase()}</span>
-          </div>
-          <div class="platform-tags">${item.platforms.map(p => `<span class="platform-tag">${p}</span>`).join('')}</div>
-        </div>
-        <div class="card-idea"><p>${item.idea}</p></div>
-        <div class="card-footer">
-          <span class="visual-hint">📸 ${item.visual.substring(0,60)}...</span>
-          <span class="click-hint"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> Lihat full content</span>
-        </div>`;
-      grid.appendChild(card);
-    });
-  });
-}
+#KedaiMakan #WarungMakan #PemilikKedai #POSKedai`,
+    cta:`📣 Komen 'PERNAH' + Tag kawan peniaga!`,
+    img:`Realistic candid photo of a stressed Malaysian male restaurant owner (late 30s) writing orders on crumpled paper at a busy warung counter. Tables full of customers in background. Warm orange tungsten lighting. Messy paper notes and pen on counter. Authentic Malaysian food stall atmosphere. No text overlay. Shot from slight side angle.`},
+   tg:{f:'tofu',fmt:'📊 Poll Post',
+    cap:`📋 Soalan jujur untuk peniaga kedai makan...
 
-function filterCards(type, btn) {
-  activeFilter = type;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderGrid();
-}
+Berapa kali seminggu anda kena tulis semula order sebab tulisan susah dibaca?
 
-function openModal(idx) {
-  currentContent = CONTENT[idx];
-  const c = currentContent;
-  const funnelLabel = { tofu: '🔵 TOFU', mofu: '🟠 MOFU', bofu: '🟢 BOFU' };
-  
-  document.getElementById('modalTopBar').className = `modal-top-bar ${c.funnel}`;
-  document.getElementById('modalDate').textContent = `${c.date} (${c.day})`;
-  
-  const fb = document.getElementById('modalFunnel');
-  fb.className = `funnel-badge ${c.funnel}`;
-  fb.textContent = funnelLabel[c.funnel];
-  
-  document.getElementById('modalTitle').textContent = c.idea;
-  document.getElementById('modalPlatforms').innerHTML = c.platforms.map(p => `<span class="modal-platform-tag">${getPlatformEmoji(p)}</span>`).join('');
-  
-  // Build body
-  let body = '';
-  
-  // Caption
-  body += `<div class="section-label">✍️ Full Caption</div>`;
-  body += `<div class="caption-box highlight">${c.caption.replace(/\n/g,'<br>')}</div>`;
-  
-  // CTA
-  body += `<div class="cta-box"><div class="cta-box-label">🎯 Call To Action</div><p>${c.cta}</p></div>`;
-  
-  // Visual
-  body += `<div class="section-label">🎨 Arahan Visual</div>`;
-  body += `<div class="visual-box"><div class="visual-box-title">Apa perlu buat</div><p>${c.visual}</p></div>`;
-  
-  // Hashtags
-  if (c.hashtags.length) {
-    body += `<div class="section-label">🏷️ Hashtag</div>`;
-    body += `<div class="hashtag-box">${c.hashtags.map(h => `<span class="hashtag" onclick="copyText('${h}')">${h}</span>`).join('')}</div>`;
-    body += `<p style="font-size:0.72rem;color:var(--gray-light);margin-bottom:12px">Klik hashtag untuk copy individual</p>`;
-  }
-  
-  document.getElementById('modalBody').innerHTML = body;
-  document.getElementById('modalOverlay').classList.add('show');
-}
+A) Hampir setiap hari 😭
+B) 2–3 kali seminggu
+C) Jarang berlaku
+D) Asyik je berlaku 😅
 
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modalOverlay')) {
-    document.getElementById('modalOverlay').classList.remove('show');
-  }
-}
+Reply A/B/C/D di bawah 👇`,
+    cta:``,
+    img:`Flat design illustration of a crumpled notepad filled with messy handwritten food orders. Some words crossed out, some with question marks. Orange (#FF6B00) and white colour scheme. Clean minimal background. Square 1:1 format.`},
+   wa:{f:'tofu',fmt:'📢 Broadcast',
+    cap:`Hai! 👋
 
-function copyCaption() {
-  if (!currentContent) return;
-  const text = currentContent.caption + '\n\n' + currentContent.hashtags.join(' ');
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('btnCopy');
-    btn.classList.add('copied');
-    btn.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Copied!`;
-    showToast('✅ Caption berjaya disalin!', 'success');
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Caption`;
-    }, 2000);
-  });
-}
+Satu soalan ringkas untuk anda...
 
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => showToast(`Copied: ${text}`, 'success'));
-}
+Anda masih guna kertas dan pen untuk ambil pesanan di kedai?
 
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+Kalau YA — anda mungkin rugi RM200–500 sebulan tanpa sedar.
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+Kami akan terangkan macam mana esok 😊
 
-renderGrid();
-</script>
-</body>
-</html>
+— POSKedai Team`,
+    cta:``,
+    img:`Split image. Left half (sepia): messy handwritten paper orders on a counter. Right half (bright): clean tablet screen showing a POS order interface. Dividing line in centre. Orange and white brand palette. No text overlay. 1:1 square format.`},
+   aff:{f:'tofu',fmt:'💬 Affiliate Script',
+    cap:`🔥 CONTENT HARI 1 — HANTAR KE PROSPEK ANDA
+
+Salin & hantar kepada kenalan yang ada kedai makan:
+
+───────────────
+"Eh, kedai kau masih guna kertas untuk order tak?
+
+Ada sistem POS baru — RM30 je sebulan, guna phone sendiri, setup 1 hari je.
+
+Nak aku forward info?"
+───────────────
+
+✅ Gunakan pendekatan casual & personal
+✅ Jangan terus jual — tanya dulu, offer info
+📸 Hantar sekali poster POSKedai
+💰 Setiap referral berjaya = komisyen untuk anda`,
+    cta:``,
+    img:`Bold motivational graphic. Orange background (#FF6B00). White text: "HARI 1 — MULA SHARE, MULA DAPAT KOMISYEN". POSKedai logo at bottom. Simple clean design. 16:9 landscape format.`}},
+
+  {day:2, theme:'Kos POS Biasa vs POSKedai', funnel:'tofu',
+   fb:{f:'tofu',fmt:'📊 Infografik Perbandingan',
+    cap:`💸 Ramai peniaga tak tahu berapa sebenarnya kos sistem POS biasa...
+
+🔴 Mesin / Hardware: RM2,000 – RM5,000
+🔴 Yuran bulanan: RM100 – RM300
+🔴 Kontrak wajib: 12–24 bulan
+🔴 Training staff: 2–3 hari
+
+Dalam setahun pertama? Boleh cecah RM5,000++
+
+Tapi ada cara lain yang peniaga Malaysia kini guna...
+
+📱 Guna phone atau tablet yang SEDIA ADA
+⚡ Setup dalam 1 hari
+💰 RM30 sebulan sahaja
+
+Drop "INFO" dalam komen untuk tahu lebih 👇
+
+#SistemPOS #KedaiMakan #TipsPerniagaan`,
+    cta:`👍 Like & Share — ramai peniaga perlu tahu!`,
+    img:`Clean two-column comparison infographic. Left column "POS Biasa" on red background: red X icons showing RM2,000+ hardware, RM150+/bulan, 12-bulan kontrak. Right column "POSKedai" on orange: green checks showing RM0 hardware, RM30/bulan, tiada kontrak. Bold Malay text labels. White overall background.`},
+   tg:{f:'tofu',fmt:'📝 Fakta Ringkas',
+    cap:`💡 FAKTA YANG RAMAI PENIAGA TAK TAHU
+
+Sistem POS tak semestinya mahal.
+
+❌ POS Konvensional
+• Hardware: RM2,000+
+• Bulanan: RM150+
+• Kontrak: 1–2 tahun
+
+✅ POSKedai
+• Hardware: GUNA SENDIRI (RM0)
+• Bulanan: RM30
+• Kontrak: TIADA
+
+Jimat lebih RM3,000 dalam setahun pertama 💰
+
+🔗 poskedai.online`,
+    cta:`📤 Forward kepada peniaga yang anda kenal!`,
+    img:`Side-by-side product comparison card. Left: traditional POS terminal with red price labels. Right: smartphone showing POSKedai app with green price labels. "RM0 Hardware" and "RM30/bulan" prominently. Orange brand accent. Clean white card background. Flat design illustration.`},
+   wa:{f:'tofu',fmt:'📢 Broadcast Fakta',
+    cap:`📊 Fakta menarik untuk peniaga kedai makan...
+
+Sistem POS biasa: RM5,000+ setahun
+POSKedai: RM360 setahun sahaja
+
+Jimat RM4,640+ setiap tahun 💰
+
+Bayangkan apa yang boleh anda buat dengan simpanan tu untuk bisnes anda.
+
+Info lanjut: poskedai.online
+
+— POSKedai Team`,
+    cta:``,
+    img:`Bold financial comparison. "RM5,000+" in dark grey crossed out with red line vs "RM360" in bright orange. "JIMAT RM4,640+" in large green. Clean white background. 1:1 format.`},
+   aff:{f:'tofu',fmt:'💬 Script Harga',
+    cap:`💬 SCRIPT BILA PROSPEK TANYA "BERAPA HARGA?"
+
+Jangan jawab harga dulu. Cuba gini:
+
+───────────────
+"RM30 je sebulan. Less than RM1 sehari.
+
+Tapi yang lagi best — tak payah beli mesin langsung. Guna phone atau tablet yang kau dah ada. Jimat RM2,000+ dari mula."
+───────────────
+
+🎯 Fokus pada BERAPA YANG JIMAT, bukan pada harga
+🔑 Zero hardware cost adalah game-changer`,
+    cta:``,
+    img:`"JUAL JIMAT, BUKAN HARGA" affiliate strategy tip. Orange background. Coin/savings illustration. Bold white text. POSKedai logo. WhatsApp 16:9.`}},
+
+  {day:3, theme:'Demo & Cara Guna Sistem', funnel:'tofu',
+   fb:{f:'tofu',fmt:'🎥 Video / Reel',
+    cap:`📱 Tengok betapa MUDAHNYA ambil pesanan dengan POSKedai...
+
+Dalam demo ni:
+✅ Klik menu & tambah order — 5 saat je!
+✅ Hantar order terus ke dapur automatik
+✅ Cetak resit dalam sekelip mata
+✅ Tengok laporan jualan harian
+
+Staff baru pun boleh belajar dalam 15 MINIT 🎉
+
+Cuba demo percuma tanpa daftar apa-apa:
+👉 saudaranas.github.io/demo-pos-kedai/
+
+Atau cuba sistem penuh percuma 7 hari:
+👉 poskedai.online
+
+#POSKedai #SistemPOS #DemoPercuma`,
+    cta:`🔗 Klik link dalam bio untuk cuba demo!`,
+    img:`Close-up of Malaysian hands tapping on a bright tablet screen. POSKedai orange UI clearly visible with menu items (Nasi Lemak RM5, Teh Tarik RM2). Clean modern restaurant counter background slightly blurred. "CUBA DEMO PERCUMA" badge top right corner. Bright natural lighting. Realistic photo style.`},
+   tg:{f:'tofu',fmt:'📝 Tutorial 4 Langkah',
+    cap:`🖥️ CARA GUNA POSKEDAI — 4 LANGKAH MUDAH
+
+1️⃣ WhatsApp team kami
+   → Kami buat akaun dalam 24 jam
+
+2️⃣ Dapat login details
+   → Tambah menu (15 minit)
+
+3️⃣ Buka di phone / tablet / laptop
+   → Terus boleh ambil pesanan!
+
+4️⃣ Tengok laporan jualan setiap hari
+   → Data automatik
+
+Cuba demo live (tanpa daftar):
+👉 saudaranas.github.io/demo-pos-kedai/`,
+    cta:`🔗 Cuba demo sekarang!`,
+    img:`4-step horizontal infographic. Each step: rounded card with icon — WhatsApp logo, key/login, tablet device, bar chart. Connected by arrows. Orange brand colour. White card backgrounds. Flat design.`},
+   wa:{f:'tofu',fmt:'📢 Jemput Cuba Demo',
+    cap:`🎮 Nak tengok POSKedai sebelum buat keputusan?
+
+CUBA DEMO PERCUMA — tanpa daftar, tanpa isi borang:
+
+👉 saudaranas.github.io/demo-pos-kedai
+
+Cuba sendiri:
+• Tambah order ke troli
+• Assign nombor meja
+• Cetak resit
+• Tengok laporan
+
+5 minit je. Kalau berminat, hubungi kami 😊
+
+— POSKedai Team`,
+    cta:``,
+    img:`Action-oriented graphic. Large bold "CUBA DEMO PERCUMA" in orange. Centre: tablet mockup showing POSKedai interface. Large arrow pointing to URL. Clean white background. 1:1.`},
+   aff:{f:'tofu',fmt:'💬 Teknik Demo Link',
+    cap:`🚀 TEKNIK PALING POWERFUL — HANTAR DEMO LINK
+
+Untuk prospek yang masih belum decide:
+
+───────────────
+"Eh, cuba test sendiri dulu. Tak payah register apa-apa.
+
+👉 saudaranas.github.io/demo-pos-kedai
+
+5 minit je. Cuba order, cetak resit. Lepas tu bagi tau apa pendapat kau."
+───────────────
+
+💡 KENAPA BERKESAN?
+• Prospek rasa dia yang control keputusan
+• Demo buat kerja convincing untuk anda
+• Prospek yang try demo = 3x lebih mudah close`,
+    cta:``,
+    img:`Funnel illustration. Shows: "Hantar Demo" → "Prospek Engaged" → "Mudah Close". "3x LEBIH MUDAH CLOSE" highlighted. Orange background. White labels. POSKedai logo. 16:9.`}},
+
+  {day:4, theme:'Testimoni & Social Proof', funnel:'mofu',
+   fb:{f:'mofu',fmt:'⭐ Testimoni Post',
+    cap:`⭐⭐⭐⭐⭐
+
+"Dulu order selalu silap, sekarang dah tak ada masalah tu langsung."
+
+— Encik Farid, Pemilik Warung Pak Farid, Selangor
+
+Dalam masa 2 minggu guna POSKedai:
+✅ Tiada lagi pesanan yang silap
+✅ Jimat lebih 1 jam setiap hari
+✅ Tahu menu mana paling laris
+✅ Staff pun happy — sistem senang guna
+
+Nak jadi kisah kejayaan seterusnya?
+👉 Cuba percuma 7 hari di poskedai.online
+
+#Testimoni #POSKedai #SuksesPerniagaan`,
+    cta:`💬 Kongsi pengalaman anda di komen!`,
+    img:`Split testimonial layout. Left: photo of happy Malaysian male warung owner (40s) smiling behind clean food counter. Warung setting. Right: solid orange background with white quote marks, testimonial text, 5 gold stars at top. Attribution at bottom. Professional warm design.`},
+   tg:{f:'mofu',fmt:'💬 Multi-Testimoni',
+    cap:`💬 APA KATA PELANGGAN KAMI...
+
+⭐ "Setup 1 hari. Staff belajar 15 minit. Terus boleh guna."
+— Pemilik Kedai Makan, KL
+
+⭐ "Ingatkan ada hidden charges. Rupanya RM30 je sebulan."
+— Operator Cafe, Johor Bahru
+
+⭐ "Baru tahu rupanya menu Nasi Goreng paling laris!"
+— Pemilik Warung, Shah Alam
+
+Anda pun boleh alami benda yang sama 😊
+
+poskedai.online`,
+    cta:`📤 Forward kepada peniaga yang anda kenal!`,
+    img:`Three white testimonial cards in grid. Each: single orange star, italic quote text, person silhouette icon, city name. Orange border accent. Clean professional layout.`},
+   wa:{f:'mofu',fmt:'📢 Testimoni Kuat',
+    cap:`⭐⭐⭐⭐⭐
+
+"Sebelum guna POSKedai, setiap hujung bulan mesti ada selisih dalam kira-kira. Sekarang dah tak ada masalah tu. Laporan terus auto."
+
+— Puan Siti, Restoran Nasi Campur, PJ
+
+Ini pengalaman sebenar pelanggan kami 💯
+
+Cuba sendiri:
+👉 poskedai.online — 7 hari PERCUMA
+
+— POSKedai Team`,
+    cta:``,
+    img:`Warm cream/orange gradient testimonial card. Large opening quotation mark in orange at top. Testimonial text in dark serif font. 5 gold stars below. Attribution in orange bold. "PENGALAMAN SEBENAR" seal. Clean elegant. 1:1.`},
+   aff:{f:'mofu',fmt:'💬 Teknik Testimoni',
+    cap:`⭐ SENJATA PALING KUAT — TESTIMONI
+
+Bila prospek masih ragu-ragu:
+
+───────────────
+"Ada pemilik warung share — dia jimat lebih 1 jam sehari lepas guna POSKedai.
+
+Dalam sebulan jimat 30 jam. Bayangkan kalau masa tu dia guna untuk benda lain untuk bisnes..."
+───────────────
+
+💡 KENAPA BERKESAN?
+• Anda TIDAK kata "saya nak jual"
+• Kurang resistance, lebih banyak response
+• Orang percaya orang lain lebih dari syarikat
+
+✅ Tambah: "Diorang ada trial percuma 7 hari."`,
+    cta:``,
+    img:`"TESTIMONI = KEPERCAYAAN = JUALAN" three orange circles connected by arrows. Testimonial icon, handshake icon, RM sign. White text on orange. Clean design. 16:9.`}},
+
+  {day:5, theme:'Pain Point — Tiada Laporan Jualan', funnel:'tofu',
+   fb:{f:'tofu',fmt:'📊 Edukasi + Question',
+    cap:`📊 Soalan jujur untuk pemilik kedai makan...
+
+Anda tahu EXACTLY menu mana yang bagi paling banyak untung minggu lepas?
+
+Kalau "agak-agak je" — anda ada masalah yang ramai peniaga hadapi:
+
+❌ Beli stok bahan yang tak laris
+❌ Promosi menu yang sebenarnya rugi
+❌ Tak tahu bila peak hour sebenar
+❌ Buat keputusan berdasarkan "rasa" bukan data
+
+Data jualan bukan untuk syarikat besar sahaja.
+
+POSKedai bagi anda data tu — automatik, setiap hari.
+
+Drop "DATA" dalam komen 👇
