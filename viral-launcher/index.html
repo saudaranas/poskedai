@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viral Launcher — Bina Kempen Viral Anda</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0D0D0D;
+    --surface: #161616;
+    --surface2: #1E1E1E;
+    --border: #2A2A2A;
+    --border2: #333;
+    --text: #F0EDE8;
+    --muted: #888;
+    --accent: #FF6B2B;
+    --accent-dim: rgba(255,107,43,0.12);
+    --accent-glow: rgba(255,107,43,0.25);
+    --green: #22C55E;
+    --green-dim: rgba(34,197,94,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* ── HEADER ── */
+  header {
+    padding:28px 40px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:50;
+    background:rgba(13,13,13,0.92); backdrop-filter:blur(12px);
+  }
+  .logo { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:800; letter-spacing:-0.02em; }
+  .logo em { color:var(--accent); font-style:normal; }
+  .header-badge { font-size:0.72rem; background:var(--accent-dim); border:1px solid var(--accent); color:var(--accent); padding:4px 12px; border-radius:100px; font-weight:600; letter-spacing:0.04em; }
+
+  /* ── HERO ── */
+  .hero { padding:64px 40px 48px; max-width:900px; margin:0 auto; }
+  .hero-tag { display:inline-flex; align-items:center; gap:6px; font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:20px; }
+  .hero-tag .dot { width:5px; height:5px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.3);} }
+  .hero h1 { font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:800; line-height:1.1; letter-spacing:-0.03em; margin-bottom:14px; }
+  .hero h1 em { color:var(--accent); font-style:normal; }
+  .hero p { font-size:1rem; color:var(--muted); line-height:1.7; max-width:520px; }
+
+  /* ── MAIN GRID ── */
+  .main { max-width:900px; margin:0 auto; padding:0 40px 80px; display:grid; grid-template-columns:1fr 340px; gap:24px; align-start:start; }
+
+  /* ── FORM CARD ── */
+  .form-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; overflow:hidden; }
+  .section-head { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+  .section-head .sh-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0; }
+  .section-head .sh-text { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; color:var(--text); }
+  .section-head .sh-sub { font-size:0.75rem; color:var(--muted); margin-top:1px; }
+  .section-body { padding:20px 24px; }
+
+  /* ── FIELDS ── */
+  .field { margin-bottom:16px; }
+  .field:last-child { margin-bottom:0; }
+  .field label { display:block; font-size:0.75rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:7px; }
+  .field input, .field textarea, .field select {
+    width:100%; padding:11px 14px;
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:10px; color:var(--text);
+    font-family:'DM Sans',sans-serif; font-size:0.92rem;
+    outline:none; transition:border-color .2s, box-shadow .2s;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);
+  }
+  .field input::placeholder, .field textarea::placeholder { color:#555; }
+  .field select { cursor:pointer; }
+  .field select option { background:var(--surface2); }
+  .field textarea { resize:vertical; min-height:80px; line-height:1.6; }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .field-hint { font-size:0.73rem; color:#666; margin-top:5px; }
+
+  /* ── POSTER UPLOAD ── */
+  .poster-zone {
+    border:1.5px dashed var(--border2); border-radius:12px;
+    padding:28px 20px; text-align:center; cursor:pointer;
+    transition:all .2s; background:var(--surface2); position:relative; overflow:hidden;
+  }
+  .poster-zone:hover { border-color:var(--accent); background:var(--accent-dim); }
+  .poster-zone.has-poster { border-color:var(--green); border-style:solid; padding:0; }
+  .poster-preview { width:100%; max-height:200px; object-fit:cover; border-radius:10px; display:none; }
+  .poster-zone.has-poster .poster-preview { display:block; }
+  .poster-zone.has-poster .poster-placeholder { display:none; }
+  .poster-placeholder .pz-icon { font-size:2rem; margin-bottom:8px; }
+  .poster-placeholder p { font-size:0.85rem; color:var(--muted); line-height:1.6; }
+  .poster-placeholder strong { color:var(--text); }
+  #posterInput { display:none; }
+
+  /* ── THEME SELECTOR ── */
+  .themes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .theme-opt {
+    border:2px solid var(--border); border-radius:12px; padding:12px 8px;
+    text-align:center; cursor:pointer; transition:all .2s;
+    background:var(--surface2);
+  }
+  .theme-opt:hover { border-color:var(--border2); transform:translateY(-1px); }
+  .theme-opt.selected { border-color:white; box-shadow:0 0 0 1px white; }
+  .theme-dot { width:28px; height:28px; border-radius:50%; margin:0 auto 7px; }
+  .theme-name { font-size:0.72rem; color:var(--muted); font-weight:600; }
+  .theme-opt.selected .theme-name { color:var(--text); }
+
+  /* THEME COLORS */
+  .t-orange .theme-dot { background:linear-gradient(135deg,#FF6B2B,#FF9A00); }
+  .t-blue   .theme-dot { background:linear-gradient(135deg,#1D4ED8,#3B82F6); }
+  .t-green  .theme-dot { background:linear-gradient(135deg,#16A34A,#22C55E); }
+  .t-purple .theme-dot { background:linear-gradient(135deg,#7C3AED,#A855F7); }
+  .t-red    .theme-dot { background:linear-gradient(135deg,#DC2626,#F87171); }
+  .t-dark   .theme-dot { background:linear-gradient(135deg,#1A1A2E,#16213E); border:1px solid #444; }
+
+  /* ── DIVIDER ── */
+  .divider { height:1px; background:var(--border); margin:4px 0; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display:flex; flex-direction:column; gap:16px; }
+
+  /* ── PREVIEW CARD ── */
+  .preview-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:20px; position:sticky; top:100px; }
+  .preview-title { font-family:'Syne',sans-serif; font-size:0.82rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px; }
+  .preview-phone { background:var(--bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+  .preview-bar { background:var(--surface2); padding:8px 12px; display:flex; align-items:center; gap:6px; border-bottom:1px solid var(--border); }
+  .preview-bar .pb-dot { width:6px; height:6px; border-radius:50%; }
+  .preview-bar .pb-url { font-size:0.65rem; color:#555; flex:1; text-align:center; }
+  .preview-content { padding:14px; }
+  .pc-badge { display:inline-flex; align-items:center; gap:5px; font-size:0.65rem; font-weight:700; padding:4px 10px; border-radius:100px; margin-bottom:10px; }
+  .pc-title { font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:800; line-height:1.2; margin-bottom:6px; }
+  .pc-offer { font-size:0.7rem; background:var(--surface2); border-radius:8px; padding:8px 10px; margin-bottom:10px; }
+  .pc-offer .pco-row { display:flex; justify-content:space-between; font-size:0.68rem; margin-bottom:3px; }
+  .pc-offer .pco-row:last-child { margin-bottom:0; }
+  .pc-offer .pco-key { color:var(--muted); }
+  .pc-offer .pco-val { font-weight:700; }
+  .pc-btn { width:100%; padding:8px; border-radius:8px; font-size:0.72rem; font-weight:700; text-align:center; }
+
+  /* ── LOGIN SCREEN ── */
+  .launcher-login {
+    position:fixed; inset:0; background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    z-index:999; padding:20px;
+  }
+  .launcher-login.hidden { display:none; }
+  .ll-box { width:100%; max-width:380px; text-align:center; }
+  .ll-icon { font-size:3.5rem; margin-bottom:16px; animation:float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  .ll-logo { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin-bottom:6px; }
+  .ll-logo em { color:var(--accent); font-style:normal; }
+  .ll-sub { font-size:0.85rem; color:var(--muted); margin-bottom:32px; line-height:1.6; }
+  .ll-label { display:block; font-size:0.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; text-align:left; margin-bottom:8px; }
+  .ll-input {
+    width:100%; padding:14px 18px; background:var(--surface);
+    border:1.5px solid var(--border2); border-radius:12px;
+    color:var(--text); font-family:'DM Sans',sans-serif; font-size:1rem;
+    outline:none; transition:border-color .2s, box-shadow .2s;
+    margin-bottom:12px; letter-spacing:0.08em;
+  }
+  .ll-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
+  .ll-input::placeholder { color:#444; letter-spacing:0; }
+  .ll-btn {
+    width:100%; padding:15px; background:var(--accent); border:none; border-radius:12px;
+    color:white; font-family:'Syne',sans-serif; font-size:1rem; font-weight:800;
+    cursor:pointer; transition:all .2s;
+  }
+  .ll-btn:hover { box-shadow:0 8px 28px var(--accent-glow); transform:translateY(-1px); }
+  .ll-btn:active { transform:translateY(0); }
+  .ll-err { font-size:0.8rem; color:#F87171; margin-top:10px; min-height:20px; }
+  .ll-hint { font-size:0.72rem; color:#333; margin-top:20px; }
+
+  /* ── GENERATE BUTTON ── */
+  .generate-wrap { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; }
+  .btn-generate {
+    width:100%; padding:16px; background:var(--accent); border:none; border-radius:12px;
+    color:white; font-family:'Syne',sans-serif; font-size:1rem; font-weight:800;
+    cursor:pointer; transition:all .2s; letter-spacing:-0.01em;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .btn-generate:hover { background:#E85A1A; transform:translateY(-2px); box-shadow:0 8px 28px var(--accent-glow); }
+  .btn-generate:active { transform:translateY(0); }
+  .gen-note { font-size:0.75rem; color:var(--muted); text-align:center; margin-top:10px; line-height:1.6; }
+
+  /* ── OUTPUT SECTION ── */
+  .output-section { display:none; max-width:900px; margin:0 auto 80px; padding:0 40px; }
+  .output-section.show { display:block; animation:fadeUp .4s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+  .output-title { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:20px; }
+  .output-title em { color:var(--green); font-style:normal; }
+  .output-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .output-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; }
+  .oc-icon { font-size:2rem; margin-bottom:10px; }
+  .oc-name { font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:700; margin-bottom:4px; }
+  .oc-desc { font-size:0.78rem; color:var(--muted); line-height:1.6; margin-bottom:16px; }
+  .btn-download {
+    width:100%; padding:11px; background:var(--accent-dim); border:1px solid var(--accent);
+    border-radius:10px; color:var(--accent); font-family:'DM Sans',sans-serif;
+    font-size:0.85rem; font-weight:700; cursor:pointer; transition:all .2s;
+  }
+  .btn-download:hover { background:var(--accent); color:white; }
+  .output-steps { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; margin-top:16px; }
+  .os-title { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; margin-bottom:14px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+  .os-step { display:flex; gap:12px; margin-bottom:12px; align-items:flex-start; }
+  .os-step:last-child { margin-bottom:0; }
+  .os-num { width:22px; height:22px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; color:var(--accent); flex-shrink:0; margin-top:1px; }
+  .os-text { font-size:0.83rem; color:var(--muted); line-height:1.6; }
+  .os-text strong { color:var(--text); }
+
+  /* ── TOAST ── */
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(60px); background:var(--surface); border:1px solid var(--border); color:var(--text); padding:12px 24px; border-radius:100px; font-size:0.85rem; font-weight:600; z-index:999; transition:transform .3s cubic-bezier(.34,1.56,.64,1); white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  @media(max-width:1024px) {
+    .main { grid-template-columns:1fr; padding:0 24px 60px; }
+    .sidebar { order:-1; }
+    .preview-card { position:static; }
+    .output-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media(max-width:768px) {
+    header { padding:16px 20px; }
+    .hero { padding:36px 20px 28px; }
+    .main { grid-template-columns:1fr; padding:0 16px 60px; }
+    .output-section { padding:0 16px; }
+    .output-grid { grid-template-columns:1fr; }
+    .sidebar { order:-1; }
+    .preview-card { position:static; }
+    .field-row { grid-template-columns:1fr; }
+    .themes-grid { grid-template-columns:repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="launcher-login" id="launcherLogin">
+  <div class="ll-box">
+    <div class="ll-icon">🚀</div>
+    <div class="ll-logo"><em>Viral</em> Launcher</div>
+    <p class="ll-sub">Tool peribadi untuk bina kempen viral.<br>Masukkan kata laluan untuk teruskan.</p>
+    <label class="ll-label">Kata Laluan</label>
+    <input type="password" class="ll-input" id="llInput" placeholder="••••••••••" onkeydown="if(event.key==='Enter')launcherLogin()" autofocus />
+    <button class="ll-btn" onclick="launcherLogin()">⚡ Masuk Launcher</button>
+    <p class="ll-err" id="llErr"></p>
+    <p class="ll-hint">Lupa kata laluan? Hubungi pembangun anda.</p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="launcherApp" style="display:none;">
+
+<header>
+  <div class="logo"><em>Viral</em> Launcher</div>
+  <div class="header-badge">PERSONAL TOOL</div>
+</header>
+
+<div class="hero">
+  <div class="hero-tag"><span class="dot"></span> Setup Kempen Baru</div>
+  <h1>Bina <em>Viral Page</em><br>dalam Minit</h1>
+  <p>Isi details kempen anda, pilih tema, dan generate — viral page + dashboard siap untuk upload ke GitHub.</p>
+</div>
+
+<div class="main">
+
+  <!-- LEFT: FORM -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <!-- PRODUK -->
+    <div class="form-card">
+      <div class="section-head">
+        <div class="sh-icon">📦</div>
+        <div><div class="sh-text">Maklumat Produk</div><div class="sh-sub">Nama, badge dan poster kempen</div></div>
+      </div>
+      <div class="section-body">
+        <div class="field">
+          <label>Nama Produk</label>
+          <input type="text" id="fNamaProduk" placeholder="contoh: POSKedai" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Teks Badge</label>
+          <input type="text" id="fBadge" placeholder="contoh: Kempen Viral Raya 2026" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Poster Kempen</label>
+          <div class="poster-zone" id="posterZone" onclick="document.getElementById('posterInput').click()">
+            <div class="poster-placeholder">
+              <div class="pz-icon">🖼️</div>
+              <p><strong>Klik untuk upload poster</strong><br>JPG, PNG — max 2MB</p>
+            </div>
+            <img class="poster-preview" id="posterPreview" />
+          </div>
+          <input type="file" id="posterInput" accept="image/*" onchange="handlePoster(event)" />
+          <p class="field-hint">Poster akan dipapar dalam viral page sebagai visual utama</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OFFER -->
+    <div class="form-card">
+      <div class="section-head">
+        <div class="sh-icon">💰</div>
+        <div><div class="sh-text">Details Offer</div><div class="sh-sub">Harga, nilai dan teks tawaran</div></div>
+      </div>
+      <div class="section-body">
+        <div class="field">
+          <label>Teks Offer Utama</label>
+          <input type="text" id="fOfferText" placeholder="contoh: 2 bulan hanya RM50!" oninput="updatePreview()" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Harga Promosi (RM)</label>
+            <input type="number" id="fHargaPromo" placeholder="50" oninput="updatePreview()" />
+          </div>
+          <div class="field">
+            <label>Harga Normal (RM)</label>
+            <input type="number" id="fHargaNormal" placeholder="110" oninput="updatePreview()" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Peratus Jimat (%)</label>
+          <input type="number" id="fJimat" placeholder="55" oninput="updatePreview()" />
+          <p class="field-hint">Kosongkan untuk auto-kira dari harga di atas</p>
+        </div>
+        <div class="field">
+          <label>Ganjaran Viral (1 Bulan Percuma)</label>
+          <input type="text" id="fGanjaran" placeholder="contoh: 1 bulan percuma (nilai RM30)" oninput="updatePreview()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- KEMPEN -->
+    <div class="form-card">
+      <div class="section-head">
+        <div class="sh-icon">⚙️</div>
+        <div><div class="sh-text">Setting Kempen</div><div class="sh-sub">Slot, tarikh dan WhatsApp</div></div>
+      </div>
+      <div class="section-body">
+        <div class="field-row">
+          <div class="field">
+            <label>Total Slot</label>
+            <input type="number" id="fSlot" placeholder="100" oninput="updatePreview()" />
+          </div>
+          <div class="field">
+            <label>Slot Dah Ambil</label>
+            <input type="number" id="fSlotTaken" placeholder="23" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Tarikh Tamat Kempen</label>
+          <input type="date" id="fTarikh" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>No. WhatsApp Anda</label>
+          <input type="text" id="fWA" placeholder="60167388358" />
+          <p class="field-hint">Format: 601XXXXXXXX (tanpa +)</p>
+        </div>
+        <div class="field">
+          <label>Google Apps Script URL</label>
+          <input type="text" id="fSheetURL" placeholder="https://script.google.com/macros/s/..." />
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="form-card">
+      <div class="section-head">
+        <div class="sh-icon">🔐</div>
+        <div><div class="sh-text">Setting Dashboard</div><div class="sh-sub">Kata laluan untuk akses dashboard</div></div>
+      </div>
+      <div class="section-body">
+        <div class="field">
+          <label>Kata Laluan Dashboard</label>
+          <input type="text" id="fPassword" placeholder="contoh: poskedai2026" />
+          <p class="field-hint">Gunakan kata laluan yang mudah diingat</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMA -->
+    <div class="form-card">
+      <div class="section-head">
+        <div class="sh-icon">🎨</div>
+        <div><div class="sh-text">Pilih Tema Warna</div><div class="sh-sub">Tema akan apply pada viral page dan dashboard</div></div>
+      </div>
+      <div class="section-body">
+        <div class="themes-grid">
+          <div class="theme-opt t-orange selected" onclick="selectTheme('orange',this)">
+            <div class="theme-dot"></div>
+            <div class="theme-name">Orange</div>
+          </div>
+          <div class="theme-opt t-blue" onclick="selectTheme('blue',this)">
+            <div class="theme-dot"></div>
+            <div class="theme-name">Biru</div>
+          </div>
+          <div class="theme-opt t-green" onclick="selectTheme('green',this)">
+            <div class="theme-dot"></div>
+            <div class="theme-name">Hijau</div>
+          </div>
+          <div class="theme-opt t-purple" onclick="selectTheme('purple',this)">
+            <div class="theme-dot"></div>
+            <div class="theme-name">Purple</div>
+          </div>
+          <div class="theme-opt t-red" onclick="selectTheme('red',this)">
+            <div class="theme-dot"></div>
+            <div class="theme-name">Merah</div>
+          </div>
+          <div class="theme-opt t-dark" onclick="selectTheme('dark',this)">
+            <div class="theme-dot"></div>
+            <div class="theme-name">Dark</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- PREVIEW -->
+    <div class="preview-card">
+      <div class="preview-title">Preview</div>
+      <div class="preview-phone">
+        <div class="preview-bar">
+          <div class="pb-dot" style="background:#FF5F57"></div>
+          <div class="pb-dot" style="background:#FFBD2E"></div>
+          <div class="pb-dot" style="background:#28CA41"></div>
+          <div class="pb-url" id="pvUrl">poskedai.online/viral</div>
+        </div>
+        <div class="preview-content" id="previewContent">
+          <div class="pc-badge" id="pvBadge" style="background:rgba(255,107,43,0.12);color:#FF6B2B;">🔴 Kempen Viral</div>
+          <div class="pc-title" id="pvTitle">Dapatkan 1 Bulan<br><span style="color:#FF6B2B">PERCUMA!</span></div>
+          <div class="pc-offer" id="pvOffer">
+            <div class="pco-row"><span class="pco-key">Harga Promosi</span><span class="pco-val" id="pvPromo" style="color:#FF6B2B">RM50</span></div>
+            <div class="pco-row"><span class="pco-key">Harga Normal</span><span class="pco-val" id="pvNormal" style="text-decoration:line-through;color:#666">RM110</span></div>
+            <div class="pco-row"><span class="pco-key">Anda Jimat</span><span class="pco-val" id="pvJimat" style="color:#22C55E">55%</span></div>
+          </div>
+          <div class="pc-btn" id="pvBtn" style="background:#FF6B2B;color:white;">Tuntut Percuma →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERATE -->
+    <div class="generate-wrap">
+      <button class="btn-generate" onclick="generatePages()">
+        <span>⚡</span> Generate Pages
+      </button>
+      <p class="gen-note">2 fail akan di-generate:<br>viral-page.html + dashboard.html</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- OUTPUT -->
+<div class="output-section" id="outputSection">
+  <div class="output-title">✅ Pages <em>Berjaya</em> Di-generate!</div>
+  <div class="output-grid">
+    <div class="output-card">
+      <div class="oc-icon">🚀</div>
+      <div class="oc-name">viral-page.html</div>
+      <div class="oc-desc">Halaman untuk peserta kempen. Upload ke GitHub dan kongsi link ini kepada semua orang.</div>
+      <button class="btn-download" onclick="downloadViral()">⬇️ Download viral-page.html</button>
+    </div>
+    <div class="output-card">
+      <div class="oc-icon">📊</div>
+      <div class="oc-name">dashboard.html</div>
+      <div class="oc-desc">Dashboard admin untuk anda semak dan urus semua pendaftar. Simpan secara private.</div>
+      <button class="btn-download" onclick="downloadDashboard()">⬇️ Download dashboard.html</button>
+    </div>
+  </div>
+  <div class="output-steps">
+    <div class="os-title">Langkah Seterusnya</div>
+    <div class="os-step"><div class="os-num">1</div><div class="os-text">Download kedua-dua fail di atas</div></div>
+    <div class="os-step"><div class="os-num">2</div><div class="os-text">Upload <strong>viral-page.html</strong> ke GitHub repo anda</div></div>
+    <div class="os-step"><div class="os-num">3</div><div class="os-text">Simpan <strong>dashboard.html</strong> secara local — jangan upload ke GitHub</div></div>
+    <div class="os-step"><div class="os-num">4</div><div class="os-text">Kongsi link viral page dan pantau dashboard</div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Berjaya!</div>
+
+</div><!-- end launcherApp -->
+
+<script>
+  // ── LAUNCHER PASSWORD ─────────────────────────────────────────────
+  // Tukar kata laluan anda di sini:
+  const LAUNCHER_PASSWORD = 'viral2026';
+
+  function launcherLogin() {
+    const val = document.getElementById('llInput').value;
+    const err = document.getElementById('llErr');
+    if (val === LAUNCHER_PASSWORD) {
+      document.getElementById('launcherLogin').classList.add('hidden');
+      document.getElementById('launcherApp').style.display = 'block';
+      updatePreview();
+    } else {
+      err.textContent = '⚠️ Kata laluan salah. Cuba lagi.';
+      document.getElementById('llInput').value = '';
+      document.getElementById('llInput').focus();
+      setTimeout(()=>{ err.textContent=''; }, 3000);
+    }
+  }
+  // ── THEMES ────────────────────────────────────────────────────────
+  const THEMES = {
+    orange: { brand:'#FF6B2B', brandDark:'#E85A1A', brandLight:'#FFF3EE', brandMid:'#FFE0D0', bg:'#FFFAF7' },
+    blue:   { brand:'#1D4ED8', brandDark:'#1E40AF', brandLight:'#EFF6FF', brandMid:'#DBEAFE', bg:'#F8FAFF' },
+    green:  { brand:'#16A34A', brandDark:'#15803D', brandLight:'#F0FFF4', brandMid:'#DCFCE7', bg:'#F7FFF9' },
+    purple: { brand:'#7C3AED', brandDark:'#6D28D9', brandLight:'#F5F3FF', brandMid:'#EDE9FE', bg:'#FAFAFF' },
+    red:    { brand:'#DC2626', brandDark:'#B91C1C', brandLight:'#FFF5F5', brandMid:'#FEE2E2', bg:'#FFFAFA' },
+    dark:   { brand:'#E2E8F0', brandDark:'#CBD5E1', brandLight:'#1E293B', brandMid:'#334155', bg:'#0F172A' },
+  };
+
+  let selectedTheme = 'orange';
+  let posterBase64 = '';
+
+  function selectTheme(name, el) {
+    selectedTheme = name;
+    document.querySelectorAll('.theme-opt').forEach(t=>t.classList.remove('selected'));
+    el.classList.add('selected');
+    updatePreview();
+  }
+
+  // ── POSTER ────────────────────────────────────────────────────────
+  function handlePoster(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      posterBase64 = ev.target.result;
+      document.getElementById('posterPreview').src = posterBase64;
+      document.getElementById('posterZone').classList.add('has-poster');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // drag & drop poster
+  const pz = document.getElementById('posterZone');
+  pz.addEventListener('dragover', e=>{e.preventDefault();pz.style.borderColor='var(--accent)';});
+  pz.addEventListener('dragleave', ()=>{pz.style.borderColor='';});
+  pz.addEventListener('drop', e=>{
+    e.preventDefault();
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) {
+      const fakeEv = {target:{files:[f]}};
+      handlePoster(fakeEv);
+    }
+  });
+
+  // ── PREVIEW ───────────────────────────────────────────────────────
+  function updatePreview() {
+    const t = THEMES[selectedTheme];
+    const badge   = document.getElementById('fBadge').value || 'Kempen Viral';
+    const produk  = document.getElementById('fNamaProduk').value || '';
+    const promo   = document.getElementById('fHargaPromo').value || '?';
+    const normal  = document.getElementById('fHargaNormal').value || '?';
+    let jimat     = document.getElementById('fJimat').value;
+    if (!jimat && promo && normal) {
+      jimat = Math.round((1 - promo/normal)*100);
+    }
+
+    document.getElementById('pvBadge').textContent  = '🔴 ' + badge;
+    document.getElementById('pvBadge').style.background = t.brandLight;
+    document.getElementById('pvBadge').style.color = t.brand;
+    document.getElementById('pvTitle').innerHTML = produk
+      ? `Dapatkan 1 Bulan<br><span style="color:${t.brand}">${produk} PERCUMA!</span>`
+      : `Dapatkan 1 Bulan<br><span style="color:${t.brand}">PERCUMA!</span>`;
+    document.getElementById('pvPromo').textContent = 'RM' + promo;
+    document.getElementById('pvPromo').style.color = t.brand;
+    document.getElementById('pvNormal').textContent = 'RM' + normal;
+    document.getElementById('pvJimat').textContent = jimat + '% jimat';
+    document.getElementById('pvBtn').style.background = t.brand;
+  }
+
+  // ── VALIDATE ──────────────────────────────────────────────────────
+  function validate() {
+    const required = [
+      ['fNamaProduk', 'Nama Produk'],
+      ['fBadge', 'Teks Badge'],
+      ['fOfferText', 'Teks Offer'],
+      ['fHargaPromo', 'Harga Promosi'],
+      ['fHargaNormal', 'Harga Normal'],
+      ['fSlot', 'Total Slot'],
+      ['fTarikh', 'Tarikh Tamat'],
+      ['fWA', 'No. WhatsApp'],
+      ['fPassword', 'Kata Laluan Dashboard'],
+    ];
+    for (const [id, label] of required) {
+      if (!document.getElementById(id).value.trim()) {
+        showToast('⚠️ Sila isi: ' + label);
+        document.getElementById(id).focus();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // ── GENERATE ──────────────────────────────────────────────────────
+  let generatedViral = '';
+  let generatedDash  = '';
+
+  function generatePages() {
+    if (!validate()) return;
+
+    const cfg = {
+      namaProduk : document.getElementById('fNamaProduk').value.trim(),
+      badge      : document.getElementById('fBadge').value.trim(),
+      offerText  : document.getElementById('fOfferText').value.trim(),
+      hargaPromo : document.getElementById('fHargaPromo').value.trim(),
+      hargaNormal: document.getElementById('fHargaNormal').value.trim(),
+      jimat      : document.getElementById('fJimat').value.trim() || Math.round((1 - document.getElementById('fHargaPromo').value / document.getElementById('fHargaNormal').value)*100),
+      ganjaran   : document.getElementById('fGanjaran').value.trim() || '1 bulan percuma',
+      slot       : document.getElementById('fSlot').value.trim(),
+      slotTaken  : document.getElementById('fSlotTaken').value.trim() || '23',
+      tarikh     : document.getElementById('fTarikh').value,
+      wa         : document.getElementById('fWA').value.trim(),
+      sheetURL   : document.getElementById('fSheetURL').value.trim() || 'PASTE_YOUR_APPS_SCRIPT_URL_HERE',
+      password   : document.getElementById('fPassword').value.trim(),
+      theme      : THEMES[selectedTheme],
+      poster     : posterBase64,
+    };
+
+    generatedViral = buildViralPage(cfg);
+    generatedDash  = buildDashboard(cfg);
+
+    document.getElementById('outputSection').classList.add('show');
+    document.getElementById('outputSection').scrollIntoView({behavior:'smooth', block:'start'});
+    showToast('✅ 2 pages berjaya di-generate!');
+  }
+
+  function downloadViral() {
+    download('viral-page.html', generatedViral);
+    showToast('⬇️ viral-page.html dimuat turun!');
+  }
+
+  function downloadDashboard() {
+    download('dashboard.html', generatedDash);
+    showToast('⬇️ dashboard.html dimuat turun!');
+  }
+
+  function download(filename, content) {
+    const blob = new Blob([content], {type:'text/html;charset=utf-8'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ── BUILD VIRAL PAGE ───────────────────────────────────────────────
+  function buildViralPage(c) {
+    const t = c.theme;
+    const endDate = new Date(c.tarikh).getTime();
+    const posterHTML = c.poster
+      ? `<div style="max-width:480px;margin:0 auto 20px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.12);"><img src="${c.poster}" style="width:100%;display:block;" /></div>`
+      : '';
+
+    return `<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${c.namaProduk} — Dapatkan ${c.ganjaran}!</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand:${t.brand};--brand-dark:${t.brandDark};--brand-light:${t.brandLight};
+    --brand-mid:${t.brandMid};--green:#16A34A;--green-light:#DCFCE7;
+    --dark:#1A1208;--text:#2D2010;--muted:#7A6A58;--border:#E8DDD4;
+    --bg:${t.bg};--white:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .nav{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:50;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
+  .nav-logo{font-size:1.25rem;font-weight:800;color:var(--dark);}
+  .nav-logo span{color:var(--brand);}
+  .hero{background:linear-gradient(180deg,var(--brand-light) 0%,var(--bg) 100%);padding:48px 20px 36px;text-align:center;border-bottom:1px solid var(--brand-mid);}
+  .hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--brand);color:white;font-size:0.72rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:18px;animation:fadeDown .5s ease both;}
+  .hero-badge .dot{width:6px;height:6px;background:white;border-radius:50%;animation:blink 1.2s infinite;}
+  @keyframes blink{50%{opacity:0.3;}}
+  .hero h1{font-size:clamp(1.8rem,6vw,2.8rem);font-weight:800;line-height:1.15;color:var(--dark);margin-bottom:14px;animation:fadeDown .5s .08s ease both;}
+  .hero h1 .hl{color:var(--brand);}
+  .hero-sub{font-size:1rem;color:var(--muted);line-height:1.7;max-width:500px;margin:0 auto 28px;animation:fadeDown .5s .14s ease both;}
+  .offer-strip{display:flex;align-items:stretch;background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;max-width:480px;margin:0 auto 20px;animation:fadeDown .5s .18s ease both;box-shadow:0 4px 20px rgba(0,0,0,0.08);}
+  .oi{flex:1;padding:16px 12px;text-align:center;border-right:1px solid var(--border);}
+  .oi:last-child{border-right:none;}
+  .oi:first-child{background:var(--brand-light);}
+  .oi .lbl{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+  .oi .val{font-size:1.6rem;font-weight:800;color:var(--brand);line-height:1;}
+  .oi .unt{font-size:0.75rem;color:var(--muted);margin-top:2px;}
+  .oi.save .val{color:var(--green);font-size:1.3rem;}
+  .slots-wrap{max-width:480px;margin:0 auto;animation:fadeDown .5s .22s ease both;}
+  .slots-row{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--muted);margin-bottom:7px;}
+  .slots-row strong{color:var(--green);font-weight:700;}
+  .slots-bar{height:7px;background:#F0E8E0;border-radius:100px;overflow:hidden;}
+  .slots-fill{height:100%;background:linear-gradient(90deg,var(--brand),${t.brandDark});border-radius:100px;animation:barIn 1.4s 1s ease both;}
+  @keyframes barIn{from{width:0;}}
+  .cd-wrap{max-width:480px;margin:16px auto 0;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:14px 20px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;animation:fadeDown .5s .26s ease both;}
+  .cd-lbl{font-size:0.8rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;width:100%;text-align:center;}
+  .cd-boxes{display:flex;gap:6px;align-items:center;}
+  .cd-box{background:var(--brand-light);border:1px solid var(--brand-mid);border-radius:8px;padding:7px 10px;text-align:center;min-width:46px;}
+  .cd-box .n{font-size:1.1rem;font-weight:800;color:var(--brand);display:block;line-height:1;}
+  .cd-box .u{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
+  .cd-col{font-size:1.1rem;font-weight:800;color:var(--brand);animation:blink 1s infinite;}
+  .main{max-width:520px;margin:0 auto;padding:36px 20px 72px;}
+  .sec-ttl{font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .sec-ttl .num{width:26px;height:26px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;flex-shrink:0;transition:background .3s;}
+  .sec-ttl.done .num{background:var(--green);}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;transition:border-color .2s,box-shadow .2s;}
+  .card.active{border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,0,0,0.04);}
+  .card.done-card{border-color:#BBF7D0;background:#F0FFF4;}
+  .field{margin-bottom:14px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:6px;}
+  .field input{width:100%;padding:13px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;color:var(--text);outline:none;transition:border-color .2s;}
+  .field input:focus{border-color:var(--brand);}
+  .field input::placeholder{color:#C0B0A0;}
+  .copy-hint{font-size:0.75rem;color:var(--brand);margin-bottom:10px;}
+  .copy-msg{background:var(--bg);border:1.5px dashed #D0C0B0;border-radius:12px;padding:16px;font-size:0.88rem;line-height:1.75;color:var(--text);margin-bottom:10px;cursor:pointer;transition:border-color .2s;user-select:all;}
+  .copy-msg:hover{border-color:var(--brand);background:var(--brand-light);}
+  .btn-copy{width:100%;padding:13px;background:var(--brand-light);border:1.5px solid var(--brand);border-radius:10px;color:var(--brand);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .btn-copy:hover{background:var(--brand);color:white;}
+  .btn-copy.copied{background:var(--green-light);border-color:var(--green);color:var(--green);}
+  .upload-zone{border:2px dashed var(--border);border-radius:12px;padding:24px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);}
+  .upload-zone:hover{border-color:var(--brand);background:var(--brand-light);}
+  .upload-zone.has-files{border-color:var(--brand);background:var(--brand-light);}
+  .upload-zone.ready{border-color:var(--green);background:var(--green-light);cursor:default;}
+  .up-icon{font-size:2rem;margin-bottom:8px;}
+  .up-txt{font-size:0.88rem;color:var(--muted);line-height:1.6;}
+  .up-txt strong{color:var(--text);}
+  #fileInput{display:none;}
+  .file-list{margin-top:12px;display:flex;flex-direction:column;gap:6px;text-align:left;}
+  .file-item{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:0.82rem;}
+  .fi-icon{font-size:0.95rem;flex-shrink:0;}
+  .fi-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
+  .fi-ok{font-size:0.75rem;color:var(--green);font-weight:700;flex-shrink:0;}
+  .up-progress{margin-top:10px;display:flex;align-items:center;justify-content:space-between;}
+  .up-count{font-size:0.82rem;font-weight:700;color:var(--brand);}
+  .up-count.full{color:var(--green);}
+  .btn-add{font-size:0.78rem;color:var(--brand);font-weight:600;background:none;border:none;cursor:pointer;text-decoration:underline;padding:0;font-family:'Plus Jakarta Sans',sans-serif;}
+  .checklist{margin-top:14px;}
+  .ci{display:flex;align-items:flex-start;gap:8px;font-size:0.83rem;color:var(--muted);margin-bottom:6px;line-height:1.5;}
+  .ci .chk{color:var(--brand);flex-shrink:0;margin-top:1px;}
+  .ci.grn .chk{color:var(--green);}
+  .btn-submit{width:100%;padding:18px;background:var(--brand);border:none;border-radius:14px;color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:1.05rem;font-weight:800;cursor:pointer;transition:all .18s;box-shadow:0 6px 24px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;}
+  .btn-submit:hover{background:var(--brand-dark);transform:translateY(-2px);}
+  .form-note{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:12px;line-height:1.6;}
+  .success-wrap{display:none;max-width:520px;margin:0 auto;padding:60px 20px 80px;text-align:center;}
+  .success-wrap.show{display:block;animation:fadeDown .5s ease;}
+  .s-icon{font-size:5rem;margin-bottom:20px;animation:pop .6s ease;}
+  @keyframes pop{0%{transform:scale(0);opacity:0;}70%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+  .s-title{font-size:2rem;font-weight:800;color:var(--dark);margin-bottom:12px;}
+  .s-sub{font-size:0.95rem;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto 24px;}
+  .s-summary{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:20px;text-align:left;}
+  .s-summary-title{font-size:0.78rem;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;}
+  .s-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:12px;}
+  .s-row:last-child{border-bottom:none;padding-bottom:0;}
+  .s-key{font-size:0.82rem;color:var(--muted);font-weight:500;flex-shrink:0;}
+  .s-val{font-size:0.88rem;font-weight:600;color:var(--dark);text-align:right;}
+  .s-status{background:var(--brand-light);color:var(--brand);padding:3px 10px;border-radius:100px;font-size:0.78rem;font-weight:700;}
+  .s-next{background:var(--brand-light);border:1.5px solid var(--brand-mid);border-radius:14px;padding:16px 20px;margin-bottom:20px;text-align:left;}
+  .s-next-title{font-size:0.82rem;font-weight:700;color:var(--brand);margin-bottom:8px;}
+  .s-next-desc{font-size:0.85rem;color:var(--text);line-height:1.65;}
+  .btn-wa{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;background:#25D366;border:none;border-radius:12px;color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 6px 20px rgba(37,211,102,0.3);width:100%;justify-content:center;}
+  .btn-wa:hover{transform:translateY(-2px);}
+  .s-toast{position:fixed;bottom:24px;left:16px;right:16px;max-width:340px;margin:0 auto;background:var(--dark);color:white;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:100;transform:translateY(80px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,0.2);}
+  .s-toast.show{transform:translateY(0);}
+  .s-av{width:34px;height:34px;background:var(--brand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:white;flex-shrink:0;}
+  .s-inf{font-size:0.82rem;font-weight:600;}
+  .s-tm{font-size:0.72rem;color:rgba(255,255,255,0.5);margin-top:2px;}
+  .a-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:white;padding:10px 20px;border-radius:100px;font-size:0.85rem;font-weight:600;z-index:200;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;}
+  .a-toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-logo"><span>${c.namaProduk.replace(/(\w+)/, '<span>$1</span>')}</span></div></nav>
+
+<div id="mainScreen">
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span>${c.badge}</div>
+  <h1>Dapatkan <span class="hl">${c.ganjaran.toUpperCase()}</span><br>Untuk Kedai Anda!</h1>
+  <p class="hero-sub">Kongsi kepada 5 kawan peniaga dan tuntut ganjaran anda secara percuma.</p>
+  ${posterHTML}
+  <div class="offer-strip">
+    <div class="oi"><div class="lbl">Harga Promosi</div><div class="val">RM${c.hargaPromo}</div><div class="unt">untuk 2 bulan</div></div>
+    <div class="oi"><div class="lbl">Harga Normal</div><div class="val" style="text-decoration:line-through;font-size:1.2rem;color:var(--muted)">RM${c.hargaNormal}</div><div class="unt">tanpa promosi</div></div>
+    <div class="oi save"><div class="lbl">Anda Jimat</div><div class="val">${c.jimat}%</div><div class="unt">tawaran terhad</div></div>
+  </div>
+  <div class="slots-wrap">
+    <div class="slots-row"><span>Slot tuntutan percuma</span><strong id="slotsLeft">${parseInt(c.slot)-parseInt(c.slotTaken)}</strong> slot berbaki</div>
+    <div class="slots-bar"><div class="slots-fill" id="slotFill" style="width:${Math.round(parseInt(c.slotTaken)/parseInt(c.slot)*100)}%"></div></div>
+  </div>
+  <div class="cd-wrap">
+    <div class="cd-lbl">⏰ Kempen tamat dalam</div>
+    <div class="cd-boxes">
+      <div class="cd-box"><span class="n" id="cdD">00</span><span class="u">Hari</span></div>
+      <span class="cd-col">:</span>
+      <div class="cd-box"><span class="n" id="cdH">00</span><span class="u">Jam</span></div>
+      <span class="cd-col">:</span>
+      <div class="cd-box"><span class="n" id="cdM">00</span><span class="u">Min</span></div>
+      <span class="cd-col">:</span>
+      <div class="cd-box"><span class="n" id="cdS">00</span><span class="u">Saat</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sec-ttl" id="t1"><div class="num">1</div>Isi Maklumat Anda</div>
+  <div class="card active" id="c1">
+    <div class="field"><label>Nama Penuh</label><input type="text" id="nameInput" placeholder="Nama anda" /></div>
+    <div class="field"><label>No. WhatsApp</label><input type="text" id="phoneInput" placeholder="0123456789" /></div>
+    <div class="field"><label>Nama Kedai (optional)</label><input type="text" id="kedaiInput" placeholder="Nama kedai anda" /></div>
+  </div>
+
+  <div class="sec-ttl" id="t2"><div class="num">2</div>Kongsi Kepada 5 Kawan Peniaga</div>
+  <div class="card" id="c2">
+    <p class="copy-hint">📋 Copy ayat di bawah dan paste ke WhatsApp 5 kawan yang ada kedai makan:</p>
+    <div class="copy-msg" id="copyText" onclick="copyMsg()">POSKedai nak beri peniaga makanan sistem POS PERCUMA untuk 1 bulan! 🎉
+
+Kalau anda ada kedai makan, warung, cafe atau gerai — ini peluang anda.
+
+✅ Guna phone sendiri — tak perlu beli mesin
+✅ Setup dalam 1 hari
+✅ Tiada kontrak, berhenti bila-bila
+✅ 100% Bahasa Melayu
+
+Daftar percuma di sini 👇
+[link kempen anda]
+(Tawaran terhad — ${c.slot} slot sahaja!)</div>
+    <button class="btn-copy" id="copyBtn" onclick="copyMsg()"><span id="copyIcon">📋</span><span id="copyLbl">Copy Ayat Ini</span></button>
+  </div>
+
+  <div class="sec-ttl" id="t3"><div class="num">3</div>Upload 5 Screenshot Bukti</div>
+  <div class="card" id="c3">
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:14px;line-height:1.6;">Screenshot WhatsApp conversation dengan 5 kawan. Pilih semua 5 gambar sekaligus:</p>
+    <div class="upload-zone" id="upZone" onclick="document.getElementById('fileInput').click()">
+      <div class="up-icon" id="upIcon">📸</div>
+      <div class="up-txt" id="upTxt"><strong>Klik untuk pilih screenshot</strong><br>Pilih sehingga 5 gambar sekaligus</div>
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <div class="up-progress" id="upProgress" style="display:none;">
+      <span class="up-count" id="upCount">0/5 screenshot</span>
+      <button class="btn-add" onclick="document.getElementById('fileInput').click()">+ Tambah lagi</button>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(event)" />
+    <div class="checklist">
+      <div class="ci"><span class="chk">✓</span> Screenshot kena nampak nama kawan dan mesej yang dihantar</div>
+      <div class="ci"><span class="chk">✓</span> Perlu 5 orang berbeza (bukan sama group)</div>
+      <div class="ci grn"><span class="chk">✓</span> Kawan anda juga layak daftar dan dapat percuma!</div>
+    </div>
+  </div>
+
+  <button class="btn-submit" onclick="handleSubmit()">Tuntut ${c.ganjaran} Sekarang <span>→</span></button>
+  <p class="form-note">🔒 Maklumat anda selamat & tidak dikongsi kepada pihak lain.<br>Kami akan hubungi melalui WhatsApp dalam 24 jam.</p>
+</div>
+</div>
+
+<div class="success-wrap" id="successScreen">
+  <div class="s-icon">🎉</div>
+  <h2 class="s-title">Permohonan Berjaya!</h2>
+  <p class="s-sub">Tahniah! Sila semak butiran permohonan anda dan tekan butang WhatsApp untuk hantar screenshot bukti.</p>
+  <div class="s-summary">
+    <div class="s-summary-title">📋 Ringkasan Permohonan</div>
+    <div class="s-row"><span class="s-key">Nama</span><span class="s-val" id="sumNama">—</span></div>
+    <div class="s-row"><span class="s-key">No. WhatsApp</span><span class="s-val" id="sumTelefon">—</span></div>
+    <div class="s-row"><span class="s-key">Nama Kedai</span><span class="s-val" id="sumKedai">—</span></div>
+    <div class="s-row"><span class="s-key">Tarikh Daftar</span><span class="s-val" id="sumTarikh">—</span></div>
+    <div class="s-row"><span class="s-key">Tawaran</span><span class="s-val" style="color:var(--green);font-weight:700;">${c.ganjaran}</span></div>
+    <div class="s-row"><span class="s-key">Status</span><span class="s-val s-status">⏳ Menunggu Verifikasi</span></div>
+  </div>
+  <div class="s-next">
+    <div class="s-next-title">⚡ Langkah Seterusnya</div>
+    <p class="s-next-desc">Tekan butang di bawah dan hantar 5 screenshot bukti kepada kami. Akaun akan diaktifkan dalam <strong>24 jam</strong> selepas verify.</p>
+  </div>
+  <a class="btn-wa" id="waBtn" href="#" target="_blank">📱 Hantar Screenshot via WhatsApp</a>
+  <p class="form-note" style="margin-top:14px;">Hantar 5 screenshot dalam satu chat WhatsApp. Kami akan reply dan confirm.</p>
+</div>
+
+<div class="s-toast" id="sToast"><div class="s-av" id="sAv">NR</div><div><div class="s-inf" id="sInf"><strong>Nor R.</strong> dari Kelantan baru join</div><div class="s-tm" id="sTm">2 minit lepas</div></div></div>
+<div class="a-toast" id="aToast">✅ Berjaya!</div>
+
+<script>
+  const SHEET_URL='${c.sheetURL}';
+  const WA_NUM='${c.wa}';
+  const END_DATE=${endDate};
+
+  function tick(){const d=END_DATE-Date.now();if(d<=0)return;document.getElementById('cdD').textContent=String(Math.floor(d/86400000)).padStart(2,'0');document.getElementById('cdH').textContent=String(Math.floor((d%86400000)/3600000)).padStart(2,'0');document.getElementById('cdM').textContent=String(Math.floor((d%3600000)/60000)).padStart(2,'0');document.getElementById('cdS').textContent=String(Math.floor((d%60000)/1000)).padStart(2,'0');}
+  setInterval(tick,1000);tick();
+
+  let taken=${parseInt(c.slotTaken)};
+  setInterval(()=>{if(Math.random()>.6&&taken<${parseInt(c.slot)-1}){taken++;document.getElementById('slotsLeft').textContent=${parseInt(c.slot)}-taken;document.getElementById('slotFill').style.width=(taken/${parseInt(c.slot)}*100)+'%';}},42000);
+
+  let didCopy=false;
+  function copyMsg(){const text=document.getElementById('copyText').innerText;try{navigator.clipboard.writeText(text).then(markCopied).catch(()=>{fallback(text);markCopied();});}catch(e){fallback(text);markCopied();}}
+  function fallback(t){const el=document.createElement('textarea');el.value=t;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);}
+  function markCopied(){if(didCopy)return;didCopy=true;document.getElementById('copyIcon').textContent='✅';document.getElementById('copyLbl').textContent='Berjaya Dicopy!';document.getElementById('copyBtn').classList.add('copied');document.getElementById('c2').classList.replace('active','done-card');const t2=document.getElementById('t2');t2.classList.add('done');t2.querySelector('.num').textContent='✓';showAlert('✅ Ayat dicopy! Paste ke WhatsApp 5 kawan peniaga sekarang.');}
+
+  let uploadedFiles=[];
+  function handleFiles(e){const nf=Array.from(e.target.files);nf.forEach(f=>{if(uploadedFiles.length<5&&!uploadedFiles.find(x=>x.name===f.name))uploadedFiles.push(f);});renderFileList();}
+  function renderFileList(){const list=document.getElementById('fileList');const progress=document.getElementById('upProgress');const count=document.getElementById('upCount');const zone=document.getElementById('upZone');list.innerHTML=uploadedFiles.map((f,i)=>'<div class="file-item"><span class="fi-icon">🖼️</span><span class="fi-name">'+f.name+'</span><span class="fi-ok">✅ Kawan '+(i+1)+'</span></div>').join('');if(uploadedFiles.length>0){progress.style.display='flex';count.textContent=uploadedFiles.length+'/5 screenshot';count.className=uploadedFiles.length>=5?'up-count full':'up-count';zone.classList.add('has-files');document.getElementById('upIcon').textContent=uploadedFiles.length>=5?'✅':'📸';document.getElementById('upTxt').innerHTML=uploadedFiles.length>=5?'<strong style="color:var(--green)">5 screenshot siap!</strong><br><span style="color:var(--muted)">Semua gambar dah dipilih</span>':'<strong>Klik untuk tambah lagi</strong><br><span style="color:var(--muted)">Perlu '+(5-uploadedFiles.length)+' lagi</span>';}if(uploadedFiles.length>=5){zone.classList.replace('has-files','ready');document.getElementById('c3').classList.replace('active','done-card');const t3=document.getElementById('t3');t3.classList.add('done');t3.querySelector('.num').textContent='✓';}}
+  const uz=document.getElementById('upZone');uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.borderColor='var(--brand)';});uz.addEventListener('dragleave',()=>{uz.style.borderColor='';});uz.addEventListener('drop',e=>{e.preventDefault();const files=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));files.forEach(f=>{if(uploadedFiles.length<5)uploadedFiles.push(f);});renderFileList();});
+
+  async function handleSubmit(){const name=document.getElementById('nameInput').value.trim();const phone=document.getElementById('phoneInput').value.trim();const kedai=document.getElementById('kedaiInput').value.trim();if(!name){showAlert('⚠️ Sila masukkan nama anda');return;}if(!phone){showAlert('⚠️ Sila masukkan nombor WhatsApp');return;}if(!didCopy){showAlert('⚠️ Sila copy dan hantar ayat ke 5 kawan dulu');return;}if(uploadedFiles.length<5){showAlert('⚠️ Sila upload 5 screenshot bukti (baru '+uploadedFiles.length+'/5)');return;}const btn=document.querySelector('.btn-submit');btn.innerHTML='⏳ Menghantar...';btn.disabled=true;const now=new Date();const tarikh=now.toLocaleDateString('ms-MY',{day:'2-digit',month:'long',year:'numeric'})+', '+now.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});try{if(SHEET_URL!=='PASTE_YOUR_APPS_SCRIPT_URL_HERE'){await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({nama:name,telefon:phone,kedai:kedai||'-',tarikh,status:'Belum Verify'});}};}catch(e){console.log(e);}taken++;document.getElementById('slotsLeft').textContent=${parseInt(c.slot)}-taken;document.getElementById('slotFill').style.width=(taken/${parseInt(c.slot)}*100)+'%';document.getElementById('sumNama').textContent=name;document.getElementById('sumTelefon').textContent=phone;document.getElementById('sumKedai').textContent=kedai||'-';document.getElementById('sumTarikh').textContent=tarikh;const msg=encodeURIComponent('Assalamualaikum ${c.namaProduk}! 👋\\n\\nSaya ingin tuntut ${c.ganjaran}.\\n\\n📋 Butiran Permohonan:\\n• Nama: '+name+'\\n• No. WA: '+phone+'\\n• Kedai: '+(kedai||'-')+'\\n• Tarikh: '+tarikh+'\\n\\nSaya dah hantar mesej ke 5 kawan peniaga ✅\\nScreenshot bukti akan saya hantar selepas ini.\\n\\nTerima kasih! 🙏');document.getElementById('waBtn').href='https://wa.me/'+WA_NUM+'?text='+msg;const firstName=name.split(' ')[0];const initials=name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();setTimeout(()=>{document.getElementById('sAv').textContent=initials;document.getElementById('sInf').innerHTML='<strong>'+firstName+'</strong> baru berjaya daftar! 🎉';document.getElementById('sTm').textContent='Baru sahaja';const t=document.getElementById('sToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),5000);},800);document.getElementById('mainScreen').style.display='none';document.getElementById('successScreen').classList.add('show');window.scrollTo({top:0,behavior:'smooth'});}
+
+  function showAlert(msg){const t=document.getElementById('aToast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+  const proofs=[{i:'NR',n:'Nor R.',l:'Kelantan'},{i:'FA',n:'Farid A.',l:'Selangor'},{i:'ZH',n:'Zulaikha H.',l:'Johor'},{i:'AM',n:'Amir M.',l:'Perak'},{i:'SR',n:'Salmah R.',l:'Pahang'}];
+  const tms=['Baru sahaja','1 min lepas','2 min lepas','5 min lepas'];let pi=0;
+  function showProof(){const p=proofs[pi++%proofs.length];document.getElementById('sAv').textContent=p.i;document.getElementById('sInf').innerHTML='<strong>'+p.n+'</strong> dari '+p.l+' baru join';document.getElementById('sTm').textContent=tms[Math.floor(Math.random()*tms.length)];const el=document.getElementById('sToast');el.classList.add('show');setTimeout(()=>el.classList.remove('show'),4500);}
+  setTimeout(showProof,3500);setInterval(showProof,18000);
+<\/script>
+</body>
+</html>`;
+  }
+
+  // ── BUILD DASHBOARD ────────────────────────────────────────────────
+  function buildDashboard(c) {
+    const t = c.theme;
+    return `<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${c.namaProduk} — Dashboard Kempen</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--brand:${t.brand};--brand-dark:${t.brandDark};--brand-light:${t.brandLight};--brand-mid:${t.brandMid};--green:#16A34A;--green-light:#DCFCE7;--yellow:#D97706;--yellow-light:#FEF3C7;--blue:#1D4ED8;--blue-light:#DBEAFE;--dark:#1A1208;--text:#2D2010;--muted:#7A6A58;--border:#E8DDD4;--bg:${t.bg};--white:#FFFFFF;--sidebar-w:220px;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .login-screen{position:fixed;inset:0;background:#0D0D0D;display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;}
+  .login-screen.hidden{display:none;}
+  .login-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center;}
+  .login-logo{font-size:1.4rem;font-weight:800;color:white;margin-bottom:8px;}
+  .login-logo span{color:${t.brand};}
+  .login-sub{font-size:0.85rem;color:rgba(255,255,255,0.45);margin-bottom:28px;}
+  .login-label{display:block;font-size:0.78rem;color:rgba(255,255,255,0.5);text-align:left;margin-bottom:6px;font-weight:600;}
+  .login-input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;outline:none;margin-bottom:16px;transition:border-color .2s;}
+  .login-input:focus{border-color:${t.brand};}
+  .login-input::placeholder{color:rgba(255,255,255,0.25);}
+  .login-btn{width:100%;padding:14px;background:${t.brand};border:none;border-radius:10px;color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;}
+  .login-err{font-size:0.8rem;color:#F87171;margin-top:10px;display:none;}
+  .layout{display:flex;min-height:100vh;}
+  .sidebar{width:var(--sidebar-w);background:#1A1208;color:white;position:fixed;top:0;left:0;bottom:0;z-index:40;display:flex;flex-direction:column;}
+  .sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .sidebar-logo .logo{font-size:1.1rem;font-weight:800;}
+  .sidebar-logo .logo span{color:${t.brand};}
+  .sidebar-logo .badge{font-size:0.65rem;background:${t.brand};color:white;padding:2px 8px;border-radius:100px;font-weight:700;margin-top:4px;display:inline-block;}
+  .sidebar-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:0.88rem;font-weight:500;color:rgba(255,255,255,0.55);transition:all .2s;text-decoration:none;}
+  .nav-item.active{background:rgba(255,255,255,0.08);color:${t.brand};font-weight:700;}
+  .sidebar-footer{padding:16px 12px;border-top:1px solid rgba(255,255,255,0.08);}
+  .logout-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:0.85rem;color:rgba(255,255,255,0.4);transition:all .2s;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif;width:100%;}
+  .logout-btn:hover{color:#F87171;}
+  .main-content{margin-left:var(--sidebar-w);flex:1;padding:32px 28px;min-height:100vh;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+  .topbar-title{font-size:1.4rem;font-weight:800;color:var(--dark);}
+  .topbar-title span{color:${t.brand};}
+  .btn-refresh{display:flex;align-items:center;gap:6px;padding:9px 16px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;}
+  .btn-refresh:hover{border-color:${t.brand};color:${t.brand};}
+  .btn-export{display:flex;align-items:center;gap:6px;padding:9px 16px;background:${t.brand};border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:700;color:white;cursor:pointer;}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px;}
+  .stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;}
+  .stat-icon{font-size:1.4rem;margin-bottom:10px;}
+  .stat-val{font-size:1.8rem;font-weight:800;color:var(--dark);line-height:1;margin-bottom:4px;}
+  .stat-lbl{font-size:0.78rem;color:var(--muted);font-weight:500;}
+  .stat-card.orange{border-left:3px solid ${t.brand};}
+  .stat-card.green{border-left:3px solid var(--green);}
+  .stat-card.yellow{border-left:3px solid var(--yellow);}
+  .stat-card.blue{border-left:3px solid var(--blue);}
+  .slot-progress-wrap{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;}
+  .sp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .sp-title{font-size:0.9rem;font-weight:700;color:var(--dark);}
+  .sp-count{font-size:0.85rem;color:var(--muted);}
+  .sp-count strong{color:${t.brand};}
+  .sp-bar{height:10px;background:#F0E8E0;border-radius:100px;overflow:hidden;}
+  .sp-fill{height:100%;background:linear-gradient(90deg,${t.brand},${t.brandDark});border-radius:100px;transition:width .6s ease;}
+  .filters{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+  .search-wrap{position:relative;flex:1;min-width:200px;}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.9rem;pointer-events:none;}
+  .search-input{width:100%;padding:10px 10px 10px 36px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:border-color .2s;}
+  .search-input:focus{border-color:${t.brand};}
+  .filter-tabs{display:flex;gap:6px;}
+  .ftab{padding:8px 14px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .2s;}
+  .ftab.active{background:${t.brand};border-color:${t.brand};color:white;}
+  .table-wrap{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;}
+  .table-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .table-title{font-size:0.9rem;font-weight:700;color:var(--dark);}
+  .table-count{font-size:0.8rem;color:var(--muted);}
+  table{width:100%;border-collapse:collapse;}
+  thead th{padding:12px 16px;text-align:left;font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;background:#FAFAF8;border-bottom:1px solid var(--border);}
+  tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:var(--brand-light);}
+  tbody td{padding:14px 16px;font-size:0.88rem;color:var(--text);vertical-align:middle;}
+  .status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .status-badge.pending{background:var(--yellow-light);color:var(--yellow);}
+  .status-badge.verified{background:var(--blue-light);color:var(--blue);}
+  .status-badge.active{background:var(--green-light);color:var(--green);}
+  .action-btns{display:flex;gap:6px;}
+  .act-btn{padding:6px 12px;border-radius:7px;font-size:0.78rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+  .act-btn.wa{border-color:#25D366;color:#16A34A;background:var(--green-light);}
+  .act-btn.wa:hover{background:#25D366;color:white;}
+  .act-btn.del{border-color:#FCA5A5;color:#DC2626;background:#FEF2F2;}
+  .act-btn.del:hover{background:#DC2626;color:white;}
+  .empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .modal-overlay.show{opacity:1;pointer-events:all;}
+  .modal{background:var(--white);border-radius:20px;padding:28px;width:100%;max-width:420px;}
+  .modal-title{font-size:1.1rem;font-weight:800;color:var(--dark);margin-bottom:4px;}
+  .modal-sub{font-size:0.85rem;color:var(--muted);margin-bottom:20px;}
+  .modal-field{margin-bottom:14px;}
+  .modal-field label{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);margin-bottom:6px;}
+  .modal-val{font-size:0.95rem;font-weight:600;color:var(--dark);padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);}
+  .modal-status-btns{display:flex;gap:8px;margin-top:20px;}
+  .msb{flex:1;padding:11px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+  .msb.pending{background:var(--yellow-light);color:var(--yellow);}
+  .msb.verified{background:var(--blue-light);color:var(--blue);}
+  .msb.active{background:var(--green-light);color:var(--green);}
+  .msb.selected{outline:2px solid currentColor;outline-offset:2px;}
+  .modal-actions{display:flex;gap:8px;margin-top:16px;}
+  .btn-save{flex:1;padding:12px;background:${t.brand};border:none;border-radius:10px;color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;}
+  .btn-cancel{padding:12px 20px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--dark);color:white;padding:12px 24px;border-radius:100px;font-size:0.85rem;font-weight:600;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .hamburger{display:none;position:fixed;top:16px;left:16px;z-index:100;background:var(--dark);border:none;color:white;width:40px;height:40px;border-radius:10px;font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:39;}
+  .sidebar-overlay.show{display:block;}
+  @media(max-width:1024px){.main-content{padding:24px 20px;}}
+  @media(max-width:768px){
+    .hamburger{display:flex;}
+    .sidebar{transform:translateX(-100%);transition:transform .3s;}
+    .sidebar.open{transform:translateX(0);}
+    .main-content{margin-left:0;padding:20px 16px;padding-top:68px;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .filter-tabs{display:none;}
+    table thead{display:none;}
+    tbody tr{display:block;padding:14px 16px;}
+    tbody td{display:flex;justify-content:space-between;padding:4px 0;border:none;}
+    tbody td::before{content:attr(data-label);font-size:0.75rem;color:var(--muted);font-weight:600;}
+    .topbar{padding-top:8px;}
+    .topbar-title{font-size:1.1rem;}
+  }
+</style>
+</head>
+<body>
+<button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo"><span>${c.namaProduk}</span></div>
+    <p class="login-sub">Dashboard Kempen — Admin sahaja</p>
+    <label class="login-label">Kata Laluan</label>
+    <input type="password" class="login-input" id="pwInput" placeholder="Masukkan kata laluan" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button class="login-btn" onclick="doLogin()">Masuk Dashboard</button>
+    <p class="login-err" id="loginErr">⚠️ Kata laluan salah. Cuba lagi.</p>
+  </div>
+</div>
+<div class="layout" id="appLayout" style="display:none;">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo"><span>${c.namaProduk}</span></div><span class="badge">${c.badge}</span></div>
+    <nav class="sidebar-nav"><a class="nav-item active">👥 Semua Pendaftar</a></nav>
+    <div class="sidebar-footer"><button class="logout-btn" onclick="doLogout()">🚪 Log Keluar</button></div>
+  </aside>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title">${c.namaProduk} — <span>${c.badge}</span></div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-refresh" onclick="loadData()">🔄 Refresh</button>
+        <button class="btn-export" onclick="exportCSV()">⬇️ Export CSV</button>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card orange"><div class="stat-icon">🎯</div><div class="stat-val" id="statTotal">0</div><div class="stat-lbl">Jumlah Pendaftar</div></div>
+      <div class="stat-card yellow"><div class="stat-icon">⏳</div><div class="stat-val" id="statPending">0</div><div class="stat-lbl">Belum Verify</div></div>
+      <div class="stat-card blue"><div class="stat-icon">✅</div><div class="stat-val" id="statVerified">0</div><div class="stat-lbl">Dah Verify</div></div>
+      <div class="stat-card green"><div class="stat-icon">🚀</div><div class="stat-val" id="statActive">0</div><div class="stat-lbl">Akaun Aktif</div></div>
+    </div>
+    <div class="slot-progress-wrap">
+      <div class="sp-row"><span class="sp-title">📊 Kemajuan Slot</span><span class="sp-count"><strong id="slotUsed">0</strong> / ${c.slot} slot</span></div>
+      <div class="sp-bar"><div class="sp-fill" id="slotBar" style="width:0%"></div></div>
+    </div>
+    <div class="filters">
+      <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="Cari nama, nombor atau kedai..." oninput="filterData(this.value)" /></div>
+      <div class="filter-tabs">
+        <div class="ftab active" onclick="setFilter('semua',this)">Semua</div>
+        <div class="ftab" onclick="setFilter('pending',this)">⏳ Pending</div>
+        <div class="ftab" onclick="setFilter('verified',this)">✅ Verify</div>
+        <div class="ftab" onclick="setFilter('active',this)">🚀 Aktif</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <div class="table-header"><span class="table-title">Senarai Pendaftar</span><span class="table-count" id="tableCount">0 rekod</span></div>
+      <div style="overflow-x:auto;"><table><thead><tr><th>#</th><th>Nama</th><th>No. WhatsApp</th><th>Kedai</th><th>Tarikh</th><th>Status</th><th>Tindakan</th></tr></thead><tbody id="tableBody"></tbody></table></div>
+      <div class="empty-state" id="emptyState" style="display:none;"><div style="font-size:3rem;margin-bottom:12px;">📭</div><div>Tiada rekod dijumpai</div></div>
+    </div>
+  </main>
+</div>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-title">✏️ Kemaskini Status</div>
+    <p class="modal-sub">Tukar status pendaftar di bawah</p>
+    <div class="modal-field"><label>Nama</label><div class="modal-val" id="mNama">—</div></div>
+    <div class="modal-field"><label>No. WhatsApp</label><div class="modal-val" id="mTelefon">—</div></div>
+    <div class="modal-field"><label>Pilih Status Baharu</label><div class="modal-status-btns"><button class="msb pending" onclick="selectStatus('pending',this)">⏳ Pending</button><button class="msb verified" onclick="selectStatus('verified',this)">✅ Verify</button><button class="msb active" onclick="selectStatus('active',this)">🚀 Aktif</button></div></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">Batal</button><button class="btn-save" onclick="saveStatus()">Simpan</button></div>
+  </div>
+</div>
+<div class="toast" id="toast">✅ Berjaya!</div>
+<script>
+  const PASSWORD='${c.password}';
+  const SHEET_URL='${c.sheetURL}';
+  const TOTAL_SLOT=${parseInt(c.slot)};
+  let allData=[];let filtered=[];let currentFilter='semua';let editingId=null;let editingStatus=null;
+  function doLogin(){if(document.getElementById('pwInput').value===PASSWORD){document.getElementById('loginScreen').classList.add('hidden');document.getElementById('appLayout').style.display='flex';loadData();}else{document.getElementById('loginErr').style.display='block';document.getElementById('pwInput').value='';}}
+  function doLogout(){document.getElementById('loginScreen').classList.remove('hidden');document.getElementById('appLayout').style.display='none';}
+  async function loadData(){const saved=localStorage.getItem('dash_data_${c.namaProduk.replace(/\s/g,'')}');if(saved)allData=JSON.parse(saved);if(SHEET_URL&&SHEET_URL!=='PASTE_YOUR_APPS_SCRIPT_URL_HERE'){try{const r=await fetch(SHEET_URL+'?action=get');const j=await r.json();if(j.data){allData=j.data;saveLocal();showToast('✅ Data dari Sheet');}}catch(e){}}renderAll();}
+  function renderAll(){const total=allData.length;const pending=allData.filter(d=>d.status==='pending').length;const verified=allData.filter(d=>d.status==='verified').length;const active=allData.filter(d=>d.status==='active').length;document.getElementById('statTotal').textContent=total;document.getElementById('statPending').textContent=pending;document.getElementById('statVerified').textContent=verified;document.getElementById('statActive').textContent=active;document.getElementById('slotUsed').textContent=total;document.getElementById('slotBar').style.width=Math.min(total,TOTAL_SLOT)/TOTAL_SLOT*100+'%';filterData('');}
+  function filterData(q){filtered=allData.filter(d=>{const ms=currentFilter==='semua'||d.status===currentFilter;const mq=!q||d.nama.toLowerCase().includes(q.toLowerCase())||d.telefon.includes(q)||(d.kedai||'').toLowerCase().includes(q.toLowerCase());return ms&&mq;});const tbody=document.getElementById('tableBody');const empty=document.getElementById('emptyState');document.getElementById('tableCount').textContent=filtered.length+' rekod';if(!filtered.length){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';tbody.innerHTML=filtered.map(d=>'<tr><td data-label="#">'+d.id+'</td><td data-label="Nama" style="font-weight:600">'+d.nama+'</td><td data-label="WA" style="color:var(--muted)">'+d.telefon+'</td><td data-label="Kedai" style="font-size:0.83rem">'+d.kedai+'</td><td data-label="Tarikh" style="color:var(--muted);font-size:0.8rem">'+d.tarikh+'</td><td data-label="Status"><span class="status-badge '+d.status+'" onclick="openModal('+d.id+')">'+statusLabel(d.status)+'</span></td><td data-label="Tindakan"><div class="action-btns"><button class="act-btn wa" onclick="openWA(\''+d.telefon+'\',\''+d.nama+'\')">📱 WA</button><button class="act-btn del" onclick="deleteRecord('+d.id+')">🗑️</button></div></td></tr>').join('');}
+  function setFilter(f,el){currentFilter=f;document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');filterData(document.querySelector('.search-input').value);}
+  function statusLabel(s){if(s==='pending')return'⏳ Pending';if(s==='verified')return'✅ Verify';if(s==='active')return'🚀 Aktif';return s;}
+  function openModal(id){const d=allData.find(x=>x.id===id);if(!d)return;editingId=id;editingStatus=d.status;document.getElementById('mNama').textContent=d.nama;document.getElementById('mTelefon').textContent=d.telefon;document.querySelectorAll('.msb').forEach(b=>b.classList.remove('selected'));document.querySelector('.msb.'+d.status)?.classList.add('selected');document.getElementById('modalOverlay').classList.add('show');}
+  function closeModal(e){if(!e||e.target===document.getElementById('modalOverlay')){document.getElementById('modalOverlay').classList.remove('show');editingId=null;}}
+  function selectStatus(s,el){editingStatus=s;document.querySelectorAll('.msb').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+  function saveStatus(){if(!editingId||!editingStatus)return;const idx=allData.findIndex(x=>x.id===editingId);if(idx>=0){allData[idx].status=editingStatus;saveLocal();renderAll();closeModal();showToast('✅ Status dikemaskini!');}}
+  function deleteRecord(id){if(!confirm('Padam rekod ini?'))return;allData=allData.filter(x=>x.id!==id);saveLocal();renderAll();showToast('🗑️ Rekod dipadam');}
+  function openWA(phone,name){const clean=phone.replace(/[^0-9]/g,'');const wa=clean.startsWith('0')?'6'+clean:clean;const msg=encodeURIComponent('Assalamualaikum '+name+'! 👋\\n\\nIni ${c.namaProduk}. Kami nak confirm status permohonan anda.\\n\\nSila hubungi kami jika ada pertanyaan. Terima kasih!');window.open('https://wa.me/'+wa+'?text='+msg,'_blank');}
+  function saveLocal(){localStorage.setItem('dash_data_${c.namaProduk.replace(/\s/g,'')}',JSON.stringify(allData));}
+  function exportCSV(){const headers=['#','Nama','No. WhatsApp','Kedai','Tarikh','Status'];const rows=allData.map(d=>[d.id,d.nama,d.telefon,d.kedai,d.tarikh,statusLabel(d.status).replace(/[^\\w\\s]/gi,'').trim()]);const csv=[headers,...rows].map(r=>r.map(c=>'"'+c+'"').join(',')).join('\\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='${c.namaProduk.replace(/\s/g,'-').toLowerCase()}-pendaftar.csv';a.click();URL.revokeObjectURL(url);showToast('✅ CSV diexport!');}
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+  function toggleSidebar(){const s=document.querySelector('.sidebar');const o=document.getElementById('sidebarOverlay');s.classList.toggle('open');o.classList.toggle('show');}
+  document.getElementById('pwInput').focus();
+<\/script>
+</body>
+</html>`;
+  }
+
+  // ── TOAST ──────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 3000);
+  }
+
+  // Init preview
+  updatePreview();
+</script>
+</body>
+</html>
