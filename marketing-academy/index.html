@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Marketing Academy — AI Powered</title>
+<style>
+:root {
+  --green:#1D9E75; --green-bg:#E1F5EE; --green-dark:#085041;
+  --text:#111827; --muted:#6b7280; --hint:#9ca3af;
+  --bg:#ffffff; --bg2:#f8f9fa; --border:#e5e7eb;
+  --yellow:#FEF3C7; --yellow-b:#FCD34D; --yellow-t:#78350F;
+  --red-bg:#FEE2E2; --red-t:#991B1B;
+  --font:'Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg2);color:var(--text);min-height:100vh;}
+#app{max-width:820px;margin:0 auto;background:var(--bg);min-height:100vh;}
+
+/* HEADER */
+.hdr{text-align:center;padding:1.25rem 1rem .6rem;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
+.hdr h1{font-size:18px;font-weight:700;margin-bottom:3px;}
+.hdr p{font-size:11px;color:var(--muted);}
+
+/* PROGRESS */
+.prog-wrap{padding:.5rem 1rem .3rem;}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px;}
+.prog-bg{background:var(--border);border-radius:999px;height:6px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--green);border-radius:999px;transition:width .4s;}
+
+/* TABS */
+.tabs{display:flex;gap:4px;padding:.4rem 1rem .5rem;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;padding:7px 9px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--bg);font-size:11px;font-weight:500;color:var(--muted);text-align:center;min-width:72px;line-height:1.3;transition:all .15s;}
+.tab.on{border:2px solid var(--green);color:var(--green-dark);background:var(--green-bg);font-weight:700;}
+.tab .ic{font-size:14px;display:block;margin-bottom:2px;}
+.tab .sm{font-size:9px;display:block;opacity:.65;margin-top:1px;}
+
+/* PANELS */
+.panel{display:none;padding:1rem;}
+.panel.on{display:block;}
+
+/* CARDS */
+.card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 13px;}
+.card-hdr{display:flex;align-items:center;gap:11px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:.9rem;}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.card-hdr h2{font-size:14px;font-weight:700;margin-bottom:1px;}
+.card-hdr p{font-size:11px;color:var(--muted);}
+
+/* SECTION LABEL */
+.sl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:1rem 0 6px;}
+
+/* INPUTS */
+input,textarea,select{width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:var(--font);color:var(--text);background:var(--bg);outline:none;transition:border .15s;}
+input:focus,textarea:focus{border-color:var(--green);}
+textarea{resize:vertical;}
+
+/* BUTTONS */
+.btn{padding:10px 18px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn-green{background:var(--green);color:white;}
+.btn-green:hover:not(:disabled){opacity:.85;}
+.btn-outline{background:var(--bg);border:1px solid var(--green);color:var(--green);}
+.btn-gray{background:var(--bg);border:1px solid var(--border);color:var(--muted);}
+.btn-full{width:100%;padding:13px;}
+
+/* LANG TOGGLE */
+.lang-row{display:flex;gap:8px;}
+.lang-btn{flex:1;padding:9px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:12px;cursor:pointer;font-weight:500;color:var(--muted);transition:all .15s;}
+.lang-btn.on{border:2px solid var(--green);color:var(--green-dark);background:var(--green-bg);font-weight:700;}
+
+
+
+/* ACTION ITEMS */
+.act-list{display:flex;flex-direction:column;gap:6px;}
+.act-item{display:flex;gap:9px;align-items:flex-start;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:opacity .2s;}
+.act-item.done{opacity:.4;}
+.chk{width:18px;height:18px;border-radius:50%;border:1.5px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s;}
+.act-item.done .chk{background:var(--green);border-color:var(--green);}
+.chk-dot{width:6px;height:6px;background:white;border-radius:50%;display:none;}
+.act-item.done .chk-dot{display:block;}
+.act-title{font-size:13px;font-weight:500;margin-bottom:2px;}
+.act-desc{font-size:11px;color:var(--muted);line-height:1.55;}
+.act-week{font-size:9px;color:var(--green);background:var(--green-bg);padding:1px 7px;border-radius:999px;margin-top:4px;display:inline-block;}
+
+/* TIP BOX */
+.tip{background:var(--green-bg);border-radius:8px;padding:10px 13px;margin-top:12px;font-size:11px;color:var(--green-dark);line-height:1.65;}
+.warn-box{background:var(--yellow);border:1px solid var(--yellow-b);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--yellow-t);margin-bottom:1rem;}
+
+/* FUNNEL STAGES */
+.stage{border-radius:10px;border:1px solid var(--border);overflow:hidden;margin-bottom:.65rem;}
+.stage-hdr{padding:9px 13px;display:flex;align-items:center;gap:10px;}
+.stage-num{width:24px;height:24px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.stage-body{padding:9px 13px;border-top:1px solid var(--border);}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
+.tag{font-size:10px;padding:2px 8px;border-radius:999px;border:1px solid var(--border);}
+.eg-box{font-size:11px;color:var(--muted);line-height:1.6;padding:7px 10px;background:var(--bg2);border-radius:7px;}
+
+/* LADDER */
+.ladder{display:flex;flex-direction:column;gap:3px;margin-bottom:.75rem;}
+.rung{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg);}
+.rung-b{font-size:9px;font-weight:700;padding:2px 7px;border-radius:999px;}
+.arr-down{text-align:center;font-size:11px;color:var(--muted);}
+
+/* GEN TYPES */
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:1rem;}
+.gen-card{padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--bg);transition:all .15s;}
+.gen-card.on{border:2px solid var(--green);background:var(--green-bg);}
+.gen-icon{font-size:16px;margin-bottom:4px;}
+.gen-label{font-size:12px;font-weight:700;}
+.gen-card.on .gen-label{color:var(--green-dark);}
+.gen-desc{font-size:10px;color:var(--muted);line-height:1.4;margin-top:2px;}
+
+/* RESULT */
+.result-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;line-height:1.8;white-space:pre-wrap;max-height:520px;overflow-y:auto;margin-top:10px;}
+.result-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.result-btn-row{display:flex;gap:6px;margin-top:8px;}
+
+/* API KEY */
+.api-box{background:var(--yellow);border:1px solid var(--yellow-b);border-radius:10px;padding:12px 14px;}
+.api-row{display:flex;justify-content:space-between;align-items:center;}
+.api-title{font-size:12px;font-weight:700;color:var(--yellow-t);}
+.api-sub{font-size:11px;color:#92400E;margin-top:1px;}
+.api-input-row{display:flex;gap:6px;margin-top:8px;}
+.api-input-row input{font-family:monospace;font-size:12px;}
+.api-note{font-size:10px;color:#92400E;margin-top:6px;}
+.api-note a{color:var(--green);font-weight:700;}
+.key-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:999px;cursor:pointer;}
+
+/* JABS GRID */
+.jab-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.8rem;}
+.jab-card{padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg);}
+.jab-card.special{border:2px solid var(--green);background:var(--green-bg);}
+.jab-label{font-size:9px;font-weight:700;color:var(--green);margin-bottom:3px;}
+.jab-txt{font-size:11px;color:var(--muted);line-height:1.5;}
+.jab-card.special .jab-txt{color:var(--green-dark);}
+
+/* KW GRID */
+.kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.8rem;}
+.kw-card{padding:9px 11px;border-radius:8px;}
+.kw-bad{border:1px solid #FCA5A5;background:#FEF2F2;}
+.kw-good{border:1px solid #6EE7B7;background:#ECFDF5;}
+.kw-title{font-size:9px;font-weight:700;margin-bottom:4px;}
+.kw-bad .kw-title{color:#991B1B;}
+.kw-good .kw-title{color:#065F46;}
+.kw-items{font-size:11px;line-height:1.9;}
+.kw-bad .kw-items{color:#7F1D1D;}
+.kw-good .kw-items{color:#047857;}
+
+/* FUNNEL AI FLOW */
+.flow{display:flex;flex-direction:column;align-items:center;gap:3px;margin-bottom:.8rem;}
+.flow-box{border-radius:8px;padding:7px 10px;text-align:center;font-size:10px;font-weight:600;border:1px solid;}
+.flow-arr{font-size:10px;color:var(--muted);}
+.flow-split{display:grid;grid-template-columns:1fr 1fr;gap:5px;width:100%;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:.8rem;}
+.stat{background:var(--bg2);border-radius:8px;padding:9px;text-align:center;}
+.stat-n{font-size:18px;font-weight:700;color:var(--green);}
+.stat-l{font-size:9px;color:var(--muted);margin-top:2px;}
+
+/* QUOTE */
+.quote{font-size:12px;font-style:italic;color:var(--muted);border-left:3px solid var(--green);padding-left:11px;margin-bottom:.9rem;line-height:1.65;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <h1 id="hdr-title">🎯 Marketing Academy</h1>
+    <p id="hdr-sub">Masukkan produk anda untuk mulakan</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="prog-wrap" id="prog-wrap" style="display:none">
+    <div class="prog-row"><span>Kemajuan Action Plan</span><span id="prog-txt">0/30</span></div>
+    <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabs"></div>
+
+  <!-- PANELS -->
+  <div id="panels"></div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const MODS = [
+  {id:'setup',  ic:'🏪', label:'Produk Saya', sm:'Setup'},
+  {id:'funnel', ic:'⚙️', label:'Funnel Auto', sm:'Asas'},
+  {id:'brunson',ic:'🔴', label:'Brunson',     sm:'Value Ladder'},
+  {id:'godin',  ic:'🟣', label:'Seth Godin',  sm:'Permission'},
+  {id:'garyvee',ic:'🟠', label:'Gary Vee',    sm:'Jab Hook'},
+  {id:'patel',  ic:'🔵', label:'Neil Patel',  sm:'SEO+Webinar'},
+  {id:'modern', ic:'🟢', label:'AI 2025',     sm:'Intent Funnel'},
+  {id:'gen',    ic:'✨', label:'Jana Konten', sm:'AI Powered'},
+];
+
+const ACTIONS = {
+  funnel:[
+    {t:'Lakar funnel {p} dari mula hingga akhir',d:'Tulis: Trafik → tangkap lead → nurture → convert → retain. Kenal pasti gap.',w:'Hari 1'},
+    {t:'Setup email automation untuk {p}',d:'Daftar Mailchimp/Brevo percuma. Import contacts, buat borang subscribe.',w:'Minggu 1'},
+    {t:'Bina email sequence 6 hari untuk {p}',d:'Trigger: daftar/beli → sequence mula auto. Nurture lead secara automatik.',w:'Minggu 2'},
+    {t:'Pasang Meta Pixel + Google Analytics',d:'Tampal kod pixel dalam header website. Asas untuk semua retargeting.',w:'Minggu 1'},
+    {t:'Bina chatbot mudah di website {p}',d:'Guna Tidio percuma. Jawab soalan kerap automatik, redirect ke WhatsApp.',w:'Minggu 2'},
+  ],
+  brunson:[
+    {t:'Cipta Lead Magnet percuma untuk {p}',d:'Ebook, checklist, atau template percuma berkaitan masalah pelanggan.',w:'Minggu 1'},
+    {t:'Bina Landing Page utama {p}',d:'Satu tujuan: tangkap lead atau buat jualan. Headline kuat, CTA jelas.',w:'Minggu 1'},
+    {t:'Setup Value Ladder {p}',d:'Susun dari percuma → murah → sederhana → premium → VIP.',w:'Minggu 2'},
+    {t:'Tambah One Time Offer (OTO) untuk {p}',d:'Selepas beli → tawaran eksklusif upsell dalam masa terhad.',w:'Minggu 3'},
+    {t:'Bina email sequence susulan {p}',d:'7 hari: welcome → value → testimoni → CTA upgrade → last chance.',w:'Minggu 2'},
+  ],
+  godin:[
+    {t:'Tetapkan Purple Cow {p}',d:'Pilih 1 janji berani yang tiada pesaing lain buat. Satu ayat.',w:'Minggu 1'},
+    {t:'Kumpul 5 kisah nyata pelanggan {p}',d:'Hubungi pelanggan sedia ada. Rakam perubahan mereka.',w:'Minggu 2'},
+    {t:'Mulakan newsletter mingguan untuk {p}',d:'1 tip setiap Isnin. BUKAN promosi. Pure value 4 minggu dulu.',w:'Minggu 2'},
+    {t:'Kenal pasti 500 pelanggan ideal {p}',d:'500 peminat setia > 10,000 followers pasif. Fokus niche.',w:'Minggu 3'},
+    {t:'Bina permission ladder di website {p}',d:'Subscribe → tips → webinar → tawaran. Jangan langkau peringkat.',w:'Minggu 4'},
+  ],
+  garyvee:[
+    {t:'Buka akaun TikTok untuk {p}',d:'Video pertama: masalah yang {p} selesaikan. Rakam casual.',w:'Hari 1'},
+    {t:'Sediakan 30 idea konten {p} (1 bulan)',d:'10 tips, 10 relatable/humor, 5 kisah pelanggan, 5 right hook.',w:'Minggu 1'},
+    {t:'Bina WhatsApp Channel {p}',d:'1 tip berguna setiap Isnin. Broadcast ke subscribers.',w:'Minggu 1'},
+    {t:'Adaptasi konten {p} untuk tiap platform',d:'TikTok=casual, Facebook=mendalam, Instagram=visual. Jangan copy-paste.',w:'Minggu 2'},
+    {t:'Balas SEMUA komen {p} dalam 1 jam',d:'Lebih penting daripada iklan berbayar. Balas cepat = algoritma suka.',w:'Berterusan'},
+  ],
+  patel:[
+    {t:'Tulis artikel Pillar {p} (3,000+ patah)',d:'Panduan lengkap berkaitan masalah pelanggan. Keyword = masalah, bukan nama produk.',w:'Minggu 1-2'},
+    {t:'Tulis 5 artikel Cluster SEO untuk {p}',d:'Setiap artikel sasarkan 1 keyword masalah. Semua link ke artikel Pillar.',w:'Minggu 2-3'},
+    {t:'Setup webinar bulanan tentang {p}',d:'Workshop percuma: selesaikan masalah pelanggan. Demo produk di hujung.',w:'Minggu 3'},
+    {t:'Pasang Google Analytics + Hotjar untuk {p}',d:'Pantau di mana pelanggan klik dan berhenti. Optimasi tanpa data = tekaan.',w:'Minggu 1'},
+    {t:'A/B test headline landing page {p}',d:'Uji 2 headline berbeza 2 minggu. Kekal yang lebih tinggi conversion.',w:'Minggu 4'},
+  ],
+  modern:[
+    {t:'Setup chatbot AI untuk {p}',d:'Tidio/Intercom percuma. Qualify leads 24/7, jawab soalan harga dan cara beli.',w:'Minggu 1'},
+    {t:'Pasang retargeting pixel untuk {p}',d:'Meta Pixel + Google Tag. Pelawat halaman produk dikejar iklan auto.',w:'Minggu 1'},
+    {t:'Bina abandoned sequence untuk {p}',d:'Masuk troli tapi tak beli → auto-email 1 jam. Recover 15-20% jualan hilang.',w:'Minggu 2'},
+    {t:'Segmentasi pelanggan {p} ikut tingkah laku',d:'Beli 1x vs repeat vs window shopper — mesej berbeza untuk setiap segmen.',w:'Minggu 3'},
+    {t:'Setup post-purchase upsell {p}',d:'Selepas beli → auto-tunjuk produk berkaitan. Tingkatkan nilai setiap pelanggan.',w:'Minggu 4'},
+  ],
+};
+
+const TIPS = {
+  funnel:'Mulakan dengan email automation — paling mudah setup dan paling tinggi ROI.',
+  brunson:'Setiap peringkat funnel wajib ada upsell. Pelanggan beli produk pertama adalah prospek terbaik untuk produk premium.',
+  godin:'Dapat izin dahulu. Pelanggan yang subscribe secara sukarela 10x lebih mudah dijual.',
+  garyvee:'Dokumenkan, jangan cipta. Rakam aktiviti harian perniagaan — lebih authentic daripada video profesional.',
+  patel:'Blog adalah aset jangka panjang. SEO jana leads organik bertahun-tahun tanpa kos tambahan.',
+  modern:'AI detect niat pelanggan dan hantar mesej tepat — conversion naik 3-5x berbanding blast biasa.',
+};
+
+const EXPERT = {
+  brunson:{avBg:'#FEE2E2',name:'Russell Brunson — Value Ladder',role:'Pengasas ClickFunnels · DotCom Secrets',quote:'Anda tak perlu 10 funnel. Bina 1 yang terbaik dan beri 90% tumpuan ke sana.'},
+  godin:  {avBg:'#EDE9FE',name:'Seth Godin — Permission Marketing',role:'Penulis Purple Cow, This Is Marketing',quote:'Marketing bukan tentang produk yang anda jual. Ia tentang kisah yang anda ceritakan.'},
+  garyvee:{avBg:'#FEF3C7',name:'Gary Vaynerchuk — Jab Jab Right Hook',role:'Pengasas VaynerMedia · Pakar Social Media',quote:'Beri, beri, beri — baru minta. Kebanyakan bisnes terbalik.'},
+  patel:  {avBg:'#DBEAFE',name:'Neil Patel — SEO + Webinar',role:'Pengasas NP Digital, Ubersuggest',quote:'Apa yang diukur, itulah yang bertambah baik. Data adalah segalanya.'},
+  modern: {avBg:'#D1FAE5',name:'Strategi 2025 — AI Intent Funnel',role:'Forrester · HubSpot · Omnisend',quote:'Funnel bukan lagi linear. AI kenal pasti niat pelanggan dan bertindak automatik.'},
+};
+
+const GEN = [
+  {id:'email7',   ic:'📅',label:'Email 7 Hari',       desc:'Sequence welcome hingga upgrade'},
+  {id:'welcome',  ic:'👋',label:'Email Welcome',       desc:'Email pertama selepas daftar/beli'},
+  {id:'story',    ic:'📖',label:'Kisah Pelanggan',     desc:'Storytelling transformasi pelanggan'},
+  {id:'offer',    ic:'🎯',label:'Email Tawaran',       desc:'CTA dengan urgency dan diskaun'},
+  {id:'newsletter',ic:'📰',label:'Newsletter',         desc:'Pure value — gaya Seth Godin'},
+  {id:'tiktok',   ic:'🎬',label:'10 Idea TikTok',      desc:'Formula Jab Jab Right Hook'},
+  {id:'ladder',   ic:'📈',label:'Value Ladder',        desc:'Cadangan tangga nilai produk anda'},
+  {id:'seo',      ic:'🔍',label:'50 Keyword SEO',      desc:'Keyword masalah pelanggan sasaran'},
+];
+
+
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const S = {
+  tab:'setup',
+  product:'', target:'', desc:'', lang:'bm',
+  apiKey: localStorage.getItem('mk_k')||'',
+  done:{funnel:[],brunson:[],godin:[],garyvee:[],patel:[],modern:[]},
+  genType:null, genResult:'', genLoading:false, genError:'',
+  showKeyInput:false,
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function fp(str){ return str.replace(/\{p\}/g, S.product||'produk anda'); }
+
+function totalDone(){
+  return Object.values(S.done).reduce((a,b)=>a+b.length,0);
+}
+
+function setApiKey(k){
+  S.apiKey=k;
+  try{ k ? localStorage.setItem('mk_k',k) : localStorage.removeItem('mk_k'); }catch(e){}
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render(){
+  renderHeader();
+  renderProgress();
+  renderTabs();
+  renderPanel();
+}
+
+function renderHeader(){
+  document.getElementById('hdr-title').textContent = S.product ? '📊 '+S.product : '🎯 Marketing Academy';
+  document.getElementById('hdr-sub').textContent = S.product
+    ? 'Funnel Automation + 5 Pakar Dunia + AI Konten Generator'
+    : 'Masukkan produk anda untuk mulakan';
+}
+
+function renderProgress(){
+  const w = document.getElementById('prog-wrap');
+  if(!S.product){ w.style.display='none'; return; }
+  w.style.display='block';
+  const t=totalDone(), pct=Math.round(t/30*100);
+  document.getElementById('prog-txt').textContent = t+'/30 ('+pct+'%)';
+  document.getElementById('prog-fill').style.width = pct+'%';
+}
+
+function renderTabs(){
+  const el = document.getElementById('tabs');
+  el.innerHTML = MODS.map(m=>`
+    <div class="tab${S.tab===m.id?' on':''}" onclick="switchTab('${m.id}')">
+      <span class="ic">${m.ic}</span>${m.label}<span class="sm">${m.sm}</span>
+    </div>`).join('');
+}
+
+function renderPanel(){
+  const el = document.getElementById('panels');
+  const panels = {};
+  MODS.forEach(m=>{
+    const div = document.createElement('div');
+    div.className = 'panel'+(S.tab===m.id?' on':'');
+    div.id = 'pn-'+m.id;
+    if(S.tab===m.id){
+      if(m.id==='setup')   div.innerHTML = setupHTML();
+      else if(m.id==='funnel') div.innerHTML = funnelHTML();
+      else if(m.id==='gen')    div.innerHTML = genHTML();
+      else                     div.innerHTML = expertHTML(m.id);
+    }
+    panels[m.id] = div;
+  });
+  el.innerHTML='';
+  Object.values(panels).forEach(p=>el.appendChild(p));
+  bindEvents();
+}
+
+// ── SETUP PANEL ───────────────────────────────────────────────────────────────
+function setupHTML(){
+  const apiBox = S.apiKey
+    ? `<div class="api-box">
+        <div class="api-row">
+          <div><div class="api-title">🔑 Anthropic API Key</div>
+          <div class="api-sub">✅ API key disimpan — sedia jana konten AI</div></div>
+          <button class="btn btn-gray" style="padding:5px 11px;font-size:11px;" onclick="toggleKeyInput()">Tukar</button>
+        </div>
+        ${S.showKeyInput?keyInputHTML():''}
+      </div>`
+    : `<div class="api-box">
+        <div class="api-row">
+          <div><div class="api-title">🔑 Anthropic API Key</div>
+          <div class="api-sub">Diperlukan untuk jana konten AI</div></div>
+          <button class="btn btn-gray" style="padding:5px 11px;font-size:11px;" onclick="toggleKeyInput()">Set Key</button>
+        </div>
+        ${S.showKeyInput||!S.apiKey?keyInputHTML():''}
+        <div class="api-note">Dapatkan API key percuma di: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>
+      </div>`;
+
+  const successTip = S.product
+    ? `<div class="tip" style="margin-top:1rem;">✅ Produk ditetapkan: <strong>${S.product}</strong>. Semua tab kini disesuaikan untuk produk anda. Pergi ke tab <strong>✨ Jana Konten</strong> untuk generate email dan konten AI.</div>`
+    : '';
+
+  return `
+    <div style="text-align:center;padding:1.25rem 0 1rem;">
+      <div style="font-size:32px;margin-bottom:8px;">🏪</div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px;">Masukkan Produk / Perkhidmatan Anda</div>
+      <div style="font-size:12px;color:var(--muted);">Semua strategi dan konten AI akan dijana khusus untuk produk anda</div>
+    </div>
+    <div class="sl" style="margin-top:0;">Nama Produk / Perkhidmatan</div>
+    <input id="inp-product" value="${S.product}" placeholder="Nama produk atau perkhidmatan anda..." style="margin-bottom:8px;${S.product?'border-color:var(--green);':''}"/>
+    <div class="sl">Pelanggan Sasaran</div>
+    <input id="inp-target" value="${S.target}" placeholder="Siapa yang anda jual kepada?" style="margin-bottom:8px;"/>
+    <div class="sl">Penerangan Ringkas</div>
+    <textarea id="inp-desc" rows="3" placeholder="Terangkan produk / perkhidmatan anda dalam 1-2 ayat...">${S.desc}</textarea>
+    <div class="sl">Bahasa Output AI</div>
+    <div class="lang-row" style="margin-bottom:1rem;">
+      <button class="lang-btn${S.lang==='bm'?' on':''}" onclick="setLang('bm')">🇲🇾 Bahasa Malaysia</button>
+      <button class="lang-btn${S.lang==='en'?' on':''}" onclick="setLang('en')">🇬🇧 English</button>
+    </div>
+    <button class="btn btn-green btn-full" onclick="saveSetup()">✅ Simpan & Mulakan</button>
+    ${apiBox}
+    ${successTip}`;
+}
+
+function keyInputHTML(){
+  return `<div class="api-input-row">
+    <input type="password" id="inp-apikey" placeholder="sk-ant-api03-..." value="${S.apiKey}"/>
+    <button class="btn btn-green" style="padding:7px 14px;white-space:nowrap;" onclick="saveApiKey()">Simpan</button>
+  </div>`;
+}
+
+// ── FUNNEL PANEL ──────────────────────────────────────────────────────────────
+function funnelHTML(){
+  const prod = S.product||'produk anda';
+  const stages = [
+    {num:1,title:'Kesedaran (Awareness)',sub:'Orang mula tahu produk anda wujud',bg:'#F3F0FF',nBg:'#7C3AED',tC:'#4C1D95',sC:'#6D28D9',tags:['Google Ads','Meta Ads','SEO Blog','TikTok'],tBg:'#EDE9FE',tCol:'#5B21B6',eg:`Iklan "Cuba ${prod} percuma" + artikel blog muncul di Google bila pelanggan cari penyelesaian.`},
+    {num:2,title:'Minat (Interest)',sub:'Prospek tunjuk minat, kita tangkap data',bg:'#EFF6FF',nBg:'#1D4ED8',tC:'#1E3A8A',sC:'#2563EB',tags:['Landing Page','Lead Magnet','Chatbot'],tBg:'#DBEAFE',tCol:'#1E40AF',eg:`Prospek klik iklan → landing page → isi email dapat lead magnet percuma → masuk email sequence auto.`},
+    {num:3,title:'Pertimbangan (Consideration)',sub:'Panaskan lead — bina kepercayaan auto',bg:'#ECFDF5',nBg:'#059669',tC:'#064E3B',sC:'#047857',tags:['Email Sequence','WhatsApp Auto','Retargeting'],tBg:'#D1FAE5',tCol:'#065F46',eg:`Email Hari 1 welcome → Hari 3 kisah berjaya → Hari 5 demo → Hari 7 tawaran ${prod}.`},
+    {num:4,title:'Tindakan (Action)',sub:'Tukar prospek jadi pelanggan berbayar',bg:'#FFFBEB',nBg:'#D97706',tC:'#78350F',sC:'#B45309',tags:['Abandoned Cart','Upsell Auto','Checkout'],tBg:'#FEF3C7',tCol:'#92400E',eg:`Masuk troli tapi tak beli → auto-peringatan 1 jam → diskaun 10% jika beli dalam 24 jam.`},
+    {num:5,title:'Kesetiaan (Loyalty)',sub:'Kekal pelanggan, ubah jadi penyokong',bg:'#E1F5EE',nBg:'#0F6E56',tC:'#085041',sC:'#0F6E56',tags:['Thank You Email','Program Loyalti','Review Auto'],tBg:'#E1F5EE',tCol:'#0F6E56',eg:`Beli → ucapan terima kasih + onboarding. 30 hari → minta ulasan Google. 3 bulan → upsell.`},
+  ];
+
+  const stagesHTML = stages.map(f=>`
+    <div class="stage">
+      <div class="stage-hdr" style="background:${f.bg};">
+        <div class="stage-num" style="background:${f.nBg};">${f.num}</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:${f.tC};">${f.title}</div>
+          <div style="font-size:11px;color:${f.sC};">${f.sub}</div>
+        </div>
+      </div>
+      <div class="stage-body">
+        <div class="tags">${f.tags.map(t=>`<span class="tag" style="background:${f.tBg};color:${f.tCol};">${t}</span>`).join('')}</div>
+        <div class="eg-box">${f.eg}</div>
+      </div>
+    </div>`).join('');
+
+  return `
+    <div class="card-hdr">
+      <div class="av" style="background:var(--green-bg);">⚙️</div>
+      <div><h2>Digital Marketing Funnel Automation</h2><p>${S.product?'Disesuaikan untuk: '+S.product:'Masukkan produk di tab 🏪 untuk contoh spesifik'}</p></div>
+    </div>
+    <div class="sl" style="margin-top:0;">5 Peringkat Funnel</div>
+    ${stagesHTML}
+    <div class="sl">Action Plan untuk ${prod}</div>
+    ${actionsHTML('funnel')}
+    <div class="tip">Mulakan dengan email automation — paling mudah setup dan paling tinggi ROI untuk ${prod}.</div>`;
+}
+
+// ── EXPERT PANELS ─────────────────────────────────────────────────────────────
+function expertHTML(mod){
+  const m = EXPERT[mod];
+  const prod = S.product||'produk anda';
+  let extra = '';
+
+  if(mod==='brunson'){
+    const rungs = [
+      {b:'T1',bg:'#FEE2E2',tc:'#991B1B',t:'Lead Magnet Percuma',p:'PERCUMA'},
+      {b:'T2',bg:'#FEE2E2',tc:'#991B1B',t:'Produk Entry / Trial',p:'RM0–RM50'},
+      {b:'T3',bg:'#FECACA',tc:'#991B1B',t:'Produk Utama (Core)',p:'RM50–RM300'},
+      {b:'T4',bg:'#FCA5A5',tc:'#7F1D1D',t:'Pakej Premium / Bundle',p:'RM300–RM1,000'},
+      {b:'T5',bg:'#EF4444',tc:'white',  t:'VIP / High-Ticket',p:'RM1,000+'},
+    ];
+    extra = `
+      <div class="sl" style="margin-top:0;">Value Ladder untuk ${prod}</div>
+      <div class="ladder">
+        ${rungs.map((r,i)=>`
+          <div class="rung"><span class="rung-b" style="background:${r.bg};color:${r.tc};">${r.b}</span>
+          <span style="flex:1;font-size:12px;">${r.t}</span>
+          <span style="font-size:10px;color:var(--muted);">${r.p}</span></div>
+          ${i<rungs.length-1?'<div class="arr-down">↓</div>':''}`).join('')}
+      </div>
+      <div class="tip">💡 Pergi ke <strong>✨ Jana Konten → Value Ladder</strong> untuk AI jana value ladder spesifik untuk ${prod}.</div>`;
+  }
+
+  if(mod==='garyvee'){
+    extra = `
+      <div class="sl" style="margin-top:0;">Formula 3 Jab : 1 Right Hook</div>
+      <div class="jab-grid">
+        <div class="jab-card"><div class="jab-label">JAB 1 — Tips</div><div class="jab-txt">Masalah yang selalu dihadapi pelanggan ${prod}</div></div>
+        <div class="jab-card"><div class="jab-label">JAB 2 — Data</div><div class="jab-txt">Fakta mengejutkan / transformasi pelanggan nyata</div></div>
+        <div class="jab-card"><div class="jab-label">JAB 3 — Humor</div><div class="jab-txt">Situasi relatable yang pelanggan akan share</div></div>
+        <div class="jab-card special"><div class="jab-label">RIGHT HOOK — 1x/minggu</div><div class="jab-txt">Tawaran jelas ${prod} — direct & konkrit</div></div>
+      </div>`;
+  }
+
+  if(mod==='patel'){
+    extra = `
+      <div class="sl" style="margin-top:0;">Keyword Strategy — Cari Masalah, Bukan Produk</div>
+      <div class="kw-grid">
+        <div class="kw-card kw-bad"><div class="kw-title">Keyword Salah</div><div class="kw-items">"${prod} terbaik"<br>"beli ${prod} murah"<br>"${prod} Malaysia"</div></div>
+        <div class="kw-card kw-good"><div class="kw-title">Keyword Betul</div><div class="kw-items">Masalah pelanggan<br>Cara selesaikan<br>Perbandingan alternatif</div></div>
+      </div>
+      <div class="tip">💡 Pergi ke <strong>✨ Jana Konten → 50 Keyword SEO</strong> untuk AI jana keyword khusus untuk ${prod}.</div>`;
+  }
+
+  if(mod==='modern'){
+    extra = `
+      <div class="sl" style="margin-top:0;">AI Intent Funnel</div>
+      <div class="flow">
+        <div class="flow-box" style="width:100%;background:#EDE9FE;border-color:#C4B5FD;color:#4C1D95;">Pelawat baca artikel → AI tag minat → auto retarget</div>
+        <div class="flow-arr">↓</div>
+        <div class="flow-box" style="width:90%;background:#DBEAFE;border-color:#93C5FD;color:#1E3A5F;">Iklan ${prod} ditunjuk automatik → Klik → Convert</div>
+        <div class="flow-arr">↓ AI pantau aktiviti</div>
+        <div class="flow-split">
+          <div class="flow-box" style="background:#FEF3C7;border-color:#FCD34D;color:#78350F;">Aktif → auto-offer upgrade</div>
+          <div class="flow-box" style="background:#FEE2E2;border-color:#FCA5A5;color:#7F1D1D;">Tak aktif → bantuan auto</div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-n">37%</div><div class="stat-l">jualan dari email auto</div></div>
+        <div class="stat"><div class="stat-n">70%</div><div class="stat-l">sentuh 3+ touchpoint</div></div>
+        <div class="stat"><div class="stat-n">3-5x</div><div class="stat-l">conversion dengan AI</div></div>
+      </div>`;
+  }
+
+  return `
+    <div class="card-hdr">
+      <div class="av" style="background:${m.avBg};">${MODS.find(x=>x.id===mod).ic}</div>
+      <div><h2>${m.name}</h2><p>${m.role}</p></div>
+    </div>
+    <p class="quote">"${m.quote}"</p>
+    ${S.product?`<div style="display:inline-block;font-size:11px;padding:3px 10px;border-radius:999px;background:var(--green-bg);color:var(--green-dark);margin-bottom:.75rem;">✅ Disesuaikan untuk: ${S.product}</div>`:''}
+    ${extra}
+    <div class="sl">Action Plan untuk ${prod}</div>
+    ${actionsHTML(mod)}
+    <div class="tip">${fp(TIPS[mod])}</div>`;
+}
+
+// ── GENERATOR PANEL ───────────────────────────────────────────────────────────
+function genHTML(){
+  const noProduct = !S.product;
+  const noKey = !S.apiKey;
+  const prod = S.product||'produk anda';
+
+  const genCards = GEN.map(g=>`
+    <div class="gen-card${S.genType===g.id?' on':''}" onclick="selectGenType('${g.id}')">
+      <div class="gen-icon">${g.ic}</div>
+      <div class="gen-label">${g.label}</div>
+      <div class="gen-desc">${g.desc}</div>
+    </div>`).join('');
+
+  const selected = GEN.find(g=>g.id===S.genType);
+  const genSection = S.genType ? `
+    <div class="sl">Tambahan / Customisasi (Pilihan)</div>
+    <textarea id="inp-note" rows="2" placeholder="Contoh: fokus bulan Ramadan, tambah diskaun 20%, guna nada formal..."></textarea>
+    <button class="btn btn-green btn-full" style="margin-top:10px;" ${S.genLoading||noProduct||noKey?'disabled':''} onclick="generateContent()">
+      ${S.genLoading?'⏳ Sedang menjana...':'✨ Jana '+selected.label+' untuk '+prod}
+    </button>` : '';
+
+  const errorSection = S.genError ? `<div style="margin-top:12px;padding:10px 13px;background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;font-size:12px;color:#991B1B;">${S.genError}</div>` : '';
+
+  const resultSection = S.genResult ? `
+    <div style="margin-top:14px;">
+      <div class="result-hdr">
+        <div style="font-size:12px;font-weight:700;">✅ ${selected?.label||'Hasil'} — ${prod}</div>
+        <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="copyResult()">📋 Salin</button>
+      </div>
+      <div class="result-box" id="result-box">${S.genResult}</div>
+      <div class="result-btn-row">
+        <button class="btn btn-outline btn-full" onclick="generateContent()">🔄 Jana Semula</button>
+        <button class="btn btn-gray btn-full" onclick="clearResult()">← Pilih Lain</button>
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="card-hdr">
+      <div class="av" style="background:#FEF3C7;">✨</div>
+      <div><h2>Jana Konten AI</h2><p>${S.product?'Menjana untuk: '+S.product:'Sila masukkan produk di tab 🏪 dahulu'}</p></div>
+    </div>
+    ${noProduct?'<div class="warn-box">⚠️ Sila isi nama produk di tab <strong>🏪 Produk Saya</strong> dahulu sebelum jana konten.</div>':''}
+    ${noKey?'<div class="warn-box">⚠️ Sila set Anthropic API key di tab <strong>🏪 Produk Saya</strong> dahulu.</div>':''}
+    <div class="sl" style="margin-top:0;">Pilih Jenis Konten</div>
+    <div class="gen-grid">${genCards}</div>
+    ${genSection}
+    ${errorSection}
+    ${resultSection}`;
+}
+
+// ── ACTION LIST HTML ──────────────────────────────────────────────────────────
+function actionsHTML(mod){
+  return `<div class="act-list">${(ACTIONS[mod]||[]).map((a,i)=>{
+    const done = S.done[mod]?.includes(i);
+    return `<div class="act-item${done?' done':''}" onclick="toggleAction('${mod}',${i})">
+      <div class="chk"><div class="chk-dot"></div></div>
+      <div style="flex:1;">
+        <div class="act-title">${fp(a.t)}</div>
+        <div class="act-desc">${fp(a.d)}</div>
+        <span class="act-week">${a.w}</span>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ── EVENT HANDLERS ─────────────────────────────────────────────────────────────
+function bindEvents(){}
+
+function switchTab(id){ S.tab=id; render(); window.scrollTo(0,0); }
+
+function saveSetup(){
+  S.product = document.getElementById('inp-product')?.value?.trim()||'';
+  S.target  = document.getElementById('inp-target')?.value?.trim()||'';
+  S.desc    = document.getElementById('inp-desc')?.value?.trim()||'';
+  render();
+  if(S.product) switchTab('funnel');
+}
+
+
+
+function setLang(l){ S.lang=l; render(); }
+
+function toggleKeyInput(){ S.showKeyInput=!S.showKeyInput; render(); }
+
+function saveApiKey(){
+  const v = document.getElementById('inp-apikey')?.value?.trim()||'';
+  setApiKey(v); S.showKeyInput=false; render();
+}
+
+function toggleAction(mod,idx){
+  const arr = S.done[mod];
+  S.done[mod] = arr.includes(idx) ? arr.filter(i=>i!==idx) : [...arr,idx];
+  renderProgress();
+  // re-render just the action list in current panel
+  const panel = document.getElementById('pn-'+S.tab);
+  if(!panel) return;
+  // full re-render to keep things simple
+  renderPanel();
+}
+
+function selectGenType(id){ S.genType=id; S.genResult=''; S.genError=''; render(); }
+function clearResult(){ S.genType=null; S.genResult=''; S.genError=''; render(); }
+
+function copyResult(){
+  const box = document.getElementById('result-box');
+  if(!box) return;
+  navigator.clipboard.writeText(box.textContent).then(()=>{
+    const btn = document.querySelector('.result-hdr button');
+    if(btn){ btn.textContent='✅ Disalin!'; setTimeout(()=>{ btn.textContent='📋 Salin'; },2000); }
+  });
+}
+
+async function generateContent(){
+  if(!S.apiKey||!S.product||!S.genType) return;
+  S.genLoading=true; S.genError=''; render();
+
+  const note = document.getElementById('inp-note')?.value?.trim()||'';
+  const langStr = S.lang==='en' ? 'natural English' : 'Bahasa Malaysia yang natural dan mesra';
+  const ctx = `Produk: "${S.product}". Pelanggan sasaran: "${S.target||'pelanggan sasaran'}". Penerangan: "${S.desc||'produk berkualiti'}".`;
+
+  const PROMPTS = {
+    email7:`Tulis email sequence 7 hari lengkap untuk "${S.product}" menggunakan strategi Russell Brunson Value Ladder. Setiap email ada subject line, preview text, dan isi kandungan penuh. Format: ### EMAIL [N] — Hari [X].`,
+    welcome:`Tulis email selamat datang untuk "${S.product}". Pelanggan baru baru sahaja daftar/beli. Ada subject line, preview text, 3 langkah mudah bermula, dan CTA yang jelas. Tone: mesra dan excited.`,
+    story:`Tulis email storytelling tentang seorang pelanggan yang berubah hidup selepas guna "${S.product}". Emosional tapi realistik. Ada subject line, preview text, dan CTA. Cipta nama dan situasi relatable.`,
+    offer:`Tulis email tawaran khas untuk "${S.product}" gaya Russell Brunson. Ada urgency dan scarcity yang tulen. Subject line, preview text, tawaran masa terhad, dan P.S. yang kuat.`,
+    newsletter:`Tulis newsletter gaya Seth Godin untuk "${S.product}" — pure value, TIADA promosi. 300-400 patah perkataan. Ada subject line, cerita/analogi pendek, 1 tip praktikal, closing inspirational.`,
+    tiktok:`Cipta 10 idea konten TikTok/Reels untuk "${S.product}" formula Gary Vaynerchuk. 8 JAB (tips/humor/relatable) + 2 RIGHT HOOK (promosi). Setiap idea: nombor, tajuk, hook 3 saat pertama, isi ringkas, CTA.`,
+    ladder:`Bina Value Ladder lengkap untuk "${S.product}" prinsip Russell Brunson. 5 peringkat: percuma → entry → core → premium → VIP. Setiap peringkat ada nama, harga cadangan, apa yang ditawarkan, dan cara lead ke peringkat seterusnya.`,
+    seo:`Jana 50 keyword SEO untuk "${S.product}" gaya Neil Patel. Fokus MASALAH pelanggan, bukan nama produk. 5 kategori: (1) Masalah utama, (2) Perbandingan, (3) Tutorial/cara, (4) Soalan FAQ, (5) Long-tail. Setiap keyword satu baris.`,
+  };
+
+  const prompt = `Tulis dalam ${langStr}. Gunakan nama produk dan konteks yang diberikan secara konsisten. Jangan guna placeholder. ${ctx}\n\n${PROMPTS[S.genType]}${note?'\n\nNota tambahan: '+note:''}`;
+
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:3000,
+        system:`Kamu adalah pakar copywriting dan digital marketing. Tulis dalam ${langStr}. Sentiasa gunakan nama produk sebenar — jangan guna placeholder. Hasilkan konten yang terus boleh digunakan.`,
+        messages:[{role:'user',content:prompt}],
+      }),
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    S.genResult = data.content?.[0]?.text||'';
+  }catch(e){
+    S.genError = '⚠️ Ralat: '+e.message+'\n\nPastikan API key betul dan ada kredit yang mencukupi.';
+  }
+  S.genLoading=false; render();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
