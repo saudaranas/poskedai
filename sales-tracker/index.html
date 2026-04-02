@@ -118,6 +118,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .badge-trial{background:#F0FDF4;color:var(--green);}
 .badge-closed{background:#DCFCE7;color:#15803D;border:1px solid #86EFAC;}
 .badge-notinterested{background:#F1F5F9;color:var(--text3);}
+.badge-hassystem{background:#FFF7ED;color:#C2410C;border:1px solid #FED7AA;}
 
 .status-select{background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:4px 8px;font-size:12px;font-family:inherit;cursor:pointer;}
 .btn-sm{background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:var(--rs);padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;}
@@ -225,6 +226,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <button class="filter-btn" onclick="setFilter('interested',this)">Berminat</button>
       <button class="filter-btn" onclick="setFilter('trial',this)">Trial</button>
       <button class="filter-btn" onclick="setFilter('closed',this)">Bayar</button>
+      <button class="filter-btn" onclick="setFilter('hassystem',this)">Dah Ada Sistem</button>
       <div class="spacer"></div>
       <button class="btn-export" onclick="exportCSV()">↓ CSV</button>
     </div>
@@ -245,6 +247,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
             <option value="trial">Sedang trial</option>
             <option value="closed">Dah bayar</option>
             <option value="notinterested">Tidak berminat</option>
+          <option value="hassystem">Dah Ada Sistem</option>
           </select>
         </div>
         <div class="field"><label>Nota</label><input type="text" id="f-nota" placeholder="Nota ringkas..."></div>
@@ -326,8 +329,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzEaIvpMjbiOM2MPV7x6PjLzQpK7lT_IH6mr9w4VPPNo7ccgusbeAigeV-7K-nvf0QS/exec';
-const SL = {new:'Baru approach',sent:'WA Hantar',interested:'Berminat',trial:'Trial',closed:'Dah Bayar',notinterested:'Tidak Berminat'};
-const SC = {new:'badge-new',sent:'badge-sent',interested:'badge-interested',trial:'badge-trial',closed:'badge-closed',notinterested:'badge-notinterested'};
+const SL = {new:'Baru approach',sent:'WA Hantar',interested:'Berminat',trial:'Trial',closed:'Dah Bayar',notinterested:'Tidak Berminat',hassystem:'Dah Ada Sistem'};
+const SC = {new:'badge-new',sent:'badge-sent',interested:'badge-interested',trial:'badge-trial',closed:'badge-closed',notinterested:'badge-notinterested',hassystem:'badge-hassystem'};
 let allData = [], currentFilter = 'all', charts = {};
 
 // LOCK
