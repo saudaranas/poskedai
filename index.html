@@ -658,7 +658,6 @@
             <a href="#cara">Cara Guna</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
-            <!-- ✅ Nav CTA terus ke bahagian harga -->
             <a href="#harga" class="nav-cta">Langgan Sekarang</a>
         </div>
         <button class="nav-mobile" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
@@ -756,7 +755,6 @@
     </div>
 </section>
 
-<!-- ==================== PRICING (DIKEMASKINI) ==================== -->
 <section class="pricing" id="harga">
     <div class="section-container">
         <div class="section-header animate">
@@ -867,13 +865,11 @@
     <p style="margin-top:20px;font-size:0.85rem;opacity:0.5;position:relative;z-index:2;">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
 </section>
 
-<!-- ==================== FOOTER (DENGAN TRIAL BOX) ==================== -->
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-brand">
             <h3>POS<span>Kedai</span></h3>
             <p>Sistem POS paling mudah dan murah untuk kedai makan di Malaysia. Dibina khas untuk peniaga tempatan. 🇲🇾</p>
-            <!-- ✅ TRIAL PERCUMA — di footer sahaja -->
             <div class="footer-trial-box">
                 <strong>🎁 Cuba Percuma 7 Hari</strong>
                 <p>Belum pasti? Hubungi kami untuk dapatkan akses percubaan penuh selama 7 hari — tiada bayaran, tiada kad kredit diperlukan.</p>
@@ -910,13 +906,30 @@
     <span class="wa-icon">💬</span><span>WhatsApp Kami</span>
 </a>
 
-<!-- Payment Modal -->
+<!-- ==================== PAYMENT MODAL ==================== -->
 <div class="payment-overlay" id="paymentModal">
     <div class="payment-modal">
-        <div class="payment-modal-header"><div><h3 id="pm-title">💳 Langgan POSKedai</h3><p id="pm-subtitle">Lengkapkan bayaran untuk mula guna POSKedai</p></div><button class="payment-modal-close" onclick="closePaymentModal()">&times;</button></div>
-        <div class="payment-modal-info"><div><div class="pmi-label" id="pm-label">Jumlah Bayaran</div><div class="pmi-breakdown" id="pm-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</div></div><div class="pmi-amount" id="pm-amount">RM80</div></div>
-        <div class="payment-modal-body"><div id="bcl-payment-form" data-url="https://nucleusriver.bcl.my/embed/form/poskedai-daftar"></div></div>
-        <div class="payment-modal-footer"><p>🔒 Bayaran selamat melalui <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></p></div>
+        <div class="payment-modal-header">
+            <div>
+                <h3 id="pm-title">💳 Langgan POSKedai</h3>
+                <p id="pm-subtitle">Lengkapkan bayaran untuk mula guna POSKedai</p>
+            </div>
+            <button class="payment-modal-close" onclick="closePaymentModal()">&times;</button>
+        </div>
+        <div class="payment-modal-info">
+            <div>
+                <div class="pmi-label" id="pm-label">Jumlah Bayaran</div>
+                <div class="pmi-breakdown" id="pm-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</div>
+            </div>
+            <div class="pmi-amount" id="pm-amount">RM80</div>
+        </div>
+        <div class="payment-modal-body">
+            <!-- BCL form container — data-url swapped by JS before script loads -->
+            <div id="bcl-payment-form" data-url="https://nucleusriver.bcl.my/embed/form/poskedai-daftar"></div>
+        </div>
+        <div class="payment-modal-footer">
+            <p>🔒 Bayaran selamat melalui <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></p>
+        </div>
     </div>
 </div>
 
@@ -1036,17 +1049,22 @@
 </div>
 
 <script>
+// ==================== NAVBAR ====================
 window.addEventListener('scroll', function() {
     var navbar = document.getElementById('navbar');
     if (window.scrollY > 50) navbar.classList.add('scrolled');
     else navbar.classList.remove('scrolled');
 });
+
+// ==================== FAQ ====================
 function toggleFaq(element) {
     var item = element.parentElement;
     var isActive = item.classList.contains('active');
     document.querySelectorAll('.faq-item').forEach(function(faq) { faq.classList.remove('active'); });
     if (!isActive) item.classList.add('active');
 }
+
+// ==================== SCROLL ANIMATIONS ====================
 function handleScrollAnimation() {
     document.querySelectorAll('.animate').forEach(function(el) {
         if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
@@ -1067,39 +1085,61 @@ document.querySelectorAll('.nav-links a').forEach(function(link) {
 });
 
 // ==================== PAYMENT MODAL ====================
+var BCL_URL_BULANAN = 'https://nucleusriver.bcl.my/embed/form/poskedai-daftar';
+var BCL_URL_TAHUNAN = 'https://nucleusriver.bcl.my/embed/form/poskedai-daftar-tahunan';
+
 function openPaymentModal(pakej) {
     var modal = document.getElementById('paymentModal');
+    var formDiv = document.getElementById('bcl-payment-form');
+
     if (pakej === 'tahunan') {
         document.getElementById('pm-title').textContent = '🏆 Langgan POSKedai — Pakej Tahunan';
         document.getElementById('pm-subtitle').textContent = 'Jimat RM90 — langgan setahun penuh';
         document.getElementById('pm-label').textContent = 'Jumlah Bayaran';
         document.getElementById('pm-breakdown').textContent = 'Setup RM50 (sekali) + Setahun RM270';
         document.getElementById('pm-amount').textContent = 'RM320';
+        formDiv.setAttribute('data-url', BCL_URL_TAHUNAN);
     } else {
         document.getElementById('pm-title').textContent = '💳 Langgan POSKedai — Pakej Bulanan';
         document.getElementById('pm-subtitle').textContent = 'Lengkapkan bayaran untuk mula guna POSKedai';
         document.getElementById('pm-label').textContent = 'Jumlah Bayaran';
         document.getElementById('pm-breakdown').textContent = 'Setup RM50 (sekali) + Bulan pertama RM30';
         document.getElementById('pm-amount').textContent = 'RM80';
+        formDiv.setAttribute('data-url', BCL_URL_BULANAN);
     }
+
+    // Clear any previously rendered BCL form content
+    formDiv.innerHTML = '';
+
+    // Remove old BCL script if present so it re-initialises with the new data-url
+    var oldScript = document.getElementById('bcl-script');
+    if (oldScript) oldScript.remove();
+
+    // Show modal first
     modal.style.display = 'flex';
     requestAnimationFrame(function() { modal.classList.add('show'); });
     document.body.style.overflow = 'hidden';
-    if (!document.getElementById('bcl-script')) {
-        var script = document.createElement('script');
-        script.id = 'bcl-script';
-        script.src = 'https://bcl.my/js/bc-encrypted-payment-embed.js';
-        document.body.appendChild(script);
-    }
+
+    // Load (or reload) BCL embed script — it reads data-url on execution
+    var script = document.createElement('script');
+    script.id = 'bcl-script';
+    script.src = 'https://bcl.my/js/bc-encrypted-payment-embed.js';
+    document.body.appendChild(script);
 }
+
 function closePaymentModal() {
     var modal = document.getElementById('paymentModal');
     modal.classList.remove('show');
     setTimeout(function() { modal.style.display = 'none'; }, 300);
     document.body.style.overflow = '';
 }
-document.getElementById('paymentModal').addEventListener('click', function(e) { if (e.target === this) closePaymentModal(); });
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closePaymentModal(); closePopup(); } });
+
+document.getElementById('paymentModal').addEventListener('click', function(e) {
+    if (e.target === this) closePaymentModal();
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closePaymentModal(); closePopup(); }
+});
 
 // ==================== POPUP LEAD CAPTURE ====================
 const P_SHEET_URL    = 'https://script.google.com/macros/s/AKfycbyzQRGrDOJGSgjoxhhA2YK761-3NTLV3FctfmK8ezqL5zzwI0VBRRWlIsLXqWSY769Y/exec';
