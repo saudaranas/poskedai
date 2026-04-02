@@ -246,31 +246,83 @@
         .step-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
         .step-arrow{position:absolute;top:30px;right:-16px;font-size:1.5rem;color:#cbd5e1;}
 
+        /* ==================== PRICING ==================== */
         .pricing{padding:100px 24px;background:#f8fafc;}
-        .pricing-single{max-width:580px;margin:0 auto;}
-        .price-main-card{background:#fff;border-radius:28px;padding:48px 40px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.08);border:2px solid #fed7aa;position:relative;overflow:hidden;}
-        .price-main-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#f97316,#ea580c,#f97316);}
-        .price-emoji{font-size:3rem;margin-bottom:16px;}
-        .price-main-card h3{font-size:1.6rem;font-weight:900;margin-bottom:8px;letter-spacing:-0.5px;}
-        .price-main-desc{font-size:1rem;color:#64748b;margin-bottom:28px;}
-        .price-amount-single{margin-bottom:8px;}
-        .price-amount-single .currency{font-size:1.5rem;font-weight:800;color:#64748b;vertical-align:top;line-height:3.5rem;}
-        .price-amount-single .amount{font-size:4.5rem;font-weight:900;color:#1e293b;letter-spacing:-2px;}
-        .price-amount-single .period{font-size:1rem;color:#94a3b8;font-weight:600;}
-        .price-savings{display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;color:#166534;margin-bottom:28px;}
-        .price-features-single{list-style:none;text-align:left;margin-bottom:32px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-        .price-features-single li{padding:8px 0;font-size:0.9rem;color:#475569;display:flex;align-items:center;gap:10px;font-weight:500;}
-        .price-features-single li .check{color:#22c55e;font-weight:700;font-size:1.1rem;}
-        .btn-price-main{display:block;width:100%;padding:18px;border-radius:50px;border:none;font-weight:800;font-size:1.1rem;cursor:pointer;transition:all 0.3s;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;box-shadow:0 8px 25px rgba(249,115,22,0.35);}
-        .btn-price-main:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
-        .price-buttons{display:flex;flex-direction:column;gap:12px;}
-        .btn-price-trial{display:block;width:100%;padding:16px;border-radius:50px;border:2px solid #e2e8f0;background:#fff;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.3s;color:#64748b;}
-        .btn-price-trial:hover{border-color:#f97316;color:#f97316;transform:translateY(-2px);}
-        .payment-badges{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;font-size:0.75rem;color:#94a3b8;flex-wrap:wrap;}
+        .pricing-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:24px;
+            max-width:860px;
+            margin:0 auto;
+        }
+        .price-card{
+            background:#fff;border-radius:28px;padding:40px 36px;
+            text-align:center;
+            box-shadow:0 8px 30px rgba(0,0,0,0.06);
+            border:2px solid #f1f5f9;
+            position:relative;overflow:hidden;
+            transition:transform 0.3s,box-shadow 0.3s;
+        }
+        .price-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.1);}
+        .price-card.featured{
+            border-color:#fed7aa;
+            box-shadow:0 20px 60px rgba(249,115,22,0.12);
+        }
+        .price-card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:4px;
+            background:linear-gradient(90deg,#e2e8f0,#cbd5e1);
+        }
+        .price-card.featured::before{
+            background:linear-gradient(90deg,#f97316,#ea580c,#f97316);
+        }
+        .price-popular-badge{
+            position:absolute;top:16px;right:16px;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;padding:4px 14px;border-radius:50px;
+            font-size:0.72rem;font-weight:700;
+            box-shadow:0 4px 12px rgba(249,115,22,0.35);
+        }
+        .price-emoji{font-size:2.5rem;margin-bottom:14px;}
+        .price-card h3{font-size:1.3rem;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px;}
+        .price-card-desc{font-size:0.88rem;color:#64748b;margin-bottom:24px;line-height:1.5;}
+        .price-amount{margin-bottom:6px;}
+        .price-amount .currency{font-size:1.3rem;font-weight:800;color:#64748b;vertical-align:top;line-height:3rem;}
+        .price-amount .amount{font-size:3.8rem;font-weight:900;color:#1e293b;letter-spacing:-2px;}
+        .price-amount .period{font-size:0.95rem;color:#94a3b8;font-weight:600;}
+        .price-per-month{font-size:0.78rem;color:#94a3b8;margin-bottom:6px;font-weight:600;}
+        .price-savings-badge{
+            display:inline-block;
+            background:#f0fdf4;border:1px solid #bbf7d0;
+            padding:6px 16px;border-radius:50px;
+            font-size:0.78rem;font-weight:700;color:#166534;
+            margin-bottom:20px;
+        }
+        .price-setup-note{
+            font-size:0.82rem;color:#64748b;font-weight:600;
+            background:#f8fafc;padding:7px 14px;border-radius:8px;
+            display:inline-block;margin-bottom:20px;
+        }
+        .price-features{list-style:none;text-align:left;margin-bottom:28px;display:flex;flex-direction:column;gap:8px;}
+        .price-features li{font-size:0.88rem;color:#475569;display:flex;align-items:center;gap:10px;font-weight:500;}
+        .price-features li .check{color:#22c55e;font-weight:700;font-size:1rem;}
+        .btn-price{
+            display:block;width:100%;padding:15px;border-radius:50px;
+            border:none;font-weight:800;font-size:1rem;
+            cursor:pointer;transition:all 0.3s;
+        }
+        .btn-price-primary{
+            background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;
+            box-shadow:0 8px 25px rgba(249,115,22,0.35);
+        }
+        .btn-price-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
+        .btn-price-outline{
+            background:transparent;color:#f97316;
+            border:2px solid #fed7aa;
+        }
+        .btn-price-outline:hover{background:#fff7ed;border-color:#f97316;}
+        .price-note{font-size:0.75rem;color:#94a3b8;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:5px;}
+        .payment-badges{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:0.72rem;color:#94a3b8;flex-wrap:wrap;}
         .payment-badges strong{color:#64748b;}
-        .price-breakdown{font-size:0.8rem;color:#94a3b8;margin:4px 0 12px;font-weight:600;}
-        .price-setup{font-size:0.9rem;color:#64748b;font-weight:600;margin-bottom:12px;background:#f8fafc;padding:8px 16px;border-radius:8px;display:inline-block;}
-        .price-note{font-size:0.8rem;color:#94a3b8;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:6px;}
 
         .comparison{padding:100px 24px;background:#fff;}
         .compare-cards{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
@@ -319,17 +371,33 @@
         .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
         .btn-cta-orange{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;padding:18px 40px;border-radius:50px;font-weight:800;font-size:1.05rem;border:none;cursor:pointer;box-shadow:0 8px 25px rgba(249,115,22,0.4);transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;}
         .btn-cta-orange:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.5);}
-        .btn-cta-ghost{background:transparent;color:#fff;padding:18px 40px;border-radius:50px;font-weight:700;font-size:1.05rem;border:2px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;}
-        .btn-cta-ghost:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.4);}
 
+        /* ==================== FOOTER ==================== */
         .footer{background:#0f172a;color:#94a3b8;padding:60px 24px 30px;}
         .footer-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;}
         .footer-brand h3{color:#fff;font-size:1.5rem;font-weight:900;margin-bottom:12px;}
         .footer-brand h3 span{color:#f97316;}
-        .footer-brand p{font-size:0.85rem;line-height:1.6;}
+        .footer-brand p{font-size:0.85rem;line-height:1.6;margin-bottom:20px;}
         .footer-links h4{color:#fff;font-weight:700;margin-bottom:16px;font-size:0.95rem;}
         .footer-links a{display:block;font-size:0.85rem;margin-bottom:10px;transition:color 0.2s;}
         .footer-links a:hover{color:#f97316;}
+        .footer-trial-box{
+            background:rgba(249,115,22,0.08);
+            border:1px solid rgba(249,115,22,0.2);
+            border-radius:14px;padding:18px 20px;
+            margin-top:4px;
+        }
+        .footer-trial-box p{font-size:0.82rem;color:#94a3b8;margin-bottom:10px;line-height:1.5;}
+        .footer-trial-box strong{color:#fed7aa;display:block;margin-bottom:4px;font-size:0.88rem;}
+        .btn-footer-trial{
+            display:inline-flex;align-items:center;gap:8px;
+            background:linear-gradient(135deg,#f97316,#ea580c);
+            color:#fff;padding:10px 20px;border-radius:50px;
+            font-size:0.82rem;font-weight:700;border:none;cursor:pointer;
+            transition:all 0.3s;box-shadow:0 4px 14px rgba(249,115,22,0.3);
+            width:100%;justify-content:center;
+        }
+        .btn-footer-trial:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(249,115,22,0.4);}
         .footer-bottom{max-width:1200px;margin:30px auto 0;padding-top:30px;border-top:1px solid #1e293b;text-align:center;font-size:0.8rem;}
 
         .payment-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:9999;display:none;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity 0.3s ease;}
@@ -371,7 +439,8 @@
             .features-grid{grid-template-columns:1fr 1fr;}.steps-grid{grid-template-columns:1fr 1fr;}
             .step-arrow{display:none;}.pain-grid{grid-template-columns:1fr;}
             .compare-cards{grid-template-columns:1fr;}.guarantee-grid{grid-template-columns:1fr;}
-            .price-features-single{grid-template-columns:1fr;}.footer-container{grid-template-columns:1fr;}
+            .pricing-grid{grid-template-columns:1fr;max-width:460px;}
+            .footer-container{grid-template-columns:1fr;}
         }
         @media(max-width:600px){
             .hero h1{font-size:1.9rem;}.features-grid{grid-template-columns:1fr;}
@@ -589,8 +658,8 @@
             <a href="#cara">Cara Guna</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
-            <!-- ✅ Nav CTA buka popup -->
-            <a href="javascript:void(0)" onclick="openPopup()" class="nav-cta">Cuba Percuma 7 Hari</a>
+            <!-- ✅ Nav CTA terus ke bahagian harga -->
+            <a href="#harga" class="nav-cta">Langgan Sekarang</a>
         </div>
         <button class="nav-mobile" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
     </div>
@@ -599,19 +668,18 @@
 <section class="hero" id="hero">
     <div class="hero-container">
         <div class="hero-content">
-            <div class="hero-badge"><span class="pulse"></span> Cuba Percuma 7 Hari — Tak Perlu Kad Kredit</div>
+            <div class="hero-badge"><span class="pulse"></span> Dari RM30/Bulan — Tak Perlu Kad Kredit</div>
             <h1>POS Kedai Makan Paling Murah di Malaysia. <span class="price-highlight">RM30/Bulan.</span></h1>
             <p class="hero-sub">Guna phone, tablet atau laptop yang anda sedia ada. Tak perlu beli mesin mahal.</p>
             <p>Setup dalam 1 hari, staff belajar dalam 15 minit. Sistem POS yang dibina khas untuk gerai, restoran kecil, cafe, dan warung makan di Malaysia.</p>
             <div class="hero-buttons">
-                <!-- ✅ DIUBAH: buka popup -->
-                <a href="javascript:void(0)" onclick="openPopup()" class="btn-hero btn-hero-primary">📱 Cuba Percuma 7 Hari</a>
+                <a href="#harga" class="btn-hero btn-hero-primary">💳 Langgan Sekarang</a>
                 <a href="https://saudaranas.github.io/demo-pos-kedai/" class="btn-hero btn-hero-secondary" target="_blank">👁️ Lihat Demo</a>
             </div>
             <div class="hero-trust">
-                <div class="trust-badge"><span class="trust-icon">✅</span> Cuba percuma 7 hari</div>
                 <div class="trust-badge"><span class="trust-icon">🚫</span> Tiada kontrak</div>
                 <div class="trust-badge"><span class="trust-icon">📱</span> Guna peranti sendiri</div>
+                <div class="trust-badge"><span class="trust-icon">💰</span> Jimat RM270/tahun vs bulanan</div>
             </div>
         </div>
         <div class="hero-visual">
@@ -688,32 +756,64 @@
     </div>
 </section>
 
+<!-- ==================== PRICING (DIKEMASKINI) ==================== -->
 <section class="pricing" id="harga">
     <div class="section-container">
-        <div class="section-header animate"><div class="section-badge">💎 Satu Harga. Semua Termasuk.</div><h2>Simple. Murah. <span>Berbaloi.</span></h2><p>Tiada pakej mengelirukan. Satu harga, semua fungsi.</p></div>
-        <div class="pricing-single animate">
-            <div class="price-main-card">
-                <div class="price-emoji">🍽️</div>
-                <h3>POSKedai — Semua Dalam Satu</h3>
-                <p class="price-main-desc">Semua fungsi termasuk. Tiada caj tersembunyi.</p>
-                <div class="price-amount-single"><span class="currency">RM</span><span class="amount">30</span><span class="period">/bulan</span></div>
-                <div class="price-setup">+ Yuran setup RM50 (sekali sahaja untuk customer baru)</div>
-                <div class="price-savings">💰 Jimat RM2,000++ — tak perlu beli mesin POS</div>
-                <ul class="price-features-single">
-                    <li><span class="check">✓</span> Unlimited pesanan</li><li><span class="check">✓</span> Menu tak terhad</li>
-                    <li><span class="check">✓</span> Cetak resit</li><li><span class="check">✓</span> Laporan jualan lengkap</li>
-                    <li><span class="check">✓</span> Nombor meja</li><li><span class="check">✓</span> Login staff</li>
-                    <li><span class="check">✓</span> Diskaun & promosi</li><li><span class="check">✓</span> Support WhatsApp</li>
-                </ul>
-                <div class="price-buttons">
-                    <button class="btn-price-main" onclick="openPaymentModal()">💳 Langgan Sekarang — RM80</button>
-                    <p class="price-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</p>
-                    <!-- ✅ DIUBAH: buka popup -->
-                    <button class="btn-price-trial" onclick="openPopup()">📱 Atau cuba percuma 7 hari dulu</button>
+        <div class="section-header animate">
+            <div class="section-badge">💎 Pilih Pakej Anda</div>
+            <h2>Simple. Murah. <span>Berbaloi.</span></h2>
+            <p>Tiada pakej mengelirukan. Semua fungsi termasuk dalam mana-mana pakej.</p>
+        </div>
+        <div class="pricing-grid animate">
+
+            <!-- PAKEJ BULANAN -->
+            <div class="price-card">
+                <div class="price-emoji">📅</div>
+                <h3>Pakej Bulanan</h3>
+                <p class="price-card-desc">Fleksibel — bayar bila perlu, henti bila-bila masa.</p>
+                <div class="price-amount">
+                    <span class="currency">RM</span><span class="amount">30</span><span class="period">/bulan</span>
                 </div>
-                <p class="price-note">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
-                <div class="payment-badges"><span>Bayaran selamat melalui:</span> <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></div>
+                <p class="price-per-month">&nbsp;</p>
+                <div class="price-setup-note">+ Yuran setup RM50 (sekali sahaja)</div>
+                <ul class="price-features">
+                    <li><span class="check">✓</span> Unlimited pesanan</li>
+                    <li><span class="check">✓</span> Menu tak terhad</li>
+                    <li><span class="check">✓</span> Cetak resit</li>
+                    <li><span class="check">✓</span> Laporan jualan lengkap</li>
+                    <li><span class="check">✓</span> Nombor meja & login staff</li>
+                    <li><span class="check">✓</span> Support WhatsApp</li>
+                </ul>
+                <button class="btn-price btn-price-outline" onclick="openPaymentModal('bulanan')">💳 Langgan Bulanan — RM80</button>
+                <p class="price-note">Setup RM50 + bulan pertama RM30</p>
+                <div class="payment-badges"><span>FPX · DuitNow · eWallet</span></div>
             </div>
+
+            <!-- PAKEJ TAHUNAN -->
+            <div class="price-card featured">
+                <div class="price-popular-badge">⭐ Paling Jimat</div>
+                <div class="price-emoji">🏆</div>
+                <h3>Pakej Tahunan</h3>
+                <p class="price-card-desc">Komited setahun, jimat lebih banyak!</p>
+                <div class="price-amount">
+                    <span class="currency">RM</span><span class="amount">270</span><span class="period">/tahun</span>
+                </div>
+                <p class="price-per-month">≈ RM22.50/bulan sahaja</p>
+                <div class="price-savings-badge">💰 Jimat RM90 berbanding bulanan!</div>
+                <div class="price-setup-note">+ Yuran setup RM50 (sekali sahaja)</div>
+                <ul class="price-features">
+                    <li><span class="check">✓</span> Unlimited pesanan</li>
+                    <li><span class="check">✓</span> Menu tak terhad</li>
+                    <li><span class="check">✓</span> Cetak resit</li>
+                    <li><span class="check">✓</span> Laporan jualan lengkap</li>
+                    <li><span class="check">✓</span> Nombor meja & login staff</li>
+                    <li><span class="check">✓</span> Support WhatsApp <strong style="color:#f97316">Prioriti</strong></li>
+                </ul>
+                <button class="btn-price btn-price-primary" onclick="openPaymentModal('tahunan')">🏆 Langgan Tahunan — RM320</button>
+                <p class="price-note">🔒 Setup RM50 + setahun penuh RM270</p>
+                <div class="payment-badges"><span>FPX · DuitNow · eWallet</span></div>
+            </div>
+
         </div>
     </div>
 </section>
@@ -734,7 +834,7 @@
         <h2>Jaminan <span>Tanpa Risiko</span></h2>
         <p>Kami yakin anda akan suka POSKedai. Sebab tu kami bagi jaminan penuh — tak ada risiko untuk anda langsung.</p>
         <div class="guarantee-grid">
-            <div class="guarantee-card"><div class="gc-icon">🆓</div><h4>7 Hari Percuma</h4><p>Cuba semua fungsi secara percuma selama 7 hari. Tak perlu bayar apa-apa dulu.</p></div>
+            <div class="guarantee-card"><div class="gc-icon">🆓</div><h4>Cuba Percuma 7 Hari</h4><p>Hubungi kami melalui WhatsApp untuk dapatkan akses percubaan 7 hari. Butiran di footer.</p></div>
             <div class="guarantee-card"><div class="gc-icon">🚫</div><h4>Tiada Kontrak</h4><p>Bayar bulan ke bulan sahaja. Nak berhenti? Boleh stop bila-bila masa. Tiada penalti.</p></div>
             <div class="guarantee-card"><div class="gc-icon">💬</div><h4>Support Penuh</h4><p>Ada masalah? WhatsApp kami terus. Kami bantu setup, ajar guna, dan selesaikan sebarang isu.</p></div>
         </div>
@@ -749,30 +849,36 @@
             <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Macam mana kalau internet putus?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Sistem perlu internet untuk simpan data. Tapi data mobile (4G/5G) pun dah cukup. Kalau internet putus kejap, boleh catat manual dulu dan masukkan balik nanti.</div></div>
             <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Boleh cetak resit?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Ya! Sistem auto generate resit. Boleh cetak guna printer biasa atau thermal printer. Resit ada nama kedai, butiran pesanan, dan jumlah bayaran.</div></div>
             <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Data saya selamat ke?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Ya, sangat selamat! Data disimpan dalam cloud yang secure. Backup automatik setiap hari, takkan hilang.</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Ada kontrak atau lock-in period?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Tiada kontrak langsung! Bayar bulan ke bulan. Nak berhenti? Boleh stop bila-bila masa. Tiada caj tersembunyi.</div></div>
+            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Ada kontrak atau lock-in period?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Tiada kontrak langsung! Bayar bulan ke bulan atau setahun. Nak berhenti? Boleh stop bila-bila masa. Tiada caj tersembunyi.</div></div>
             <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Berapa lama nak setup?</span><span class="faq-toggle">+</span></div><div class="faq-answer">1 hari je! WhatsApp kami, kami buat akaun untuk anda. Lepas tu anda boleh tambah menu sendiri dalam sistem — senang sangat, ambil masa dalam 15 minit. Terus boleh mula guna!</div></div>
             <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Sesuai untuk kedai jenis apa?</span><span class="faq-toggle">+</span></div><div class="faq-answer">POSKedai dibina khas untuk F&B — gerai makan, restoran kecil, warung, cafe, food truck, dan food court. Apa-apa kedai yang jual makanan dan minuman!</div></div>
+            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Apa beza pakej bulanan dan tahunan?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Semua fungsi sama! Bezanya cuma harga — pakej tahunan RM270 berbanding RM360 (RM30×12) jika bayar bulanan. Anda jimat RM90 setahun. Pakej tahunan juga dapat support WhatsApp prioriti.</div></div>
         </div>
     </div>
 </section>
 
 <section class="cta" id="hubungi">
-    <h2>Cuba Percuma 7 Hari.<br><span>Tak Suka? Tak Perlu Bayar.</span></h2>
-    <p>Tiada risiko langsung. WhatsApp kami sekarang, esok kedai anda dah ada sistem POS sendiri.</p>
-    <div class="cta-price">RM30/bulan</div>
-    <p class="cta-price-note">Setup RM50 (sekali sahaja) + RM30/bulan. Semua fungsi termasuk.</p>
+    <h2>Pilih Pakej Anda.<br><span>Mula Hari Ini.</span></h2>
+    <p>Setup dalam 1 hari. Staff belajar dalam 15 minit. Kedai anda dah ada sistem POS sendiri.</p>
     <div class="cta-buttons">
-        <a href="javascript:void(0)" onclick="openPaymentModal()" class="btn-cta-orange">💳 Langgan Sekarang — RM80</a>
-        <!-- ✅ DIUBAH: buka popup -->
-        <a href="javascript:void(0)" onclick="openPopup()" class="btn-cta-ghost">📱 Cuba Percuma 7 Hari Dulu</a>
+        <a href="javascript:void(0)" onclick="openPaymentModal('bulanan')" class="btn-cta-orange">📅 Pakej Bulanan — RM80</a>
+        <a href="javascript:void(0)" onclick="openPaymentModal('tahunan')" class="btn-cta-orange" style="background:linear-gradient(135deg,#1d4ed8,#1e40af);box-shadow:0 8px 25px rgba(29,78,216,0.4);">🏆 Pakej Tahunan — RM320</a>
     </div>
+    <p style="margin-top:20px;font-size:0.85rem;opacity:0.5;position:relative;z-index:2;">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
 </section>
 
+<!-- ==================== FOOTER (DENGAN TRIAL BOX) ==================== -->
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-brand">
             <h3>POS<span>Kedai</span></h3>
             <p>Sistem POS paling mudah dan murah untuk kedai makan di Malaysia. Dibina khas untuk peniaga tempatan. 🇲🇾</p>
+            <!-- ✅ TRIAL PERCUMA — di footer sahaja -->
+            <div class="footer-trial-box">
+                <strong>🎁 Cuba Percuma 7 Hari</strong>
+                <p>Belum pasti? Hubungi kami untuk dapatkan akses percubaan penuh selama 7 hari — tiada bayaran, tiada kad kredit diperlukan.</p>
+                <button class="btn-footer-trial" onclick="openPopup()">📱 Mohon Trial Percuma</button>
+            </div>
         </div>
         <div class="footer-links">
             <h4>Pautan</h4>
@@ -804,17 +910,17 @@
     <span class="wa-icon">💬</span><span>WhatsApp Kami</span>
 </a>
 
-<!-- Payment Modal (original) -->
+<!-- Payment Modal -->
 <div class="payment-overlay" id="paymentModal">
     <div class="payment-modal">
-        <div class="payment-modal-header"><div><h3>💳 Langgan POSKedai</h3><p>Lengkapkan bayaran untuk mula guna POSKedai</p></div><button class="payment-modal-close" onclick="closePaymentModal()">&times;</button></div>
-        <div class="payment-modal-info"><div><div class="pmi-label">Jumlah Bayaran</div><div class="pmi-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</div></div><div class="pmi-amount">RM80</div></div>
+        <div class="payment-modal-header"><div><h3 id="pm-title">💳 Langgan POSKedai</h3><p id="pm-subtitle">Lengkapkan bayaran untuk mula guna POSKedai</p></div><button class="payment-modal-close" onclick="closePaymentModal()">&times;</button></div>
+        <div class="payment-modal-info"><div><div class="pmi-label" id="pm-label">Jumlah Bayaran</div><div class="pmi-breakdown" id="pm-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</div></div><div class="pmi-amount" id="pm-amount">RM80</div></div>
         <div class="payment-modal-body"><div id="bcl-payment-form" data-url="https://nucleusriver.bcl.my/embed/form/poskedai-daftar"></div></div>
         <div class="payment-modal-footer"><p>🔒 Bayaran selamat melalui <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></p></div>
     </div>
 </div>
 
-<!-- ✅ POPUP LEAD CAPTURE -->
+<!-- POPUP LEAD CAPTURE (Trial Percuma) -->
 <div class="p-overlay" id="p-overlay" onclick="handlePOverlayClick(event)">
 <div class="p-modal">
   <div class="p-accent"></div>
@@ -836,8 +942,6 @@
     <div class="p-dot" id="p-dot-3"></div>
   </div>
   <div class="p-body">
-
-    <!-- Step 1: Jenis Kedai -->
     <div class="p-step active" id="p-step-0">
       <div class="p-step-title">Kedai anda jenis apa? 🍽️</div>
       <div class="p-step-sub">Bantu kami setup sistem yang paling sesuai untuk anda.</div>
@@ -853,8 +957,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Step 2: Cara Urus -->
     <div class="p-step" id="p-step-1">
       <div class="p-step-title">Macam mana anda urus pesanan sekarang? 📝</div>
       <div class="p-step-sub">Tiada jawapan yang salah — kami nak faham situasi anda.</div>
@@ -871,8 +973,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Step 3: Pengalaman POS -->
     <div class="p-step" id="p-step-2">
       <div class="p-step-title">Pernah guna sistem POS sebelum ni? 🖥️</div>
       <div class="p-step-sub">Ini bantu kami tentukan tahap sokongan yang anda perlukan.</div>
@@ -889,8 +989,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Step 4: Form -->
     <div class="p-step" id="p-step-3">
       <div class="p-step-title">Hampir siap! Bagi maklumat anda 🎉</div>
       <div class="p-step-sub">Kami akan setup percubaan 7 hari anda dalam masa 24 jam.</div>
@@ -912,23 +1010,20 @@
       <div class="p-btn-row">
         <button class="p-btn-back" onclick="pGoBack(2)">← Balik</button>
         <button class="p-btn-next" id="p-next-3" onclick="pSubmitForm()" disabled>
-          <span class="p-btn-text">Mula Cuba Percuma! 🚀</span><span class="p-spinner"></span>
+          <span class="p-btn-text">Minta Trial Percuma! 🚀</span><span class="p-spinner"></span>
         </button>
       </div>
       <p class="p-privacy">🔒 Maklumat anda selamat & sulit. Tidak dikongsi kepada pihak lain.</p>
     </div>
-
-    <!-- Step 5: Thank You -->
     <div class="p-step" id="p-step-4">
       <div class="p-ty-wrap">
         <div class="p-ty-icon">🎉</div>
-
         <div class="p-ty-title">Terima kasih, <span class="p-ty-name" id="p-ty-name"></span>!</div>
         <div class="p-ty-sub">Permohonan anda telah berjaya dihantar. Kami akan hubungi anda dalam masa <strong>24 jam</strong>.</div>
         <div class="p-ty-detail" id="p-ty-detail"></div>
         <a class="p-wa-btn" id="p-wa-link" href="https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w" target="_blank">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          🔔 Sertai Channel POSKedai Sekarang
+          🔔 Sertai Channel POSKedai
         </a>
         <a class="p-wa-personal" id="p-wa-personal-link" href="#" target="_blank">
           💬 Atau terus WhatsApp kami untuk setup trial
@@ -936,14 +1031,11 @@
         <span class="p-skip" onclick="closePopup()">Tutup tetingkap ini</span>
       </div>
     </div>
-
   </div>
 </div>
 </div>
-<!-- /POPUP LEAD CAPTURE -->
 
 <script>
-// ==================== ORIGINAL SCRIPTS ====================
 window.addEventListener('scroll', function() {
     var navbar = document.getElementById('navbar');
     if (window.scrollY > 50) navbar.classList.add('scrolled');
@@ -962,26 +1054,34 @@ function handleScrollAnimation() {
 }
 window.addEventListener('scroll', handleScrollAnimation);
 window.addEventListener('load', handleScrollAnimation);
-
-// IntersectionObserver — lebih reliable
 if ('IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
         });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.animate').forEach(function(el) {
-        observer.observe(el);
-    });
+    document.querySelectorAll('.animate').forEach(function(el) { observer.observe(el); });
 }
 document.querySelectorAll('.nav-links a').forEach(function(link) {
     link.addEventListener('click', function() { document.getElementById('navLinks').classList.remove('show'); });
 });
-function openPaymentModal() {
+
+// ==================== PAYMENT MODAL ====================
+function openPaymentModal(pakej) {
     var modal = document.getElementById('paymentModal');
+    if (pakej === 'tahunan') {
+        document.getElementById('pm-title').textContent = '🏆 Langgan POSKedai — Pakej Tahunan';
+        document.getElementById('pm-subtitle').textContent = 'Jimat RM90 — langgan setahun penuh';
+        document.getElementById('pm-label').textContent = 'Jumlah Bayaran';
+        document.getElementById('pm-breakdown').textContent = 'Setup RM50 (sekali) + Setahun RM270';
+        document.getElementById('pm-amount').textContent = 'RM320';
+    } else {
+        document.getElementById('pm-title').textContent = '💳 Langgan POSKedai — Pakej Bulanan';
+        document.getElementById('pm-subtitle').textContent = 'Lengkapkan bayaran untuk mula guna POSKedai';
+        document.getElementById('pm-label').textContent = 'Jumlah Bayaran';
+        document.getElementById('pm-breakdown').textContent = 'Setup RM50 (sekali) + Bulan pertama RM30';
+        document.getElementById('pm-amount').textContent = 'RM80';
+    }
     modal.style.display = 'flex';
     requestAnimationFrame(function() { modal.classList.add('show'); });
     document.body.style.overflow = 'hidden';
@@ -1002,7 +1102,6 @@ document.getElementById('paymentModal').addEventListener('click', function(e) { 
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closePaymentModal(); closePopup(); } });
 
 // ==================== POPUP LEAD CAPTURE ====================
-// ⚙️ TUKAR URL INI SELEPAS SETUP GOOGLE APPS SCRIPT
 const P_SHEET_URL    = 'https://script.google.com/macros/s/AKfycbyzQRGrDOJGSgjoxhhA2YK761-3NTLV3FctfmK8ezqL5zzwI0VBRRWlIsLXqWSY769Y/exec';
 const P_WA_NUM       = '60167388358';
 const P_CHANNEL_URL  = 'https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w';
@@ -1076,7 +1175,7 @@ async function pSubmitForm() {
         jenisKedai: pAns.jenis,
         caraUrus  : pAns.cara,
         pengalaman: pAns.pos,
-        sumber    : 'Website – Popup'
+        sumber    : 'Website – Footer Trial'
     };
     try {
         await fetch(P_SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
