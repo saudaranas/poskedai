@@ -161,9 +161,6 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const TG_BOT_TOKEN = '8686440374:AAHmLV5rOVkgkbI55qNasVAjTk71X9uWvqM';
-const TG_CHAT_ID   = '1523007964';
-
 // ============================================================
 // Set tarikh
 // ============================================================
@@ -191,13 +188,10 @@ document.getElementById('payDate').textContent = new Date().toLocaleString('ms-M
 // Hantar notifikasi Telegram
 // ============================================================
 async function sendTelegramNotif() {
-    const now = new Date().toLocaleString('ms-MY', {
-        timeZone: 'Asia/Kuala_Lumpur',
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    });
+    // GAS Master URL — token selamat dalam GAS, bukan dalam HTML
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbznU2RPkvryyNLyRrbT5iRtA1HTdazlgia_7HcN1-_OpE15pMhr7t1ZRsoqjIWNFAsY/exec';
+    const GAS_KEY = 'poskedai-master-2026';
 
-    // BCL URL params
     const params  = new URLSearchParams(window.location.search);
     const nama    = params.get('nama')   || '-';
     const phone   = params.get('phone')  || '-';
@@ -206,35 +200,18 @@ async function sendTelegramNotif() {
     const tarikh  = params.get('tarikh') || '-';
     const ref     = params.get('ref')    || '-';
 
-    // Escape untuk MarkdownV2
-    const esc = (s) => String(s).replace(/[_*[\]()~`>#+\-=|{}.!]/g, '\\$&');
-
-    const msg =
-        '💰 *RENEW POSKEDAI BERJAYA\!*\n' +
-        '━━━━━━━━━━━━━━━━\n' +
-        '📅 Tarikh: ' + esc(tarikh || now) + '\n' +
-        '👤 Nama: ' + esc(nama) + '\n' +
-        '📱 Telefon: ' + esc(phone) + '\n' +
-        '💵 Amaun: RM' + esc(amaun) + '\n' +
-        '🔢 No Order: ' + esc(order) + '\n' +
-        '🪪 Ref ID: ' + esc(ref) + '\n' +
-        '━━━━━━━━━━━━━━━━\n' +
-        '✅ *Tindakan diperlukan:*\n' +
-        '1\\. Update expiryDate dalam Registry sheet\n' +
-        '2\\. WhatsApp client untuk konfirmasi';
-
     try {
-        const res = await fetch('https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage', {
+        const res = await fetch(GAS_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify({
-                chat_id:    TG_CHAT_ID,
-                text:       msg,
-                parse_mode: 'MarkdownV2'
+                apiKey: GAS_KEY,
+                action: 'notifyTelegram',
+                data: { nama, phone, amaun, order, tarikh, ref }
             })
         });
-        const data = await res.json();
-        if (data.ok) {
+        const result = await res.json();
+        if (result.success) {
             document.getElementById('tgStatus').textContent = '✅ Notifikasi berjaya dihantar kepada admin';
             document.getElementById('tgStatus').style.color = '#16a34a';
         } else {
