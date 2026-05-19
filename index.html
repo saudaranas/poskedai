@@ -3,659 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POSKedai - Sistem POS Kedai Makanan RM30/Bulan | Tak Perlu Mesin Mahal</title>
+    <title>POSKedai - Sistem POS Kedai Makan RM30/Bulan | Auto Print | Kitchen Display</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-
         *{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth}
-        body{font-family:'Plus Jakarta Sans',sans-serif;color:#1e293b;overflow-x:hidden}
+        body{font-family:'Plus Jakarta Sans',sans-serif;color:#1e293b;overflow-x:hidden;background:#fff}
         a{text-decoration:none;color:inherit}
-        img{max-width:100%}
 
-        /* ==================== NAVBAR ==================== */
-        .navbar{
-            position:fixed;top:0;left:0;right:0;z-index:100;
-            padding:16px 24px;
-            transition:all 0.3s;
-        }
-        .navbar.scrolled{
-            background:rgba(255,255,255,0.97);
-            backdrop-filter:blur(12px);
-            box-shadow:0 2px 20px rgba(0,0,0,0.06);
-            padding:12px 24px;
-        }
-        .nav-container{
-            max-width:1200px;margin:0 auto;
-            display:flex;justify-content:space-between;align-items:center;
-        }
-        .nav-logo{font-weight:900;font-size:1.5rem;color:#f97316;letter-spacing:-0.5px;}
-        .nav-logo span{color:#1e293b}
-        .nav-links{display:flex;gap:32px;align-items:center;}
-        .nav-links a{font-weight:600;font-size:0.9rem;color:#64748b;transition:color 0.2s;}
-        .nav-links a:hover{color:#f97316}
-        .nav-cta{
-            background:#f97316;color:#fff!important;
-            padding:10px 24px;border-radius:50px;
-            font-weight:700;transition:all 0.3s;
-            box-shadow:0 4px 15px rgba(249,115,22,0.3);
-        }
-        .nav-cta:hover{background:#ea580c;transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,0.4);}
-        .nav-mobile{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;}
-        .nav-links.show{
-            display:flex!important;flex-direction:column;
-            position:absolute;top:60px;left:0;right:0;
-            background:#fff;padding:20px;gap:16px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.1);
-            border-radius:0 0 20px 20px;
+        :root{
+            --orange:#f97316;--orange-dark:#ea580c;--orange-light:#fff7ed;
+            --dark:#0f172a;--navy:#1e293b;--gray:#64748b;--light:#f8fafc;
+            --border:#f1f5f9;--radius:20px;
+            --shadow:0 20px 60px rgba(0,0,0,0.08);
         }
 
-        /* ==================== HERO ==================== */
-        .hero{
-            min-height:100vh;
-            background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 50%,#fed7aa 100%);
-            display:flex;align-items:center;
-            padding:120px 24px 80px;
-            position:relative;overflow:hidden;
-        }
-        .hero::before{
-            content:'';position:absolute;top:-50%;right:-20%;
-            width:800px;height:800px;
-            background:radial-gradient(circle,rgba(249,115,22,0.08) 0%,transparent 70%);
-            border-radius:50%;
-        }
-        .hero::after{
-            content:'';position:absolute;bottom:-30%;left:-10%;
-            width:600px;height:600px;
-            background:radial-gradient(circle,rgba(249,115,22,0.05) 0%,transparent 70%);
-            border-radius:50%;
-        }
-        .hero-container{
-            max-width:1200px;margin:0 auto;width:100%;
-            display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
-        }
-        .hero-content{position:relative;z-index:2;}
-        .hero-badge{
-            display:inline-flex;align-items:center;gap:8px;
-            background:#fff;
-            padding:8px 20px;border-radius:50px;
-            font-size:0.8rem;font-weight:700;color:#f97316;
-            box-shadow:0 2px 15px rgba(0,0,0,0.06);
-            margin-bottom:24px;animation:fadeInUp 0.6s ease;
-            border:1px solid #fed7aa;
-        }
-        .hero-badge .pulse{
-            width:8px;height:8px;border-radius:50%;
-            background:#22c55e;
-            animation:pulse 2s ease-in-out infinite;
-        }
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
-        .hero h1{
-            font-size:3.2rem;font-weight:900;line-height:1.1;
-            margin-bottom:20px;color:#1e293b;
-            letter-spacing:-1px;
-            animation:fadeInUp 0.6s ease 0.1s both;
-        }
-        .hero h1 .price-highlight{
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-        }
-        .hero-sub{
-            font-size:1.25rem;font-weight:700;color:#ea580c;
-            margin-bottom:16px;
-            animation:fadeInUp 0.6s ease 0.15s both;
-        }
-        .hero p{
-            font-size:1.05rem;color:#64748b;line-height:1.7;
-            margin-bottom:32px;max-width:500px;
-            animation:fadeInUp 0.6s ease 0.2s both;
-        }
-        .hero-buttons{
-            display:flex;gap:16px;flex-wrap:wrap;
-            animation:fadeInUp 0.6s ease 0.3s both;
-        }
-        .btn-hero{
-            padding:16px 36px;border-radius:50px;
-            font-weight:700;font-size:1rem;border:none;cursor:pointer;
-            transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;
-        }
-        .btn-hero-primary{
-            background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;
-            box-shadow:0 8px 25px rgba(249,115,22,0.35);
-        }
-        .btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
-        .btn-hero-secondary{background:#fff;color:#1e293b;box-shadow:0 4px 15px rgba(0,0,0,0.08);}
-        .btn-hero-secondary:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.12);}
+        /* ── NAVBAR ── */
+        .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 24px;transition:all .3s}
+        .navbar.scrolled{background:rgba(255,255,255,.97);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,.06);padding:12px 24px}
+        .nav-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+        .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:var(--orange);letter-spacing:-0.5px}
+        .nav-logo span{color:var(--dark)}
+        .nav-links{display:flex;gap:32px;align-items:center}
+        .nav-links a{font-weight:600;font-size:.88rem;color:var(--gray);transition:color .2s}
+        .nav-links a:hover{color:var(--orange)}
+        .nav-cta{background:var(--orange);color:#fff!important;padding:10px 24px;border-radius:50px;font-weight:700;box-shadow:0 4px 15px rgba(249,115,22,.3);transition:all .3s}
+        .nav-cta:hover{background:var(--orange-dark);transform:translateY(-2px)}
+        .nav-mobile{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer}
+        .nav-links.show{display:flex!important;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:#fff;padding:20px;gap:16px;box-shadow:0 10px 30px rgba(0,0,0,.1);border-radius:0 0 20px 20px}
 
-        .hero-trust{
-            display:flex;flex-wrap:wrap;gap:16px;margin-top:36px;
-            animation:fadeInUp 0.6s ease 0.4s both;
-        }
-        .trust-badge{
-            display:flex;align-items:center;gap:8px;
-            background:#fff;padding:10px 18px;border-radius:12px;
-            font-size:0.82rem;font-weight:600;color:#475569;
-            box-shadow:0 2px 10px rgba(0,0,0,0.04);
-            border:1px solid #f1f5f9;
-        }
-        .trust-badge .trust-icon{font-size:1.1rem;}
+        /* ── HERO ── */
+        .hero{min-height:100vh;background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 40%,#fde8d0 100%);display:flex;align-items:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:-20%;right:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(249,115,22,.1) 0%,transparent 70%);border-radius:50%}
+        .hero::after{content:'';position:absolute;bottom:-20%;left:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(249,115,22,.07) 0%,transparent 70%);border-radius:50%}
+        .hero-container{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+        .hero-content{position:relative;z-index:2}
+        .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;padding:8px 20px;border-radius:50px;font-size:.78rem;font-weight:700;color:var(--orange);box-shadow:0 2px 15px rgba(0,0,0,.06);margin-bottom:24px;border:1px solid #fed7aa;animation:fadeUp .6s ease both}
+        .pulse{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s ease-in-out infinite}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+        .hero h1{font-family:'Syne',sans-serif;font-size:3.4rem;font-weight:800;line-height:1.08;margin-bottom:20px;letter-spacing:-1.5px;animation:fadeUp .6s .1s ease both}
+        .grad-text{background:linear-gradient(135deg,var(--orange),var(--orange-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-sub{font-size:1.15rem;font-weight:700;color:var(--orange-dark);margin-bottom:14px;animation:fadeUp .6s .15s ease both}
+        .hero p{font-size:1rem;color:var(--gray);line-height:1.7;margin-bottom:32px;max-width:480px;animation:fadeUp .6s .2s ease both}
+        .hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s .3s ease both}
+        .btn-primary{padding:15px 34px;border-radius:50px;font-weight:800;font-size:.95rem;border:none;cursor:pointer;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;box-shadow:0 8px 25px rgba(249,115,22,.35);transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,.45)}
+        .btn-secondary{padding:15px 34px;border-radius:50px;font-weight:700;font-size:.95rem;background:#fff;color:var(--dark);box-shadow:0 4px 15px rgba(0,0,0,.08);transition:all .3s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer}
+        .btn-secondary:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.12)}
+        .trust-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;animation:fadeUp .6s .4s ease both}
+        .trust-chip{display:flex;align-items:center;gap:7px;background:#fff;padding:9px 16px;border-radius:12px;font-size:.78rem;font-weight:600;color:#475569;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid var(--border)}
 
-        .hero-visual{
-            position:relative;z-index:2;
-            animation:fadeInRight 0.8s ease 0.3s both;
-        }
-        .hero-mockup{
-            background:#fff;border-radius:24px;
-            box-shadow:0 30px 60px rgba(0,0,0,0.1),0 0 0 1px rgba(0,0,0,0.03);
-            overflow:hidden;
-        }
-        .mockup-header{
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            padding:12px 16px;color:#fff;
-            display:flex;justify-content:space-between;align-items:center;
-        }
-        .mockup-header-left{display:flex;align-items:center;gap:8px;}
-        .mockup-header h4{font-size:0.9rem;font-weight:900;}
-        .mockup-header h4 em{font-style:normal;opacity:0.9;}
-        .mockup-staff-badge{background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:50px;font-size:0.6rem;font-weight:600;}
-        .mockup-header-right{display:flex;align-items:center;gap:8px;}
-        .mockup-counter{background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:50px;font-size:0.65rem;font-weight:700;}
-        .mockup-time{font-size:0.65rem;opacity:0.8;}
-        .mockup-nav{background:#fff;padding:0;display:flex;border-bottom:2px solid #f1f5f9;}
-        .mockup-nav-btn{flex:1;padding:10px 8px;text-align:center;font-size:0.6rem;font-weight:700;color:#94a3b8;border-bottom:3px solid transparent;transition:all 0.3s;cursor:default;}
-        .mockup-nav-btn.active{color:#f97316;border-bottom-color:#f97316;background:#fff7ed;}
-        .mockup-nav-btn .mn-icon{font-size:0.9rem;display:block;margin-bottom:2px;}
-        .mockup-body{padding:12px;background:#f8fafc;}
-        .mockup-search{background:#fff;border:2px solid #f1f5f9;border-radius:50px;padding:7px 12px 7px 30px;font-size:0.6rem;color:#94a3b8;width:100%;margin-bottom:8px;position:relative;}
-        .mockup-search::before{content:"🔍 ";font-size:0.6rem;}
-        .mockup-cats{display:flex;gap:5px;margin-bottom:10px;overflow:hidden;}
-        .mockup-cat{padding:4px 12px;border-radius:50px;font-size:0.55rem;font-weight:700;background:#fff;border:2px solid #f1f5f9;color:#94a3b8;white-space:nowrap;}
-        .mockup-cat.active{background:#f97316;color:#fff;border-color:#f97316;box-shadow:0 2px 8px rgba(249,115,22,0.3);}
-        .mockup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
-        .mockup-item{background:#fff;border:2px solid #f1f5f9;border-radius:12px;padding:8px 6px;text-align:center;position:relative;transition:all 0.2s;}
-        .mockup-item.selected{border-color:#f97316;background:#fff7ed;}
-        .mockup-item-cat{font-size:0.45rem;color:#94a3b8;font-weight:600;}
-        .mockup-item-name{font-size:0.55rem;font-weight:700;color:#334155;margin:1px 0;}
-        .mockup-item-price{font-size:0.65rem;font-weight:800;color:#f97316;}
-        .mockup-item-badge{position:absolute;top:-5px;right:-5px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.45rem;font-weight:800;box-shadow:0 2px 6px rgba(249,115,22,0.4);}
-        .mockup-cart{background:#fff;border-radius:14px;padding:10px;border:2px solid #f1f5f9;margin-bottom:8px;}
-        .mockup-cart-title{font-size:0.6rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:4px;}
-        .mockup-cart-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #f8fafc;font-size:0.55rem;}
-        .mockup-cart-item:last-child{border:none;}
-        .mci-name{font-weight:700;color:#334155;}
-        .mci-detail{color:#94a3b8;}
-        .mci-qty{display:flex;align-items:center;gap:4px;}
-        .mci-qty-btn{width:16px;height:16px;border-radius:50%;border:1.5px solid #f97316;background:#fff;color:#f97316;font-size:0.5rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
-        .mci-qty-btn.minus{border-color:#ef4444;color:#ef4444;}
-        .mci-qty-num{font-weight:800;font-size:0.6rem;min-width:14px;text-align:center;}
-        .mci-total{font-weight:800;color:#f97316;font-size:0.6rem;}
-        .mockup-info-row{display:flex;gap:6px;margin-bottom:6px;}
-        .mockup-info-box{flex:1;background:#fff;border:2px solid #f1f5f9;border-radius:10px;padding:5px 8px;font-size:0.5rem;display:flex;align-items:center;gap:4px;}
-        .mockup-info-box strong{color:#334155;}
-        .mockup-info-box span{background:#f8fafc;padding:2px 8px;border-radius:6px;font-weight:700;color:#1e293b;}
-        .mockup-total{background:#1e293b;color:#fff;padding:10px 14px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-        .mockup-total-label{font-size:0.6rem;font-weight:600;}
-        .mockup-total-amount{font-size:1.1rem;font-weight:900;}
-        .mockup-payments{display:flex;gap:5px;margin-bottom:8px;}
-        .mockup-pay-btn{flex:1;padding:6px 4px;border:2px solid #f1f5f9;border-radius:10px;background:#fff;text-align:center;font-size:0.5rem;font-weight:700;color:#94a3b8;}
-        .mockup-pay-btn.active{border-color:#f97316;background:#fff7ed;color:#f97316;}
-        .mockup-pay-btn .mp-icon{font-size:0.85rem;display:block;margin-bottom:1px;}
-        .mockup-submit{width:100%;padding:10px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:50px;font-size:0.7rem;font-weight:700;box-shadow:0 4px 15px rgba(249,115,22,0.35);}
-        .mockup-float{position:absolute;background:#fff;border-radius:16px;padding:10px 16px;box-shadow:0 10px 30px rgba(0,0,0,0.12);font-size:0.75rem;font-weight:700;animation:float 3s ease-in-out infinite;z-index:3;}
-        .mockup-float-1{top:15%;right:-30px;color:#22c55e;}
-        .mockup-float-2{bottom:15%;left:-30px;color:#f97316;}
-        .mockup-float-3{top:50%;right:-40px;color:#3b82f6;}
+        /* ── HERO MOCKUP ── */
+        .hero-visual{position:relative;z-index:2;animation:fadeRight .8s .3s ease both}
+        .mockup-wrap{background:#fff;border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.1),0 0 0 1px rgba(0,0,0,.03);overflow:hidden}
+        .mk-header{background:linear-gradient(135deg,var(--orange),var(--orange-dark));padding:12px 16px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+        .mk-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem}
+        .mk-logo em{font-style:normal;opacity:.8}
+        .mk-right{display:flex;align-items:center;gap:8px;font-size:.62rem}
+        .mk-badge{background:rgba(255,255,255,.2);padding:3px 9px;border-radius:50px;font-weight:700}
+        .mk-nav{display:flex;border-bottom:2px solid var(--border);background:#fff}
+        .mk-tab{flex:1;padding:9px 6px;text-align:center;font-size:.55rem;font-weight:700;color:#94a3b8;border-bottom:3px solid transparent}
+        .mk-tab.active{color:var(--orange);border-bottom-color:var(--orange);background:#fff7ed}
+        .mk-tab-icon{font-size:.85rem;display:block;margin-bottom:1px}
+        .mk-body{padding:10px;background:#f8fafc}
+        .mk-cats{display:flex;gap:5px;margin-bottom:8px;overflow:hidden}
+        .mk-cat{padding:4px 11px;border-radius:50px;font-size:.52rem;font-weight:700;background:#fff;border:2px solid var(--border);color:#94a3b8;white-space:nowrap}
+        .mk-cat.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+        .mk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px}
+        .mk-item{background:#fff;border:2px solid var(--border);border-radius:10px;padding:7px 5px;text-align:center;position:relative}
+        .mk-item.sel{border-color:var(--orange);background:#fff7ed}
+        .mk-item-cat{font-size:.42rem;color:#94a3b8;font-weight:600}
+        .mk-item-name{font-size:.52rem;font-weight:700;color:#334155;margin:1px 0}
+        .mk-item-price{font-size:.62rem;font-weight:800;color:var(--orange)}
+        .mk-dot{position:absolute;top:-5px;right:-5px;background:var(--orange);color:#fff;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.42rem;font-weight:800}
+        .mk-total{background:var(--dark);color:#fff;padding:9px 12px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+        .mk-total-label{font-size:.55rem;font-weight:600}
+        .mk-total-amount{font-size:1rem;font-weight:900}
+        .mk-pay-row{display:flex;gap:4px;margin-bottom:7px}
+        .mk-pay{flex:1;padding:5px 3px;border:2px solid var(--border);border-radius:9px;background:#fff;text-align:center;font-size:.48rem;font-weight:700;color:#94a3b8}
+        .mk-pay.active{border-color:var(--orange);background:#fff7ed;color:var(--orange)}
+        .mk-pay-icon{font-size:.8rem;display:block;margin-bottom:1px}
+        .mk-submit{width:100%;padding:9px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;border:none;border-radius:50px;font-size:.65rem;font-weight:800}
+        .float-card{position:absolute;background:#fff;border-radius:14px;padding:9px 14px;box-shadow:0 10px 30px rgba(0,0,0,.12);font-size:.72rem;font-weight:700;animation:float 3s ease-in-out infinite;z-index:3;display:flex;align-items:center;gap:6px;white-space:nowrap}
+        .float-1{top:10%;right:-20px;color:#22c55e;animation-delay:0s}
+        .float-2{bottom:20%;left:-20px;color:var(--orange);animation-delay:1s}
+        .float-3{top:55%;right:-30px;color:#3b82f6;animation-delay:2s}
 
-        .pain-section{padding:80px 24px;background:#fff;border-bottom:1px solid #f1f5f9;}
-        .pain-container{max-width:800px;margin:0 auto;text-align:center;}
-        .pain-container h2{font-size:2rem;font-weight:900;margin-bottom:12px;letter-spacing:-0.5px;}
-        .pain-container h2 span{color:#ef4444;}
-        .pain-sub{font-size:1.05rem;color:#64748b;margin-bottom:40px;line-height:1.7;}
-        .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;margin-bottom:40px;}
-        .pain-card{background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;}
-        .pain-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
-        .pain-card h4{font-size:0.95rem;font-weight:700;color:#dc2626;margin-bottom:4px;}
-        .pain-card p{font-size:0.85rem;color:#64748b;line-height:1.5;}
-        .pain-solution{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #bbf7d0;border-radius:20px;padding:28px 32px;display:flex;align-items:center;gap:16px;}
-        .pain-solution-icon{font-size:2rem;}
-        .pain-solution-text{text-align:left;}
-        .pain-solution-text h4{font-size:1.1rem;font-weight:800;color:#166534;margin-bottom:4px;}
-        .pain-solution-text p{font-size:0.9rem;color:#4ade80;font-weight:600;}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeRight{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
 
-        .features{padding:100px 24px;background:#f8fafc;}
-        .section-container{max-width:1200px;margin:0 auto;}
-        .section-header{text-align:center;margin-bottom:64px;}
-        .section-badge{display:inline-block;background:#fff;padding:8px 20px;border-radius:50px;font-size:0.8rem;font-weight:700;color:#f97316;margin-bottom:16px;border:1px solid #fed7aa;}
-        .section-header h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;letter-spacing:-0.5px;}
-        .section-header h2 span{color:#f97316;}
-        .section-header p{font-size:1.05rem;color:#64748b;max-width:600px;margin:0 auto;line-height:1.6;}
-        .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-        .feature-card{background:#fff;border:2px solid #f1f5f9;border-radius:20px;padding:32px;transition:all 0.3s;position:relative;overflow:hidden;}
-        .feature-card:hover{border-color:#fed7aa;transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.06);}
-        .feature-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px;}
-        .fi-orange{background:#fff7ed;}.fi-green{background:#f0fdf4;}.fi-blue{background:#eff6ff;}.fi-purple{background:#faf5ff;}.fi-red{background:#fef2f2;}.fi-yellow{background:#fefce8;}
-        .feature-card h3{font-size:1.1rem;font-weight:800;margin-bottom:10px;}
-        .feature-card p{font-size:0.88rem;color:#64748b;line-height:1.6;}
+        /* ── SECTION BASE ── */
+        .section{padding:100px 24px}
+        .sc{max-width:1200px;margin:0 auto}
+        .sh{text-align:center;margin-bottom:64px}
+        .sh-badge{display:inline-block;background:#fff;border:1px solid #fed7aa;padding:7px 20px;border-radius:50px;font-size:.78rem;font-weight:700;color:var(--orange);margin-bottom:16px}
+        .sh h2{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;margin-bottom:14px;letter-spacing:-1px}
+        .sh h2 span{color:var(--orange)}
+        .sh p{font-size:1rem;color:var(--gray);max-width:580px;margin:0 auto;line-height:1.7}
+        .anim{opacity:0;transform:translateY(28px);transition:all .65s ease}
+        .anim.in{opacity:1;transform:translateY(0)}
 
-        .how-it-works{padding:100px 24px;background:#fff;}
-        .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;}
-        .step-card{text-align:center;position:relative;}
-        .step-number{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 20px rgba(249,115,22,0.3);}
-        .step-card h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;}
-        .step-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
-        .step-arrow{position:absolute;top:30px;right:-16px;font-size:1.5rem;color:#cbd5e1;}
+        /* ── PAIN ── */
+        .pain{padding:80px 24px;background:#fff}
+        .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:780px;margin:0 auto 36px;text-align:left}
+        .pain-card{background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:20px 22px;display:flex;gap:12px}
+        .pain-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+        .pain-card h4{font-size:.9rem;font-weight:700;color:#dc2626;margin-bottom:4px}
+        .pain-card p{font-size:.82rem;color:var(--gray);line-height:1.5}
+        .solution-box{max-width:780px;margin:0 auto;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;border-radius:20px;padding:24px 30px;display:flex;align-items:center;gap:16px}
+        .solution-box h4{font-size:1rem;font-weight:800;color:#166534;margin-bottom:4px}
+        .solution-box p{font-size:.85rem;color:#16a34a;font-weight:600}
 
-        /* ==================== PRICING ==================== */
-        .pricing{padding:100px 24px;background:#f8fafc;}
-        .pricing-grid{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:24px;
-            max-width:860px;
-            margin:0 auto;
-        }
-        .price-card{
-            background:#fff;border-radius:28px;padding:40px 36px;
-            text-align:center;
-            box-shadow:0 8px 30px rgba(0,0,0,0.06);
-            border:2px solid #f1f5f9;
-            position:relative;overflow:hidden;
-            transition:transform 0.3s,box-shadow 0.3s;
-        }
-        .price-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.1);}
-        .price-card.featured{
-            border-color:#fed7aa;
-            box-shadow:0 20px 60px rgba(249,115,22,0.12);
-        }
-        .price-card::before{
-            content:'';position:absolute;top:0;left:0;right:0;height:4px;
-            background:linear-gradient(90deg,#e2e8f0,#cbd5e1);
-        }
-        .price-card.featured::before{
-            background:linear-gradient(90deg,#f97316,#ea580c,#f97316);
-        }
-        .price-popular-badge{
-            position:absolute;top:16px;right:16px;
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            color:#fff;padding:4px 14px;border-radius:50px;
-            font-size:0.72rem;font-weight:700;
-            box-shadow:0 4px 12px rgba(249,115,22,0.35);
-        }
-        .price-emoji{font-size:2.5rem;margin-bottom:14px;}
-        .price-card h3{font-size:1.3rem;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px;}
-        .price-card-desc{font-size:0.88rem;color:#64748b;margin-bottom:24px;line-height:1.5;}
-        .price-amount{margin-bottom:6px;}
-        .price-amount .currency{font-size:1.3rem;font-weight:800;color:#64748b;vertical-align:top;line-height:3rem;}
-        .price-amount .amount{font-size:3.8rem;font-weight:900;color:#1e293b;letter-spacing:-2px;}
-        .price-amount .period{font-size:0.95rem;color:#94a3b8;font-weight:600;}
-        .price-per-month{font-size:0.78rem;color:#94a3b8;margin-bottom:6px;font-weight:600;}
-        .price-savings-badge{
-            display:inline-block;
-            background:#f0fdf4;border:1px solid #bbf7d0;
-            padding:6px 16px;border-radius:50px;
-            font-size:0.78rem;font-weight:700;color:#166534;
-            margin-bottom:20px;
-        }
-        .price-setup-note{
-            font-size:0.82rem;color:#64748b;font-weight:600;
-            background:#f8fafc;padding:7px 14px;border-radius:8px;
-            display:inline-block;margin-bottom:20px;
-        }
-        .price-features{list-style:none;text-align:left;margin-bottom:28px;display:flex;flex-direction:column;gap:8px;}
-        .price-features li{font-size:0.88rem;color:#475569;display:flex;align-items:center;gap:10px;font-weight:500;}
-        .price-features li .check{color:#22c55e;font-weight:700;font-size:1rem;}
-        .btn-price{
-            display:block;width:100%;padding:15px;border-radius:50px;
-            border:none;font-weight:800;font-size:1rem;
-            cursor:pointer;transition:all 0.3s;
-        }
-        .btn-price-primary{
-            background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;
-            box-shadow:0 8px 25px rgba(249,115,22,0.35);
-        }
-        .btn-price-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(249,115,22,0.45);}
-        .btn-price-outline{
-            background:transparent;color:#f97316;
-            border:2px solid #fed7aa;
-        }
-        .btn-price-outline:hover{background:#fff7ed;border-color:#f97316;}
-        .price-note{font-size:0.75rem;color:#94a3b8;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:5px;}
-        .payment-badges{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:0.72rem;color:#94a3b8;flex-wrap:wrap;}
-        .payment-badges strong{color:#64748b;}
+        /* ── FEATURES ── */
+        .features{padding:100px 24px;background:var(--light)}
+        .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+        .feat-card{background:#fff;border:2px solid var(--border);border-radius:var(--radius);padding:30px;transition:all .3s;position:relative;overflow:hidden}
+        .feat-card:hover{border-color:#fed7aa;transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.06)}
+        .feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-dark));opacity:0;transition:opacity .3s}
+        .feat-card:hover::before{opacity:1}
+        .feat-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px}
+        .fi-oren{background:#fff7ed}.fi-green{background:#f0fdf4}.fi-blue{background:#eff6ff}.fi-purple{background:#faf5ff}.fi-red{background:#fef2f2}.fi-yellow{background:#fefce8}.fi-teal{background:#f0fdfa}.fi-pink{background:#fdf2f8}.fi-indigo{background:#eef2ff}
+        .feat-card h3{font-size:1.05rem;font-weight:800;margin-bottom:10px}
+        .feat-card p{font-size:.85rem;color:var(--gray);line-height:1.6}
+        .feat-new{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;padding:3px 10px;border-radius:50px;font-size:.6rem;font-weight:700}
 
-        .comparison{padding:100px 24px;background:#fff;}
-        .compare-cards{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-        .compare-card{border-radius:20px;padding:32px;}
-        .compare-card.others{background:#f8fafc;border:2px solid #e2e8f0;}
-        .compare-card.poskedai{background:#fff7ed;border:2px solid #fed7aa;position:relative;}
-        .compare-card.poskedai::before{content:'👑 POSKedai';position:absolute;top:-14px;left:24px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;padding:6px 18px;border-radius:50px;font-size:0.75rem;font-weight:700;}
-        .compare-card h3{font-size:1.2rem;font-weight:800;margin-bottom:20px;padding-top:8px;}
-        .compare-card.others h3{color:#64748b;}
-        .compare-card.poskedai h3{color:#ea580c;}
-        .compare-list{list-style:none;}
-        .compare-list li{padding:10px 0;font-size:0.9rem;border-bottom:1px solid rgba(0,0,0,0.05);display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
-        .compare-list li:last-child{border:none;}
-        .compare-list li .ci{font-size:1rem;flex-shrink:0;margin-top:1px;}
+        /* ── KDS SECTION ── */
+        .kds-section{padding:100px 24px;background:#fff;overflow:hidden}
+        .kds-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+        .kds-content h2{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;margin-bottom:16px;letter-spacing:-1px;line-height:1.1}
+        .kds-content p{font-size:1rem;color:var(--gray);line-height:1.7;margin-bottom:24px}
+        .kds-points{display:flex;flex-direction:column;gap:14px}
+        .kds-point{display:flex;align-items:flex-start;gap:12px}
+        .kp-icon{width:36px;height:36px;border-radius:10px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+        .kp-text h4{font-size:.9rem;font-weight:700;margin-bottom:2px}
+        .kp-text p{font-size:.82rem;color:var(--gray)}
 
-        .guarantee{padding:100px 24px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);}
-        .guarantee-container{max-width:800px;margin:0 auto;text-align:center;}
-        .guarantee-shield{width:100px;height:100px;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.8rem;margin:0 auto 28px;box-shadow:0 12px 30px rgba(34,197,94,0.3);}
-        .guarantee-container h2{font-size:2.2rem;font-weight:900;margin-bottom:16px;letter-spacing:-0.5px;}
-        .guarantee-container h2 span{color:#22c55e;}
-        .guarantee-container>p{font-size:1.05rem;color:#64748b;line-height:1.7;max-width:600px;margin:0 auto 40px;}
-        .guarantee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-        .guarantee-card{background:#fff;border-radius:16px;padding:28px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.04);border:1px solid #e2e8f0;}
-        .guarantee-card .gc-icon{font-size:2rem;margin-bottom:12px;}
-        .guarantee-card h4{font-size:1rem;font-weight:800;margin-bottom:8px;}
-        .guarantee-card p{font-size:0.85rem;color:#64748b;line-height:1.6;}
+        /* KDS Mockup */
+        .kds-mockup{background:#0f172a;border-radius:24px;padding:16px;box-shadow:0 30px 80px rgba(0,0,0,.2)}
+        .kds-mk-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px}
+        .kds-shop-name{font-weight:800;color:#fff;font-size:.85rem;font-family:'Syne',sans-serif}
+        .kds-status{display:flex;align-items:center;gap:6px;font-size:.65rem;color:#94a3b8}
+        .kds-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s ease-in-out infinite}
+        .kds-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .kds-col-header{border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .kds-col-goreng{background:linear-gradient(135deg,#f97316,#ea580c)}
+        .kds-col-minuman{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+        .kds-col-title{font-weight:800;color:#fff;font-size:.72rem;font-family:'Syne',sans-serif}
+        .kds-col-badge{background:rgba(255,255,255,.25);color:#fff;padding:2px 8px;border-radius:50px;font-size:.58rem;font-weight:700}
+        .kds-order{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-bottom:8px}
+        .kds-order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .kds-order-no{font-weight:800;color:#fff;font-size:.75rem}
+        .kds-order-time{background:rgba(249,115,22,.2);color:#fb923c;padding:2px 8px;border-radius:50px;font-size:.58rem;font-weight:700}
+        .kds-order-time.new{background:rgba(34,197,94,.2);color:#4ade80}
+        .kds-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+        .kds-item:last-child{border:none}
+        .kds-item-num{width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:#fff;flex-shrink:0}
+        .kds-item-name{font-size:.65rem;color:#e2e8f0;font-weight:600;flex:1}
+        .kds-item-note{font-size:.55rem;color:#fb923c;margin-left:28px;margin-top:-2px;margin-bottom:2px}
+        .kds-tick{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0}
+        .kds-tick.done{background:var(--orange);border-color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#fff}
 
-        .faq{padding:100px 24px;background:#fff;}
-        .faq-list{max-width:700px;margin:0 auto;}
-        .faq-item{border-bottom:2px solid #f1f5f9;padding:20px 0;}
-        .faq-question{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:1rem;color:#1e293b;}
-        .faq-question:hover{color:#f97316;}
-        .faq-toggle{font-size:1.5rem;color:#f97316;transition:transform 0.3s;font-weight:300;}
-        .faq-answer{max-height:0;overflow:hidden;transition:max-height 0.3s ease;font-size:0.9rem;color:#64748b;line-height:1.7;}
-        .faq-item.active .faq-answer{max-height:200px;padding-top:12px;}
-        .faq-item.active .faq-toggle{transform:rotate(45deg);}
+        /* ── PRINTER SECTION ── */
+        .printer-section{padding:100px 24px;background:var(--dark);overflow:hidden;position:relative}
+        .printer-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 70% 50%,rgba(249,115,22,.08) 0%,transparent 60%)}
+        .printer-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;position:relative;z-index:2}
+        .printer-content{order:2}
+        .printer-visual{order:1}
+        .printer-content h2{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;color:#fff;margin-bottom:16px;letter-spacing:-1px;line-height:1.1}
+        .printer-content p{font-size:1rem;color:#94a3b8;line-height:1.7;margin-bottom:28px}
+        .printer-steps{display:flex;flex-direction:column;gap:16px}
+        .printer-step{display:flex;align-items:flex-start;gap:14px}
+        .ps-num{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .ps-text h4{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:2px}
+        .ps-text p{font-size:.8rem;color:#64748b}
 
-        .cta{padding:100px 24px;background:linear-gradient(135deg,#1e293b,#334155);text-align:center;color:#fff;position:relative;overflow:hidden;}
-        .cta::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(249,115,22,0.15) 0%,transparent 70%);border-radius:50%;}
-        .cta::after{content:'';position:absolute;bottom:-40%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(249,115,22,0.1) 0%,transparent 70%);border-radius:50%;}
-        .cta h2{font-size:2.5rem;font-weight:900;margin-bottom:16px;position:relative;z-index:2;letter-spacing:-0.5px;}
-        .cta h2 span{color:#f97316;}
-        .cta p{font-size:1.1rem;opacity:0.7;margin-bottom:36px;max-width:550px;margin-left:auto;margin-right:auto;position:relative;z-index:2;line-height:1.6;}
-        .cta-price{font-size:3rem;font-weight:900;color:#f97316;margin-bottom:8px;position:relative;z-index:2;}
-        .cta-price-note{font-size:0.9rem;opacity:0.5;margin-bottom:32px;position:relative;z-index:2;}
-        .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
-        .btn-cta-orange{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;padding:18px 40px;border-radius:50px;font-weight:800;font-size:1.05rem;border:none;cursor:pointer;box-shadow:0 8px 25px rgba(249,115,22,0.4);transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;}
-        .btn-cta-orange:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,0.5);}
+        /* Slip mockup */
+        .slip-mockup{background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:280px;margin:0 auto;font-family:'Courier New',monospace}
+        .slip-header{text-align:center;border-bottom:1px dashed #cbd5e1;padding-bottom:12px;margin-bottom:12px}
+        .slip-shop{font-size:.85rem;font-weight:800;color:var(--dark)}
+        .slip-addr{font-size:.65rem;color:var(--gray)}
+        .slip-section{font-weight:800;font-size:.8rem;color:var(--orange);background:#fff7ed;padding:4px 12px;border-radius:6px;text-align:center;margin-bottom:10px}
+        .slip-info{font-size:.65rem;color:#475569;margin-bottom:2px}
+        .slip-divider{border:none;border-top:1px dashed #cbd5e1;margin:10px 0}
+        .slip-item{display:flex;justify-content:space-between;font-size:.68rem;margin-bottom:4px;color:var(--dark)}
+        .slip-note{font-size:.62rem;color:#94a3b8;padding-left:12px;margin-bottom:4px}
+        .slip-total{display:flex;justify-content:space-between;font-size:.78rem;font-weight:800;color:var(--dark);padding-top:8px;border-top:1px dashed #cbd5e1;margin-top:6px}
+        .slip-footer{text-align:center;font-size:.65rem;color:#94a3b8;margin-top:12px;border-top:1px dashed #cbd5e1;padding-top:10px}
 
-        /* ==================== FOOTER ==================== */
-        .footer{background:#0f172a;color:#94a3b8;padding:60px 24px 30px;}
-        .footer-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;}
-        .footer-brand h3{color:#fff;font-size:1.5rem;font-weight:900;margin-bottom:12px;}
-        .footer-brand h3 span{color:#f97316;}
-        .footer-brand p{font-size:0.85rem;line-height:1.6;margin-bottom:20px;}
-        .footer-links h4{color:#fff;font-weight:700;margin-bottom:16px;font-size:0.95rem;}
-        .footer-links a{display:block;font-size:0.85rem;margin-bottom:10px;transition:color 0.2s;}
-        .footer-links a:hover{color:#f97316;}
-        .footer-trial-box{
-            background:rgba(249,115,22,0.08);
-            border:1px solid rgba(249,115,22,0.2);
-            border-radius:14px;padding:18px 20px;
-            margin-top:4px;
-        }
-        .footer-trial-box p{font-size:0.82rem;color:#94a3b8;margin-bottom:10px;line-height:1.5;}
-        .footer-trial-box strong{color:#fed7aa;display:block;margin-bottom:4px;font-size:0.88rem;}
-        .btn-footer-trial{
-            display:inline-flex;align-items:center;gap:8px;
-            background:linear-gradient(135deg,#f97316,#ea580c);
-            color:#fff;padding:10px 20px;border-radius:50px;
-            font-size:0.82rem;font-weight:700;border:none;cursor:pointer;
-            transition:all 0.3s;box-shadow:0 4px 14px rgba(249,115,22,0.3);
-            width:100%;justify-content:center;
-        }
-        .btn-footer-trial:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(249,115,22,0.4);}
-        .footer-bottom{max-width:1200px;margin:30px auto 0;padding-top:30px;border-top:1px solid #1e293b;text-align:center;font-size:0.8rem;}
+        /* Printer icon */
+        .printer-icon-wrap{text-align:center;margin-bottom:20px}
+        .printer-icon{font-size:3.5rem;animation:float 3s ease-in-out infinite}
+        .printer-label{font-size:.75rem;font-weight:700;color:#fb923c;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);padding:4px 14px;border-radius:50px;display:inline-block;margin-top:6px}
+        .bt-badge{display:flex;align-items:center;justify-content:center;gap:6px;color:#94a3b8;font-size:.72rem;margin-top:10px}
+        .bt-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 2s ease-in-out infinite}
 
-        .payment-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:9999;display:none;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity 0.3s ease;}
-        .payment-overlay.show{display:flex;opacity:1;}
-        .payment-modal{background:#fff;border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.25);position:relative;transform:translateY(20px);transition:transform 0.3s ease;}
-        .payment-overlay.show .payment-modal{transform:translateY(0);}
-        .payment-modal-header{background:linear-gradient(135deg,#f97316,#ea580c);padding:24px 28px;border-radius:24px 24px 0 0;color:#fff;display:flex;justify-content:space-between;align-items:center;}
-        .payment-modal-header h3{font-size:1.1rem;font-weight:800;}
-        .payment-modal-header p{font-size:0.8rem;opacity:0.85;margin-top:4px;}
-        .payment-modal-close{background:rgba(255,255,255,0.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;flex-shrink:0;}
-        .payment-modal-close:hover{background:rgba(255,255,255,0.35);}
-        .payment-modal-info{padding:16px 28px;background:#fff7ed;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #fed7aa;}
-        .payment-modal-info .pmi-label{font-size:0.85rem;color:#64748b;font-weight:600;}
-        .payment-modal-info .pmi-amount{font-size:1.4rem;font-weight:900;color:#ea580c;}
-        .payment-modal-info .pmi-breakdown{font-size:0.7rem;color:#94a3b8;margin-top:2px;}
-        .payment-modal-body{padding:0 0 8px;}
-        .payment-modal-body #bcl-payment-form{min-height:400px;}
-        .payment-modal-footer{padding:12px 28px 16px;text-align:center;border-top:1px solid #f1f5f9;}
-        .payment-modal-footer p{font-size:0.7rem;color:#94a3b8;}
-        .payment-modal-footer strong{color:#64748b;}
-        @media(max-width:600px){.payment-modal{max-width:100%;border-radius:20px;}.payment-modal-header{border-radius:20px 20px 0 0;padding:20px;}.payment-modal-info{padding:12px 20px;}}
+        /* ── CLOSING REPORT SECTION ── */
+        .closing-section{padding:100px 24px;background:var(--light)}
+        .closing-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+        .closing-content h2{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;margin-bottom:16px;letter-spacing:-1px;line-height:1.1}
+        .closing-content p{font-size:1rem;color:var(--gray);line-height:1.7;margin-bottom:24px}
+        .usecase-cards{display:flex;flex-direction:column;gap:12px}
+        .usecase-card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
+        .usecase-card:hover{border-color:#fed7aa}
+        .uc-icon{font-size:1.4rem;flex-shrink:0}
+        .uc-text h4{font-size:.88rem;font-weight:700;margin-bottom:2px}
+        .uc-text p{font-size:.8rem;color:var(--gray)}
 
-        .wa-float{position:fixed;bottom:24px;right:24px;z-index:90;display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:50px;font-weight:700;font-size:0.9rem;box-shadow:0 8px 25px rgba(37,211,102,0.4);cursor:pointer;transition:all 0.3s;}
-        .wa-float:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(37,211,102,0.5);}
-        .wa-float .wa-icon{font-size:1.3rem;}
+        /* Closing mockup */
+        .closing-mockup{background:#fff;border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+        .cm-header{background:linear-gradient(135deg,var(--orange),var(--orange-dark));padding:14px 18px;color:#fff}
+        .cm-title{font-weight:800;font-size:.88rem;margin-bottom:2px}
+        .cm-sub{font-size:.65rem;opacity:.8}
+        .cm-body{padding:16px 18px}
+        .cm-station{padding:12px 0;border-bottom:1px solid var(--border)}
+        .cm-station:last-child{border:none}
+        .cm-st-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .cm-st-name{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem}
+        .cm-st-amount{font-weight:800;color:var(--orange);font-size:.9rem}
+        .cm-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:6px}
+        .cm-prog-fill{height:100%;border-radius:3px;background:var(--orange)}
+        .cm-items{font-size:.72rem;color:var(--gray)}
+        .cm-total-row{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#fff7ed;border-top:2px solid #fed7aa}
+        .cm-total-label{font-weight:700;font-size:.85rem}
+        .cm-total-amount{font-weight:900;color:var(--orange);font-size:1.1rem}
 
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
-        @keyframes fadeInRight{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
-        @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-        .animate{opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
-        .animate.visible{opacity:1;transform:translateY(0);}
+        /* ── STEPS ── */
+        .how{padding:100px 24px;background:#fff}
+        .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative}
+        .step-card{text-align:center;position:relative}
+        .step-num{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;font-weight:900;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 8px 20px rgba(249,115,22,.3)}
+        .step-card h3{font-size:1rem;font-weight:800;margin-bottom:8px}
+        .step-card p{font-size:.82rem;color:var(--gray);line-height:1.6}
+        .step-arrow{position:absolute;top:28px;right:-16px;font-size:1.5rem;color:#cbd5e1}
 
+        /* ── PRICING ── */
+        .pricing{padding:100px 24px;background:var(--light)}
+        .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:860px;margin:0 auto}
+        .price-card{background:#fff;border-radius:28px;padding:40px 36px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.06);border:2px solid var(--border);position:relative;overflow:hidden;transition:all .3s}
+        .price-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1)}
+        .price-card.featured{border-color:#fed7aa;box-shadow:0 20px 60px rgba(249,115,22,.12)}
+        .price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#e2e8f0,#cbd5e1)}
+        .price-card.featured::before{background:linear-gradient(90deg,var(--orange),var(--orange-dark),var(--orange))}
+        .price-popular{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;padding:4px 14px;border-radius:50px;font-size:.68rem;font-weight:700}
+        .price-emoji{font-size:2.5rem;margin-bottom:14px}
+        .price-card h3{font-size:1.3rem;font-weight:900;margin-bottom:6px;font-family:'Syne',sans-serif}
+        .price-desc{font-size:.85rem;color:var(--gray);margin-bottom:22px}
+        .price-amount{margin-bottom:6px}
+        .price-cur{font-size:1.2rem;font-weight:800;color:var(--gray);vertical-align:top;line-height:3rem}
+        .price-num{font-size:3.8rem;font-weight:900;color:var(--dark);letter-spacing:-2px}
+        .price-period{font-size:.9rem;color:#94a3b8;font-weight:600}
+        .price-per{font-size:.76rem;color:#94a3b8;margin-bottom:6px;font-weight:600}
+        .price-save{display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;padding:5px 14px;border-radius:50px;font-size:.75rem;font-weight:700;color:#166534;margin-bottom:18px}
+        .price-setup{font-size:.8rem;color:var(--gray);font-weight:600;background:var(--light);padding:6px 14px;border-radius:8px;display:inline-block;margin-bottom:18px}
+        .price-features{list-style:none;text-align:left;margin-bottom:26px;display:flex;flex-direction:column;gap:8px}
+        .price-features li{font-size:.85rem;color:#475569;display:flex;align-items:center;gap:10px;font-weight:500}
+        .price-features li .ck{color:#22c55e;font-weight:700;font-size:.95rem}
+        .btn-price{display:block;width:100%;padding:14px;border-radius:50px;border:none;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .3s}
+        .btn-price-primary{background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;box-shadow:0 8px 25px rgba(249,115,22,.35)}
+        .btn-price-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(249,115,22,.45)}
+        .btn-price-outline{background:transparent;color:var(--orange);border:2px solid #fed7aa}
+        .btn-price-outline:hover{background:#fff7ed;border-color:var(--orange)}
+        .price-note{font-size:.72rem;color:#94a3b8;margin-top:10px}
+
+        /* ── COMPARISON ── */
+        .comparison{padding:100px 24px;background:#fff}
+        .compare-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+        .compare-card{border-radius:20px;padding:30px}
+        .compare-card.others{background:var(--light);border:2px solid var(--border)}
+        .compare-card.us{background:#fff7ed;border:2px solid #fed7aa;position:relative}
+        .compare-card.us::before{content:'👑 POSKedai';position:absolute;top:-14px;left:22px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;padding:5px 16px;border-radius:50px;font-size:.72rem;font-weight:700}
+        .compare-card h3{font-size:1.15rem;font-weight:800;margin-bottom:18px;padding-top:8px}
+        .compare-card.others h3{color:var(--gray)}
+        .compare-card.us h3{color:var(--orange-dark)}
+        .compare-list{list-style:none}
+        .compare-list li{padding:9px 0;font-size:.87rem;border-bottom:1px solid rgba(0,0,0,.04);display:flex;align-items:flex-start;gap:9px;line-height:1.5}
+        .compare-list li:last-child{border:none}
+
+        /* ── GUARANTEE ── */
+        .guarantee{padding:100px 24px;background:var(--light)}
+        .guarantee-wrap{max-width:800px;margin:0 auto;text-align:center}
+        .g-shield{width:96px;height:96px;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.8rem;margin:0 auto 24px;box-shadow:0 12px 30px rgba(34,197,94,.3)}
+        .guarantee-wrap h2{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;margin-bottom:14px;letter-spacing:-.5px}
+        .guarantee-wrap h2 span{color:#22c55e}
+        .guarantee-wrap>p{font-size:.98rem;color:var(--gray);line-height:1.7;max-width:580px;margin:0 auto 36px}
+        .g-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+        .g-card{background:#fff;border-radius:16px;padding:26px 22px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid var(--border)}
+        .g-icon{font-size:2rem;margin-bottom:10px}
+        .g-card h4{font-size:.95rem;font-weight:800;margin-bottom:7px}
+        .g-card p{font-size:.82rem;color:var(--gray);line-height:1.6}
+
+        /* ── FAQ ── */
+        .faq{padding:100px 24px;background:#fff}
+        .faq-list{max-width:700px;margin:0 auto}
+        .faq-item{border-bottom:2px solid var(--border);padding:18px 0}
+        .faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:.95rem;color:var(--dark)}
+        .faq-q:hover{color:var(--orange)}
+        .faq-toggle{font-size:1.4rem;color:var(--orange);transition:transform .3s;font-weight:300}
+        .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:.88rem;color:var(--gray);line-height:1.7}
+        .faq-item.active .faq-a{max-height:200px;padding-top:10px}
+        .faq-item.active .faq-toggle{transform:rotate(45deg)}
+
+        /* ── CTA ── */
+        .cta-section{padding:100px 24px;background:linear-gradient(135deg,var(--dark),#334155);text-align:center;color:#fff;position:relative;overflow:hidden}
+        .cta-section::before{content:'';position:absolute;top:-40%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(249,115,22,.12) 0%,transparent 70%);border-radius:50%}
+        .cta-section h2{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;margin-bottom:14px;position:relative;z-index:2;letter-spacing:-1px}
+        .cta-section h2 span{color:var(--orange)}
+        .cta-section p{font-size:1.05rem;opacity:.65;margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:2;line-height:1.6}
+        .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2}
+        .btn-cta-oren{background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;padding:18px 40px;border-radius:50px;font-weight:800;font-size:1rem;border:none;cursor:pointer;box-shadow:0 8px 25px rgba(249,115,22,.4);transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+        .btn-cta-oren:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(249,115,22,.5)}
+        .btn-cta-white{background:rgba(255,255,255,.1);color:#fff;padding:18px 40px;border-radius:50px;font-weight:700;font-size:1rem;border:2px solid rgba(255,255,255,.2);cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+        .btn-cta-white:hover{background:rgba(255,255,255,.15)}
+
+        /* ── FOOTER ── */
+        .footer{background:#0f172a;color:#94a3b8;padding:60px 24px 28px}
+        .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px}
+        .footer-brand h3{color:#fff;font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:10px}
+        .footer-brand h3 span{color:var(--orange)}
+        .footer-brand p{font-size:.82rem;line-height:1.6;margin-bottom:20px}
+        .footer-trial{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:14px;padding:16px 18px}
+        .footer-trial strong{color:#fed7aa;display:block;margin-bottom:4px;font-size:.85rem}
+        .footer-trial p{font-size:.78rem;margin-bottom:10px;line-height:1.5}
+        .btn-ft{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;padding:10px 18px;border-radius:50px;font-size:.8rem;font-weight:700;border:none;cursor:pointer;width:100%;box-shadow:0 4px 14px rgba(249,115,22,.3);transition:all .3s}
+        .btn-ft:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(249,115,22,.4)}
+        .footer-links h4{color:#fff;font-weight:700;margin-bottom:14px;font-size:.9rem}
+        .footer-links a{display:block;font-size:.82rem;margin-bottom:9px;transition:color .2s}
+        .footer-links a:hover{color:var(--orange)}
+        .footer-bottom{max-width:1200px;margin:28px auto 0;padding-top:28px;border-top:1px solid #1e293b;text-align:center;font-size:.77rem}
+
+        /* ── WA FLOAT ── */
+        .wa-float{position:fixed;bottom:24px;right:24px;z-index:90;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;padding:13px 22px;border-radius:50px;font-weight:700;font-size:.88rem;box-shadow:0 8px 25px rgba(37,211,102,.4);cursor:pointer;transition:all .3s}
+        .wa-float:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(37,211,102,.5)}
+
+        /* ── RESPONSIVE ── */
         @media(max-width:968px){
-            .nav-links{display:none;}.nav-mobile{display:block;}
-            .hero-container{grid-template-columns:1fr;text-align:center;}
-            .hero h1{font-size:2.3rem;}.hero p{margin:0 auto 32px;}
-            .hero-buttons{justify-content:center;}.hero-trust{justify-content:center;}
-            .hero-visual{max-width:400px;margin:0 auto;}
-            .features-grid{grid-template-columns:1fr 1fr;}.steps-grid{grid-template-columns:1fr 1fr;}
-            .step-arrow{display:none;}.pain-grid{grid-template-columns:1fr;}
-            .compare-cards{grid-template-columns:1fr;}.guarantee-grid{grid-template-columns:1fr;}
-            .pricing-grid{grid-template-columns:1fr;max-width:460px;}
-            .footer-container{grid-template-columns:1fr;}
+            .nav-links{display:none}.nav-mobile{display:block}
+            .hero-container,.kds-container,.printer-container,.closing-container{grid-template-columns:1fr}
+            .hero h1{font-size:2.4rem}.hero-visual{max-width:400px;margin:0 auto}
+            .feat-grid{grid-template-columns:1fr 1fr}.steps-grid{grid-template-columns:1fr 1fr}
+            .step-arrow{display:none}.pain-grid{grid-template-columns:1fr}
+            .compare-wrap{grid-template-columns:1fr}.g-grid{grid-template-columns:1fr}
+            .pricing-grid{grid-template-columns:1fr;max-width:440px}
+            .footer-grid{grid-template-columns:1fr}.printer-content{order:1}.printer-visual{order:2}
         }
         @media(max-width:600px){
-            .hero h1{font-size:1.9rem;}.features-grid{grid-template-columns:1fr;}
-            .steps-grid{grid-template-columns:1fr;}.hero-trust{flex-direction:column;align-items:center;}
-            .cta h2{font-size:1.8rem;}.mockup-float{display:none;}
-            .wa-float span{display:none;}.wa-float{padding:16px;border-radius:50%;width:56px;height:56px;justify-content:center;}
+            .hero h1{font-size:2rem}.feat-grid{grid-template-columns:1fr}
+            .steps-grid{grid-template-columns:1fr}.float-card{display:none}
+            .wa-float span{display:none}.wa-float{padding:16px;border-radius:50%;width:52px;height:52px;justify-content:center}
+            .cta-section h2{font-size:2rem}.kds-cols{grid-template-columns:1fr}
         }
-
-        /* ==================== POPUP STYLES ==================== */
-        *, *::before, *::after { box-sizing: border-box; }
-        :root {
-            --orange:      #E8621A;
-            --orange-hov:  #D4521A;
-            --orange-bg:   #FEF3EC;
-            --orange-bd:   #FDDCCC;
-            --orange-glow: rgba(232,98,26,0.15);
-            --navy:        #1E2D40;
-            --body-c:      #4A5568;
-            --muted:       #718096;
-            --light:       #A0AEC0;
-            --p-white:     #FFFFFF;
-            --p-border:    #EDE8E0;
-            --p-green:     #25D366;
-            --p-green-hov: #1EBE58;
-            --p-shadow:    0 24px 64px rgba(30,45,64,0.16), 0 4px 16px rgba(30,45,64,0.08);
-            --p-radius:    14px;
-        }
-        .p-overlay {
-            position: fixed; inset: 0;
-            background: rgba(30,45,64,0.55);
-            backdrop-filter: blur(4px);
-            display: flex; align-items: center; justify-content: center;
-            padding: 16px; z-index: 99999;
-            opacity: 0; pointer-events: none;
-            transition: opacity .25s ease;
-        }
-        .p-overlay.active { opacity: 1; pointer-events: all; }
-        .p-modal {
-            background: var(--p-white);
-            border: 1px solid var(--p-border);
-            border-radius: 24px;
-            width: 100%; max-width: 460px;
-            box-shadow: var(--p-shadow);
-            overflow: hidden;
-            transform: translateY(24px) scale(.96);
-            transition: transform .32s cubic-bezier(.34,1.45,.64,1);
-        }
-        .p-overlay.active .p-modal { transform: translateY(0) scale(1); }
-        .p-accent { height: 4px; background: linear-gradient(90deg, var(--orange), #F97316, #FBBF24); }
-        .p-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: center; }
-        .p-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--orange-bg); color: var(--orange);
-            font-size: 12px; font-weight: 700;
-            padding: 5px 12px; border-radius: 99px;
-            border: 1px solid var(--orange-bd);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .p-badge-dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--orange);
-            animation: p-pulse 1.8s ease-in-out infinite;
-        }
-        @keyframes p-pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.5;transform:scale(1.35);} }
-        .p-close {
-            width: 32px; height: 32px; border-radius: 8px;
-            background: #F7F4F0; border: none;
-            color: var(--muted); font-size: 16px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all .15s; line-height: 1;
-        }
-        .p-close:hover { background: #EDE8E0; color: var(--navy); }
-        .p-progress-wrap { padding: 16px 24px 0; }
-        .p-progress-meta {
-            display: flex; justify-content: space-between;
-            font-size: 11px; font-weight: 600; color: var(--muted);
-            margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .p-progress-meta .p-pct { color: var(--orange); font-weight: 700; }
-        .p-progress-track { height: 6px; background: #F0EBE3; border-radius: 99px; overflow: hidden; }
-        .p-progress-fill {
-            height: 100%; background: linear-gradient(90deg, var(--orange), #F97316);
-            border-radius: 99px; transition: width .45s cubic-bezier(.4,0,.2,1);
-        }
-        .p-dots { display: flex; gap: 5px; justify-content: center; padding: 10px 24px 0; }
-        .p-dot { height: 5px; width: 20px; border-radius: 99px; background: #EDE8E0; transition: all .3s cubic-bezier(.4,0,.2,1); }
-        .p-dot.active { background: var(--orange); width: 32px; }
-        .p-dot.done { background: var(--orange-bd); }
-        .p-body { padding: 20px 24px 24px; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .p-step { display: none; animation: p-slideIn .28s ease forwards; }
-        .p-step.active { display: block; }
-        @keyframes p-slideIn { from{opacity:0;transform:translateX(18px);} to{opacity:1;transform:translateX(0);} }
-        .p-step.back-anim { animation: p-slideBack .28s ease forwards; }
-        @keyframes p-slideBack { from{opacity:0;transform:translateX(-18px);} to{opacity:1;transform:translateX(0);} }
-        .p-step-title { font-size: 18px; font-weight: 800; color: var(--navy); line-height: 1.3; margin-bottom: 4px; }
-        .p-step-sub { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
-        .p-options { display: grid; gap: 8px; }
-        .p-opt {
-            display: flex; align-items: center; gap: 12px;
-            background: #FDFAF7; border: 1.5px solid var(--p-border);
-            border-radius: 12px; padding: 12px 14px;
-            cursor: pointer; transition: all .18s; user-select: none;
-        }
-        .p-opt:hover { border-color: var(--orange-bd); background: var(--orange-bg); }
-        .p-opt.selected { border-color: var(--orange); background: var(--orange-bg); box-shadow: 0 0 0 3px var(--orange-glow); }
-        .p-opt-icon {
-            font-size: 20px; width: 38px; height: 38px;
-            background: var(--p-white); border: 1px solid var(--p-border); border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .18s;
-        }
-        .p-opt.selected .p-opt-icon { background: var(--orange-bg); border-color: var(--orange-bd); }
-        .p-opt-label { font-size: 13.5px; font-weight: 600; color: var(--navy); flex: 1; }
-        .p-opt-check {
-            width: 20px; height: 20px; border: 2px solid var(--p-border); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .18s;
-        }
-        .p-opt.selected .p-opt-check { background: var(--orange); border-color: var(--orange); }
-        .p-opt.selected .p-opt-check::after { content:'✓'; color:#fff; font-size:11px; font-weight:800; }
-        .p-field { margin-bottom: 12px; }
-        .p-field label { display:block; font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; }
-        .p-field-wrap { position: relative; }
-        .p-f-icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:15px; pointer-events:none; }
-        .p-field input {
-            width:100%; padding:12px 14px 12px 40px;
-            background:#FDFAF7; border:1.5px solid var(--p-border);
-            border-radius:10px; color:var(--navy);
-            font-family:'Plus Jakarta Sans', sans-serif; font-size:14px; font-weight:500;
-            outline:none; transition:all .18s;
-        }
-        .p-field input::placeholder { color:#C4B8A8; font-weight:400; }
-        .p-field input:focus { border-color:var(--orange); background:var(--p-white); box-shadow:0 0 0 3px var(--orange-glow); }
-        .p-btn-row { display:flex; gap:8px; margin-top:18px; }
-        .p-btn-back {
-            flex:0 0 auto; padding:12px 16px;
-            background:#F7F4F0; border:1.5px solid var(--p-border); border-radius:10px;
-            color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif; font-size:13px; font-weight:600;
-            cursor:pointer; transition:all .15s;
-        }
-        .p-btn-back:hover { background:#EDE8E0; color:var(--navy); }
-        .p-btn-next {
-            flex:1; padding:13px;
-            background:var(--orange); border:none; border-radius:10px;
-            color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-size:14px; font-weight:800;
-            cursor:pointer; transition:all .18s;
-            display:flex; align-items:center; justify-content:center; gap:8px;
-            box-shadow:0 4px 14px rgba(232,98,26,0.3);
-        }
-        .p-btn-next:hover:not(:disabled) { background:var(--orange-hov); transform:translateY(-1px); box-shadow:0 8px 20px rgba(232,98,26,0.4); }
-        .p-btn-next:disabled { opacity:.4; cursor:not-allowed; box-shadow:none; transform:none; }
-        .p-btn-arrow { transition:transform .2s; }
-        .p-btn-next:not(:disabled):hover .p-btn-arrow { transform:translateX(3px); }
-        .p-spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:p-spin .6s linear infinite; display:none; }
-        @keyframes p-spin { to{transform:rotate(360deg);} }
-        .p-btn-next.loading .p-spinner { display:block; }
-        .p-btn-next.loading .p-btn-text { display:none; }
-        .p-ty-wrap { text-align:center; padding:4px 0; }
-        .p-ty-icon {
-            width:68px; height:68px; border-radius:50%;
-            background:linear-gradient(135deg, var(--orange-bg), #FFF7ED);
-            border:2px solid var(--orange-bd);
-            display:flex; align-items:center; justify-content:center;
-            font-size:30px; margin:0 auto 14px;
-            animation:p-popIn .4s cubic-bezier(.34,1.56,.64,1) .05s both;
-        }
-        @keyframes p-popIn { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
-        .p-ty-title { font-size:20px; font-weight:800; color:var(--navy); margin-bottom:6px; font-family:'Plus Jakarta Sans',sans-serif; }
-        .p-ty-name { color:var(--orange); }
-        .p-ty-sub { font-size:13px; color:var(--body-c); line-height:1.6; margin-bottom:10px; font-family:'Plus Jakarta Sans',sans-serif; }
-        .p-saved-badge {
-            display:inline-flex; align-items:center; gap:5px;
-            font-size:11px; font-weight:700; color:#15803D;
-            background:#DCFCE7; border:1px solid #86EFAC;
-            border-radius:99px; padding:4px 12px; margin-bottom:14px;
-            font-family:'Plus Jakarta Sans',sans-serif;
-        }
-        .p-ty-detail {
-            font-size:12px; color:var(--muted); line-height:1.7;
-            background:var(--orange-bg); border:1px solid var(--orange-bd);
-            border-radius:10px; padding:10px 14px; margin-bottom:16px; text-align:left;
-            font-family:'Plus Jakarta Sans',sans-serif;
-        }
-        .p-ty-detail strong { color:var(--navy); display:block; margin-bottom:4px; }
-        .p-wa-btn {
-            width:100%; padding:14px;
-            background:var(--p-green); border:none; border-radius:10px;
-            color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800;
-            cursor:pointer; text-decoration:none;
-            display:flex; align-items:center; justify-content:center; gap:10px;
-            transition:all .18s; box-shadow:0 4px 16px rgba(37,211,102,0.3);
-        }
-        .p-wa-btn:hover { background:var(--p-green-hov); transform:translateY(-1px); box-shadow:0 8px 24px rgba(37,211,102,0.4); }
-        .p-wa-personal {
-            display:block; width:100%; padding:12px;
-            background:transparent; border:1.5px solid #EDE8E0; border-radius:10px;
-            color:var(--muted); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:600;
-            cursor:pointer; text-decoration:none; text-align:center;
-            transition:all .18s; margin-top:8px;
-        }
-        .p-wa-personal:hover { border-color:var(--orange); color:var(--orange); }
-        .p-skip { display:block; margin-top:12px; font-size:12px; color:var(--light); cursor:pointer; transition:color .15s; text-align:center; font-family:'Plus Jakarta Sans',sans-serif; }
-        .p-skip:hover { color:var(--muted); }
-        .p-privacy { font-size:11px; color:#C4B8A8; text-align:center; margin-top:14px; line-height:1.5; font-family:'Plus Jakarta Sans',sans-serif; }
-        .p-err { font-size:12px; color:#DC2626; margin-top:5px; font-weight:500; display:none; font-family:'Plus Jakarta Sans',sans-serif; }
-        .p-err.show { display:block; }
-        @media(max-height:680px){ .p-modal{max-height:95vh;overflow-y:auto;} }
     </style>
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
     <div class="nav-container">
         <a href="#" class="nav-logo">POS<span>Kedai</span></a>
         <div class="nav-links" id="navLinks">
             <a href="#features">Fungsi</a>
-            <a href="#cara">Cara Guna</a>
+            <a href="#kds">Kitchen Display</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
             <a href="#harga" class="nav-cta">Langgan Sekarang</a>
@@ -664,592 +374,730 @@
     </div>
 </nav>
 
-<section class="hero" id="hero">
+<!-- HERO -->
+<section class="hero">
     <div class="hero-container">
         <div class="hero-content">
-            <div class="hero-badge"><span class="pulse"></span> Dari RM30/Bulan — Tak Perlu Kad Kredit</div>
-            <h1>POS Kedai Makan Paling Murah di Malaysia. <span class="price-highlight">RM30/Bulan.</span></h1>
-            <p class="hero-sub">Guna phone, tablet atau laptop yang anda sedia ada. Tak perlu beli mesin mahal.</p>
-            <p>Setup dalam 1 hari, staff belajar dalam 15 minit. Sistem POS yang dibina khas untuk gerai, restoran kecil, cafe, dan warung makan di Malaysia.</p>
-            <div class="hero-buttons">
-                <a href="#harga" class="btn-hero btn-hero-primary">💳 Langgan Sekarang</a>
-                <a href="https://poskedai.store/?kedai=demo" class="btn-hero btn-hero-secondary" target="_blank">👁️ Lihat Demo</a>
+            <div class="hero-badge"><span class="pulse"></span> RM30/Bulan — Tiada Kontrak</div>
+            <h1>Sistem POS Kedai Makan <span class="grad-text">Paling Lengkap</span> di Malaysia</h1>
+            <p class="hero-sub">Auto print slip dapur. Kitchen Display. Laporan jualan per stesen.</p>
+            <p>Guna phone, tablet atau laptop sedia ada. Setup 1 hari. Staff belajar 15 minit. Dibina khas untuk kedai makan, gerai, cafe, dan food court Malaysia.</p>
+            <div class="hero-btns">
+                <a href="#harga" class="btn-primary">💳 Langgan Sekarang</a>
+                <a href="https://poskedai.store/?kedai=demo" class="btn-secondary" target="_blank">👁️ Cuba Demo</a>
             </div>
-            <div class="hero-trust">
-                <div class="trust-badge"><span class="trust-icon">🚫</span> Tiada kontrak</div>
-                <div class="trust-badge"><span class="trust-icon">📱</span> Guna peranti sendiri</div>
-                <div class="trust-badge"><span class="trust-icon">💰</span> Jimat RM270/tahun vs bulanan</div>
+            <div class="trust-row">
+                <div class="trust-chip">🚫 Tiada kontrak</div>
+                <div class="trust-chip">📱 Guna peranti sendiri</div>
+                <div class="trust-chip">🖨️ Auto print Bluetooth</div>
+                <div class="trust-chip">📺 Kitchen Display</div>
             </div>
         </div>
         <div class="hero-visual">
-            <div class="mockup-float mockup-float-1">✅ Pesanan #12 Selesai!</div>
-            <div class="mockup-float mockup-float-2">💰 Jualan: RM 1,250</div>
-            <div class="mockup-float mockup-float-3" style="animation-delay:1.5s">🧾 Resit dicetak!</div>
-            <div class="hero-mockup">
-                <div class="mockup-header"><div class="mockup-header-left"><h4><em>POS</em>Kedai</h4><span class="mockup-staff-badge">👤 Ahmad</span></div><div class="mockup-header-right"><span class="mockup-counter">#12</span><span class="mockup-time">14:30</span></div></div>
-                <div class="mockup-nav"><span class="mockup-nav-btn active"><span class="mn-icon">🛒</span>Pesanan</span><span class="mockup-nav-btn"><span class="mn-icon">📋</span>Senarai</span><span class="mockup-nav-btn"><span class="mn-icon">📊</span>Jualan</span><span class="mockup-nav-btn"><span class="mn-icon">📝</span>Menu</span></div>
-                <div class="mockup-body">
-                    <div class="mockup-search">Cari menu...</div>
-                    <div class="mockup-cats"><span class="mockup-cat active">🍽️ Semua</span><span class="mockup-cat">🍚 Makanan</span><span class="mockup-cat">🥤 Minuman</span><span class="mockup-cat">🍰 Kuih</span></div>
-                    <div class="mockup-grid">
-                        <div class="mockup-item selected"><div class="mockup-item-badge">2</div><div class="mockup-item-cat">Makanan</div><div class="mockup-item-name">Nasi Lemak</div><div class="mockup-item-price">RM5.00</div></div>
-                        <div class="mockup-item selected"><div class="mockup-item-badge">1</div><div class="mockup-item-cat">Makanan</div><div class="mockup-item-name">Mee Goreng</div><div class="mockup-item-price">RM6.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-cat">Makanan</div><div class="mockup-item-name">Roti Canai</div><div class="mockup-item-price">RM1.50</div></div>
-                        <div class="mockup-item selected"><div class="mockup-item-badge">2</div><div class="mockup-item-cat">Minuman</div><div class="mockup-item-name">Teh Tarik</div><div class="mockup-item-price">RM2.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-cat">Makanan</div><div class="mockup-item-name">Nasi Goreng</div><div class="mockup-item-price">RM6.00</div></div>
-                        <div class="mockup-item"><div class="mockup-item-cat">Minuman</div><div class="mockup-item-name">Milo Ais</div><div class="mockup-item-price">RM3.00</div></div>
+            <div class="float-card float-1">✅ Pesanan #391 Selesai!</div>
+            <div class="float-card float-2">🖨️ Slip dapur diprint!</div>
+            <div class="float-card float-3">📊 RM 3,547 Jualan Hari Ini</div>
+            <div class="mockup-wrap">
+                <div class="mk-header">
+                    <div class="mk-logo"><em>POS</em>Kedai</div>
+                    <div class="mk-right"><span class="mk-badge">👤 Ahmad</span><span>#15</span><span>14:30</span></div>
+                </div>
+                <div class="mk-nav">
+                    <span class="mk-tab active"><span class="mk-tab-icon">🛒</span>Pesanan</span>
+                    <span class="mk-tab"><span class="mk-tab-icon">📋</span>Senarai</span>
+                    <span class="mk-tab"><span class="mk-tab-icon">📊</span>Jualan</span>
+                    <span class="mk-tab"><span class="mk-tab-icon">🔔</span>Dapur</span>
+                </div>
+                <div class="mk-body">
+                    <div class="mk-cats">
+                        <span class="mk-cat active">⭐ Utama</span>
+                        <span class="mk-cat">🍚 Makanan</span>
+                        <span class="mk-cat">🥤 Minuman</span>
+                        <span class="mk-cat">🍰 Kuih</span>
                     </div>
-                    <div class="mockup-cart">
-                        <div class="mockup-cart-title">🛒 Troli</div>
-                        <div class="mockup-cart-item"><div><div class="mci-name">Nasi Lemak</div><div class="mci-detail">RM5.00 × 2</div></div><div class="mci-qty"><span class="mci-qty-btn minus">−</span><span class="mci-qty-num">2</span><span class="mci-qty-btn">+</span></div><div class="mci-total">RM10.00</div></div>
-                        <div class="mockup-cart-item"><div><div class="mci-name">Mee Goreng</div><div class="mci-detail">RM6.00 × 1</div></div><div class="mci-qty"><span class="mci-qty-btn minus">−</span><span class="mci-qty-num">1</span><span class="mci-qty-btn">+</span></div><div class="mci-total">RM6.00</div></div>
-                        <div class="mockup-cart-item"><div><div class="mci-name">Teh Tarik</div><div class="mci-detail">RM2.00 × 2</div></div><div class="mci-qty"><span class="mci-qty-btn minus">−</span><span class="mci-qty-num">2</span><span class="mci-qty-btn">+</span></div><div class="mci-total">RM4.00</div></div>
+                    <div class="mk-grid">
+                        <div class="mk-item sel"><div class="mk-dot">2</div><div class="mk-item-cat">Makanan</div><div class="mk-item-name">Nasi Lemak</div><div class="mk-item-price">RM5.00</div></div>
+                        <div class="mk-item sel"><div class="mk-dot">1</div><div class="mk-item-cat">Makanan</div><div class="mk-item-name">Mee Goreng</div><div class="mk-item-price">RM6.00</div></div>
+                        <div class="mk-item"><div class="mk-item-cat">Makanan</div><div class="mk-item-name">Roti Canai</div><div class="mk-item-price">RM1.50</div></div>
+                        <div class="mk-item sel"><div class="mk-dot">2</div><div class="mk-item-cat">Minuman</div><div class="mk-item-name">Teh Tarik</div><div class="mk-item-price">RM2.00</div></div>
+                        <div class="mk-item"><div class="mk-item-cat">Makanan</div><div class="mk-item-name">Nasi Goreng</div><div class="mk-item-price">RM6.00</div></div>
+                        <div class="mk-item"><div class="mk-item-cat">Minuman</div><div class="mk-item-name">Milo Ais</div><div class="mk-item-price">RM3.00</div></div>
                     </div>
-                    <div class="mockup-info-row"><div class="mockup-info-box">🪑 Meja: <span>5</span></div><div class="mockup-info-box">🏷️ Diskaun: <span>RM2.00</span></div></div>
-                    <div class="mockup-total"><span class="mockup-total-label">JUMLAH</span><span class="mockup-total-amount">RM 18.00</span></div>
-                    <div class="mockup-payments"><div class="mockup-pay-btn active"><span class="mp-icon">💵</span>Tunai</div><div class="mockup-pay-btn"><span class="mp-icon">📱</span>QR</div><div class="mockup-pay-btn"><span class="mp-icon">🏦</span>Transfer</div></div>
-                    <button class="mockup-submit">✅ Hantar Pesanan</button>
+                    <div class="mk-total"><span class="mk-total-label">JUMLAH</span><span class="mk-total-amount">RM 19.00</span></div>
+                    <div class="mk-pay-row">
+                        <div class="mk-pay active"><span class="mk-pay-icon">💵</span>Tunai</div>
+                        <div class="mk-pay"><span class="mk-pay-icon">📱</span>QR</div>
+                        <div class="mk-pay"><span class="mk-pay-icon">🏦</span>Transfer</div>
+                    </div>
+                    <button class="mk-submit">✅ Hantar Pesanan → Print Slip Dapur</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="pain-section">
-    <div class="pain-container animate">
-        <h2>Masalah Yang Anda <span>Hadapi Sekarang</span></h2>
-        <p class="pain-sub">Kalau anda masih tulis pesanan atas kertas atau kira guna kalkulator, anda mungkin kenal situasi ini:</p>
+<!-- PAIN -->
+<section class="pain anim">
+    <div class="sc" style="max-width:800px">
+        <div class="sh">
+            <div class="sh-badge">😤 Masalah Peniaga</div>
+            <h2>Situasi Yang <span>Peniaga Kenal</span></h2>
+            <p>Kalau masih catat tangan atau kira kalkulator, situasi ini mungkin biasa untuk anda</p>
+        </div>
         <div class="pain-grid">
-            <div class="pain-card"><span class="pain-icon">😤</span><div><h4>Salah kira jualan</h4><p>Hujung hari, duit tak sama dengan catatan. Tak tahu mana yang bocor.</p></div></div>
-            <div class="pain-card"><span class="pain-icon">💸</span><div><h4>POS lain terlalu mahal</h4><p>Kena beli mesin RM2,000++, lepas tu bayar RM100-200 sebulan. Tak berbaloi untuk kedai kecil.</p></div></div>
+            <div class="pain-card"><span class="pain-icon">😤</span><div><h4>Salah kira jualan</h4><p>Hujung hari duit tak sama dengan catatan. Tak tahu mana yang bocor.</p></div></div>
+            <div class="pain-card"><span class="pain-icon">💸</span><div><h4>POS lain terlalu mahal</h4><p>Kena beli mesin RM2,000++, lepas tu bayar RM100–200 sebulan.</p></div></div>
             <div class="pain-card"><span class="pain-icon">😵</span><div><h4>Silap hantar pesanan</h4><p>Tulisan tangan susah baca. Dapur salah masak, customer complaint.</p></div></div>
-            <div class="pain-card"><span class="pain-icon">📝</span><div><h4>Tak tahu menu mana laris</h4><p>Tak ada data jualan. Tak tahu nak push menu apa, nak buang menu apa.</p></div></div>
+            <div class="pain-card"><span class="pain-icon">📝</span><div><h4>Tak tahu menu mana laris</h4><p>Tiada data. Tak tahu nak push menu apa, nak buang menu apa.</p></div></div>
         </div>
-        <div class="pain-solution"><span class="pain-solution-icon">💡</span><div class="pain-solution-text"><h4>POSKedai selesaikan semua ni — dengan hanya RM30/bulan dan peranti anda.</h4><p>Tak perlu mesin mahal. Tak perlu kontrak. Tak perlu pening kepala.</p></div></div>
+        <div class="solution-box">
+            <span style="font-size:2rem">💡</span>
+            <div>
+                <h4>POSKedai selesaikan semua ni — RM30/bulan sahaja</h4>
+                <p>Tak perlu mesin mahal. Tak perlu kontrak. Guna phone atau tablet sendiri.</p>
+            </div>
+        </div>
     </div>
 </section>
 
+<!-- FEATURES -->
 <section class="features" id="features">
-    <div class="section-container">
-        <div class="section-header animate"><div class="section-badge">✨ Fungsi Lengkap</div><h2>Semua Yang Kedai Anda <span>Perlukan</span></h2><p>Dari ambil pesanan sampai tengok laporan jualan — semua dalam satu sistem yang mudah guna</p></div>
-        <div class="features-grid">
-            <div class="feature-card animate"><div class="feature-icon fi-orange">🛒</div><h3>Pesanan Pantas</h3><p>Klik menu, pilih kuantiti, terus hantar pesanan. Cepat dan tak silap order lagi!</p></div>
-            <div class="feature-card animate"><div class="feature-icon fi-green">🧾</div><h3>Cetak Resit</h3><p>Auto generate resit lengkap dengan nama kedai, alamat, dan butiran pesanan.</p></div>
-            <div class="feature-card animate"><div class="feature-icon fi-blue">🪑</div><h3>Nombor Meja</h3><p>Pilih meja untuk setiap pesanan. Tak keliru hantar makanan ke meja salah!</p></div>
-            <div class="feature-card animate"><div class="feature-icon fi-purple">📊</div><h3>Laporan Jualan</h3><p>Tengok jualan harian, mingguan, dan bulanan. Tahu mana menu paling laris!</p></div>
-            <div class="feature-card animate"><div class="feature-icon fi-red">🏷️</div><h3>Diskaun & Promosi</h3><p>Bagi diskaun kepada pelanggan dengan mudah. Auto kira harga selepas diskaun.</p></div>
-            <div class="feature-card animate"><div class="feature-icon fi-yellow">👤</div><h3>Login Staff</h3><p>Setiap staff ada akaun sendiri. Tahu siapa yang ambil pesanan dan buat jualan.</p></div>
+    <div class="sc">
+        <div class="sh anim">
+            <div class="sh-badge">✨ Fungsi Lengkap</div>
+            <h2>Semua Yang Kedai Anda <span>Perlukan</span></h2>
+            <p>Dari ambil pesanan sampai laporan jualan closing — semua dalam satu sistem</p>
+        </div>
+        <div class="feat-grid">
+            <div class="feat-card anim"><div class="feat-icon fi-oren">🛒</div><h3>Pesanan Pantas</h3><p>Klik menu, pilih kuantiti, terus hantar. Cepat dan tak silap order lagi.</p></div>
+            <div class="feat-card anim"><div class="feat-icon fi-green">🧾</div><h3>Print Resit Customer</h3><p>Auto print resit lengkap via Bluetooth thermal printer. Nama kedai, pesanan, jumlah — semua ada.</p></div>
+            <div class="feat-card anim"><div class="feat-icon fi-blue">🪑</div><h3>Nombor Meja</h3><p>Assign meja untuk setiap pesanan. Tak keliru hantar makanan ke meja salah.</p></div>
+            <div class="feat-card anim"><div class="feat-icon fi-purple">📊</div><h3>Laporan Jualan Lengkap</h3><p>Carta harian, mingguan, bulanan. Cara bayar. Menu terlaris. Semua dalam satu dashboard.</p></div>
+            <div class="feat-card anim"><div class="feat-icon fi-red">🏷️</div><h3>Diskaun & Promosi</h3><p>Bagi diskaun kepada pelanggan dengan mudah. Auto kira harga selepas diskaun.</p></div>
+            <div class="feat-card anim"><div class="feat-icon fi-yellow">👤</div><h3>Login Staff</h3><p>Setiap staff ada akaun sendiri. Tahu siapa yang ambil pesanan dan buat jualan.</p></div>
+
+            <!-- NEW FEATURES -->
+            <div class="feat-card anim" style="border-color:#fed7aa">
+                <div class="feat-new">Baru</div>
+                <div class="feat-icon" style="background:#fff7ed">📺</div>
+                <h3>Kitchen Display System</h3>
+                <p>Paparan order real-time untuk staff dapur. Auto update bila order masuk. Tick item bila siap.</p>
+            </div>
+            <div class="feat-card anim" style="border-color:#fed7aa">
+                <div class="feat-new">Baru</div>
+                <div class="feat-icon" style="background:#f0fdf4">🖨️</div>
+                <h3>Auto Print Slip Dapur</h3>
+                <p>Bila cashier submit order, slip terus print ke printer Bluetooth dapur. Tiada salah pesanan lagi.</p>
+            </div>
+            <div class="feat-card anim" style="border-color:#fed7aa">
+                <div class="feat-new">Baru</div>
+                <div class="feat-icon" style="background:#eff6ff">🍳</div>
+                <h3>Multi Stesen Dapur</h3>
+                <p>Support beberapa stesen — Goreng, Minuman, Grill. Setiap stesen dapat slip yang berkaitan sahaja.</p>
+            </div>
+            <div class="feat-card anim" style="border-color:#fed7aa">
+                <div class="feat-new">Baru</div>
+                <div class="feat-icon" style="background:#faf5ff">📈</div>
+                <h3>Carta Jualan Harian</h3>
+                <p>Bar chart jualan setiap hari dalam seminggu atau sebulan. Tengok trend dengan mudah.</p>
+            </div>
+            <div class="feat-card anim" style="border-color:#fed7aa">
+                <div class="feat-new">Baru</div>
+                <div class="feat-icon" style="background:#f0fdfa">🍽️</div>
+                <h3>Jualan Per Stesen</h3>
+                <p>Sesuai untuk food court — setiap peniaga tahu hasil jualan masing-masing. Transparent dan adil.</p>
+            </div>
+            <div class="feat-card anim" style="border-color:#fed7aa">
+                <div class="feat-new">Baru</div>
+                <div class="feat-icon" style="background:#fef2f2">📋</div>
+                <h3>Closing Report Per Stesen</h3>
+                <p>Print slip closing untuk setiap peniaga masa tutup kedai. Butiran item, kuantiti, jualan.</p>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="how-it-works" id="cara">
-    <div class="section-container">
-        <div class="section-header animate"><div class="section-badge">🚀 Mudah Je</div><h2>Mula Dalam <span>4 Langkah</span></h2><p>Setup cepat, terus boleh guna hari ni!</p></div>
+<!-- KDS SECTION -->
+<section class="kds-section" id="kds">
+    <div class="kds-container sc">
+        <div class="kds-content anim">
+            <div class="sh-badge" style="text-align:left">📺 Kitchen Display System</div>
+            <h2>Dapur Anda <span class="grad-text">Nampak</span> Semua Order</h2>
+            <p>Staff dapur tak perlu tunggu cashier jerit order. Paparan real-time terus ke phone atau tablet di dapur. Auto bunyi bila order baru masuk.</p>
+            <div class="kds-points">
+                <div class="kds-point"><div class="kp-icon">🔄</div><div class="kp-text"><h4>Update setiap 5 saat</h4><p>Order baru auto muncul tanpa refresh manual</p></div></div>
+                <div class="kds-point"><div class="kp-icon">🔔</div><div class="kp-text"><h4>Bunyi loceng order baru</h4><p>Staff dapur terus tahu ada order masuk</p></div></div>
+                <div class="kds-point"><div class="kp-icon">✅</div><div class="kp-text"><h4>Tick item bila siap</h4><p>Track progress masakan setiap item dalam order</p></div></div>
+                <div class="kds-point"><div class="kp-icon">🍳</div><div class="kp-text"><h4>Multi stesen</h4><p>Setiap stesen nampak item berkaitan sahaja</p></div></div>
+                <div class="kds-point"><div class="kp-icon">📱</div><div class="kp-text"><h4>Guna phone sedia ada</h4><p>Buka URL di browser — tak perlu app khas</p></div></div>
+            </div>
+        </div>
+        <div class="anim">
+            <div class="kds-mockup">
+                <div class="kds-mk-header">
+                    <div class="kds-shop-name">Kedai Pak Haji — Papan Dapur</div>
+                    <div class="kds-status"><span class="kds-dot"></span>Live — 5 saat</div>
+                </div>
+                <div class="kds-cols">
+                    <div>
+                        <div class="kds-col-header kds-col-goreng">
+                            <span class="kds-col-title">🍚 Goreng-goreng</span>
+                            <span class="kds-col-badge">3 order</span>
+                        </div>
+                        <div class="kds-order">
+                            <div class="kds-order-header">
+                                <span class="kds-order-no">#391</span>
+                                <span class="kds-order-time new">Baru</span>
+                            </div>
+                            <div class="kds-item"><div class="kds-item-num">1</div><span class="kds-item-name">Nasi Goreng Cina</span><div class="kds-tick"></div></div>
+                            <div class="kds-item-note">>> separuh</div>
+                            <div class="kds-item"><div class="kds-item-num">2</div><span class="kds-item-name">Ayam Geprik</span><div class="kds-tick"></div></div>
+                            <div class="kds-item-note">>> kurang pedas</div>
+                        </div>
+                        <div class="kds-order">
+                            <div class="kds-order-header">
+                                <span class="kds-order-no">#389</span>
+                                <span class="kds-order-time">9 min</span>
+                            </div>
+                            <div class="kds-item"><div class="kds-item-num">1</div><span class="kds-item-name">Kuey Teow Goreng</span><div class="kds-tick done">✓</div></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="kds-col-header kds-col-minuman">
+                            <span class="kds-col-title">🥤 Minuman</span>
+                            <span class="kds-col-badge">2 order</span>
+                        </div>
+                        <div class="kds-order">
+                            <div class="kds-order-header">
+                                <span class="kds-order-no">#391</span>
+                                <span class="kds-order-time new">Baru</span>
+                            </div>
+                            <div class="kds-item"><div class="kds-item-num">1</div><span class="kds-item-name">Teh Tarik</span><div class="kds-tick"></div></div>
+                            <div class="kds-item"><div class="kds-item-num">1</div><span class="kds-item-name">Kopi O Ais</span><div class="kds-tick"></div></div>
+                        </div>
+                        <div class="kds-order">
+                            <div class="kds-order-header">
+                                <span class="kds-order-no">#388</span>
+                                <span class="kds-order-time">15 min</span>
+                            </div>
+                            <div class="kds-item"><div class="kds-item-num">2</div><span class="kds-item-name">Milo Ais</span><div class="kds-tick done">✓</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AUTO PRINT SECTION -->
+<section class="printer-section" id="print">
+    <div class="printer-container sc">
+        <div class="printer-visual anim">
+            <div class="printer-icon-wrap">
+                <div class="printer-icon">🖨️</div>
+                <div class="printer-label">PrinterMax M58 / Xprinter XP-58IIH</div>
+                <div class="bt-badge"><span class="bt-dot"></span> Bluetooth Tersambung</div>
+            </div>
+            <div class="slip-mockup">
+                <div class="slip-header">
+                    <div class="slip-shop">Kedai Pak Haji</div>
+                    <div class="slip-addr">Melaka · 016-7388358</div>
+                </div>
+                <div class="slip-section">*** GORENG-GORENG ***</div>
+                <div class="slip-info">Order #391 | Meja: 7</div>
+                <div class="slip-info">18/05/2026  05:01 PTG</div>
+                <div class="slip-info">Cashier: Ahmad</div>
+                <hr class="slip-divider">
+                <div class="slip-item"><span>1x Nasi Goreng Cina</span><span>RM6.00</span></div>
+                <div class="slip-note">>> separuh</div>
+                <div class="slip-item"><span>2x Ayam Geprik Rice</span><span>RM21.60</span></div>
+                <div class="slip-note">>> kurang pedas</div>
+                <hr class="slip-divider">
+                <div class="slip-total"><span>JUMLAH</span><span>RM27.60</span></div>
+                <div class="slip-footer">— Terima Kasih —</div>
+            </div>
+        </div>
+        <div class="printer-content anim">
+            <div class="sh-badge" style="text-align:left;background:rgba(249,115,22,.15);border-color:rgba(249,115,22,.3);color:#fb923c">🖨️ Auto Print Bluetooth</div>
+            <h2 style="color:#fff">Submit Order,<br><span style="color:var(--orange)">Terus Print</span> Ke Dapur</h2>
+            <p>Bila cashier tekan "Hantar Pesanan", slip dapur auto print ke printer Bluetooth. Tiada perlu copy-paste, tiada salah baca tulisan tangan.</p>
+            <div class="printer-steps">
+                <div class="printer-step"><div class="ps-num">1</div><div class="ps-text"><h4>Cashier submit order</h4><p>Pilih item, meja, tekan Hantar</p></div></div>
+                <div class="printer-step"><div class="ps-num">2</div><div class="ps-text"><h4>Sistem split ikut stesen</h4><p>Item goreng ke slip Goreng, minuman ke slip Minuman</p></div></div>
+                <div class="printer-step"><div class="ps-num">3</div><div class="ps-text"><h4>Printer auto print</h4><p>Slip keluar dalam 3–5 saat via Bluetooth</p></div></div>
+                <div class="printer-step"><div class="ps-num">4</div><div class="ps-text"><h4>Staff dapur masak terus</h4><p>Baca slip, masak, tick siap di KDS</p></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CLOSING REPORT SECTION -->
+<section class="closing-section">
+    <div class="closing-container sc">
+        <div class="closing-content anim">
+            <div class="sh-badge" style="text-align:left">📋 Closing Report</div>
+            <h2>Masa Tutup Kedai,<br><span class="grad-text">Semua Tahu</span> Hasil Sendiri</h2>
+            <p>Sesuai untuk food court dan kedai dengan beberapa peniaga dalam satu kaunter. Setiap peniaga dapat laporan hasil jualan masing-masing.</p>
+            <div class="usecase-cards">
+                <div class="usecase-card"><span class="uc-icon">🍚</span><div class="uc-text"><h4>Pak Ali — Goreng-goreng</h4><p>Lihat jualan Nasi Goreng, Kuey Teow, semua item stesen dia</p></div></div>
+                <div class="usecase-card"><span class="uc-icon">🥤</span><div class="uc-text"><h4>Ah Chong — Minuman</h4><p>Jualan Teh Tarik, Kopi O, Milo — terperinci ikut item</p></div></div>
+                <div class="usecase-card"><span class="uc-icon">🍗</span><div class="uc-text"><h4>Mak Som — Lauk Pauk</h4><p>Ayam, ikan, sayur — semua ada record yang jelas</p></div></div>
+                <div class="usecase-card"><span class="uc-icon">🖨️</span><div class="uc-text"><h4>Print slip closing per peniaga</h4><p>Tekan satu butang, slip closing terus keluar dari printer</p></div></div>
+            </div>
+        </div>
+        <div class="anim">
+            <div class="closing-mockup">
+                <div class="cm-header">
+                    <div class="cm-title">📊 Laporan Closing — 19/05/2026</div>
+                    <div class="cm-sub">Jualan Mengikut Stesen</div>
+                </div>
+                <div class="cm-body">
+                    <div class="cm-station">
+                        <div class="cm-st-header">
+                            <div class="cm-st-name"><span>🍚</span> Pak Ali (Goreng-goreng)</div>
+                            <div class="cm-st-amount">RM 182.00</div>
+                        </div>
+                        <div class="cm-progress"><div class="cm-prog-fill" style="width:65%;background:#f97316"></div></div>
+                        <div class="cm-items">Nasi Goreng x15, Kuey Teow x8 · 29 item · 65%</div>
+                    </div>
+                    <div class="cm-station">
+                        <div class="cm-st-header">
+                            <div class="cm-st-name"><span>🥤</span> Ah Chong (Minuman)</div>
+                            <div class="cm-st-amount">RM 89.00</div>
+                        </div>
+                        <div class="cm-progress"><div class="cm-prog-fill" style="width:32%;background:#3b82f6"></div></div>
+                        <div class="cm-items">Teh Tarik x18, Milo Ais x12 · 35 item · 32%</div>
+                    </div>
+                    <div class="cm-station">
+                        <div class="cm-st-header">
+                            <div class="cm-st-name"><span>🍗</span> Mak Som (Lauk)</div>
+                            <div class="cm-st-amount">RM 56.00</div>
+                        </div>
+                        <div class="cm-progress"><div class="cm-prog-fill" style="width:20%;background:#16a34a"></div></div>
+                        <div class="cm-items">Ayam Goreng x10, Ikan x5 · 18 item · 20%</div>
+                    </div>
+                </div>
+                <div class="cm-total-row">
+                    <span class="cm-total-label">JUMLAH KESELURUHAN</span>
+                    <span class="cm-total-amount">RM 327.00</span>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:16px">
+                <button style="background:linear-gradient(135deg,var(--orange),var(--orange-dark));color:#fff;border:none;padding:10px 24px;border-radius:50px;font-weight:700;font-size:.82rem;cursor:pointer">🖨️ Print Semua Closing</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="cara">
+    <div class="sc">
+        <div class="sh anim">
+            <div class="sh-badge">🚀 Mudah Je</div>
+            <h2>Mula Dalam <span>4 Langkah</span></h2>
+            <p>Setup cepat, terus boleh guna hari ni</p>
+        </div>
         <div class="steps-grid">
-            <div class="step-card animate"><div class="step-number">1</div><h3>WhatsApp Kami</h3><p>Bagi nama kedai anda — kami buat akaun dalam masa 1 hari</p><span class="step-arrow">→</span></div>
-            <div class="step-card animate"><div class="step-number">2</div><h3>Akaun Siap</h3><p>Kami hantar login details — anda terus boleh masuk sistem</p><span class="step-arrow">→</span></div>
-            <div class="step-card animate"><div class="step-number">3</div><h3>Tambah Menu Sendiri</h3><p>15 minit je — tambah nama, harga, kategori. Mudah sangat!</p><span class="step-arrow">→</span></div>
-            <div class="step-card animate"><div class="step-number">4</div><h3>Mula Guna!</h3><p>Buka di phone, tablet atau laptop, login, terus ambil pesanan!</p></div>
+            <div class="step-card anim"><div class="step-num">1</div><h3>WhatsApp Kami</h3><p>Bagi nama kedai — kami buat akaun dalam masa 1 hari</p><span class="step-arrow">→</span></div>
+            <div class="step-card anim"><div class="step-num">2</div><h3>Akaun Siap</h3><p>Kami hantar login details — terus boleh masuk sistem</p><span class="step-arrow">→</span></div>
+            <div class="step-card anim"><div class="step-num">3</div><h3>Setup Menu & Stesen</h3><p>Tambah menu, kategori, stesen dapur — 15–30 minit je</p><span class="step-arrow">→</span></div>
+            <div class="step-card anim"><div class="step-num">4</div><h3>Mula Guna!</h3><p>Cashier ambil order, dapur nampak KDS, printer auto print</p></div>
         </div>
     </div>
 </section>
 
+<!-- PRICING -->
 <section class="pricing" id="harga">
-    <div class="section-container">
-        <div class="section-header animate">
-            <div class="section-badge">💎 Pilih Pakej Anda</div>
+    <div class="sc">
+        <div class="sh anim">
+            <div class="sh-badge">💎 Harga</div>
             <h2>Simple. Murah. <span>Berbaloi.</span></h2>
-            <p>Tiada pakej mengelirukan. Semua fungsi termasuk dalam mana-mana pakej.</p>
+            <p>Semua fungsi termasuk — KDS, auto print, closing report — dalam satu harga</p>
         </div>
-        <div class="pricing-grid animate">
-
-            <!-- PAKEJ BULANAN -->
+        <div class="pricing-grid anim">
             <div class="price-card">
                 <div class="price-emoji">📅</div>
                 <h3>Pakej Bulanan</h3>
-                <p class="price-card-desc">Fleksibel — bayar bila perlu, henti bila-bila masa.</p>
-                <div class="price-amount">
-                    <span class="currency">RM</span><span class="amount">30</span><span class="period">/bulan</span>
-                </div>
-                <p class="price-per-month">&nbsp;</p>
-                <div class="price-setup-note">+ Yuran setup RM50 (sekali sahaja)</div>
+                <p class="price-desc">Fleksibel — bayar bila perlu, henti bila-bila</p>
+                <div class="price-amount"><span class="price-cur">RM</span><span class="price-num">30</span><span class="price-period">/bulan</span></div>
+                <div class="price-setup">+ Yuran setup RM50 (sekali sahaja)</div>
                 <ul class="price-features">
-                    <li><span class="check">✓</span> Unlimited pesanan</li>
-                    <li><span class="check">✓</span> Menu tak terhad</li>
-                    <li><span class="check">✓</span> Cetak resit</li>
-                    <li><span class="check">✓</span> Laporan jualan lengkap</li>
-                    <li><span class="check">✓</span> Nombor meja & login staff</li>
-                    <li><span class="check">✓</span> Support WhatsApp</li>
+                    <li><span class="ck">✓</span> Unlimited pesanan</li>
+                    <li><span class="ck">✓</span> Menu & kategori tak terhad</li>
+                    <li><span class="ck">✓</span> Kitchen Display System</li>
+                    <li><span class="ck">✓</span> Auto print slip dapur (BT)</li>
+                    <li><span class="ck">✓</span> Multi stesen dapur</li>
+                    <li><span class="ck">✓</span> Laporan jualan + carta</li>
+                    <li><span class="ck">✓</span> Closing report per stesen</li>
+                    <li><span class="ck">✓</span> Support WhatsApp</li>
                 </ul>
                 <button class="btn-price btn-price-outline" onclick="openPaymentModal('bulanan')">💳 Langgan Bulanan — RM80</button>
                 <p class="price-note">Setup RM50 + bulan pertama RM30</p>
-                <div class="payment-badges"><span>FPX · DuitNow · eWallet</span></div>
             </div>
-
-            <!-- PAKEJ TAHUNAN -->
             <div class="price-card featured">
-                <div class="price-popular-badge">⭐ Paling Jimat</div>
+                <div class="price-popular">⭐ Paling Jimat</div>
                 <div class="price-emoji">🏆</div>
                 <h3>Pakej Tahunan</h3>
-                <p class="price-card-desc">Komited setahun, jimat lebih banyak!</p>
-                <div class="price-amount">
-                    <span class="currency">RM</span><span class="amount">270</span><span class="period">/tahun</span>
-                </div>
-                <p class="price-per-month">≈ RM22.50/bulan sahaja</p>
-                <div class="price-savings-badge">💰 Jimat RM90 berbanding bulanan!</div>
-                <div class="price-setup-note">+ Yuran setup RM50 (sekali sahaja)</div>
+                <p class="price-desc">Komited setahun, jimat lebih banyak!</p>
+                <div class="price-amount"><span class="price-cur">RM</span><span class="price-num">270</span><span class="price-period">/tahun</span></div>
+                <p class="price-per">≈ RM22.50/bulan sahaja</p>
+                <div class="price-save">💰 Jimat RM90 berbanding bulanan!</div>
+                <div class="price-setup">+ Yuran setup RM50 (sekali sahaja)</div>
                 <ul class="price-features">
-                    <li><span class="check">✓</span> Unlimited pesanan</li>
-                    <li><span class="check">✓</span> Menu tak terhad</li>
-                    <li><span class="check">✓</span> Cetak resit</li>
-                    <li><span class="check">✓</span> Laporan jualan lengkap</li>
-                    <li><span class="check">✓</span> Nombor meja & login staff</li>
-                    <li><span class="check">✓</span> Support WhatsApp <strong style="color:#f97316">Prioriti</strong></li>
+                    <li><span class="ck">✓</span> Semua dalam Pakej Bulanan</li>
+                    <li><span class="ck">✓</span> Support WhatsApp <strong style="color:var(--orange)">Prioriti</strong></li>
+                    <li><span class="ck">✓</span> Update features auto</li>
                 </ul>
                 <button class="btn-price btn-price-primary" onclick="openPaymentModal('tahunan')">🏆 Langgan Tahunan — RM320</button>
                 <p class="price-note">🔒 Setup RM50 + setahun penuh RM270</p>
-                <div class="payment-badges"><span>FPX · DuitNow · eWallet</span></div>
             </div>
-
         </div>
     </div>
 </section>
 
-<section class="comparison" id="comparison">
-    <div class="section-container">
-        <div class="section-header animate"><div class="section-badge">📊 Bandingkan Sendiri</div><h2>Kenapa Peniaga Pilih <span>POSKedai?</span></h2><p>Fakta yang anda boleh semak sendiri</p></div>
-        <div class="compare-cards animate">
-            <div class="compare-card others"><h3>😐 Sistem POS Biasa</h3><ul class="compare-list"><li><span class="ci">💸</span> Kena beli mesin/terminal khas — RM2,000 ke atas untuk mula</li><li><span class="ci">📄</span> Ada kontrak 6-12 bulan — tak boleh berhenti sesuka hati</li><li><span class="ci">⏳</span> Setup ambil masa 1-2 minggu</li><li><span class="ci">🤯</span> Interface kompleks — staff ambil masa lama nak belajar</li><li><span class="ci">🌐</span> Support dalam Bahasa Inggeris — susah nak communicate</li></ul></div>
-            <div class="compare-card poskedai"><h3>POSKedai</h3><ul class="compare-list"><li><span class="ci">📱</span> <strong>Guna phone, tablet atau laptop sendiri</strong> — tak perlu beli apa-apa mesin</li><li><span class="ci">🆓</span> <strong>Tiada kontrak</strong> — bayar bulan ke bulan, berhenti bila-bila</li><li><span class="ci">⚡</span> <strong>Setup dalam 1 hari</strong> — WhatsApp kami, esok dah boleh guna</li><li><span class="ci">😊</span> <strong>Super simple</strong> — staff belajar dalam 15 minit</li><li><span class="ci">🇲🇾</span> <strong>100% Bahasa Melayu</strong> — support pun dalam BM</li></ul></div>
+<!-- COMPARISON -->
+<section class="comparison">
+    <div class="sc">
+        <div class="sh anim">
+            <div class="sh-badge">📊 Bandingkan</div>
+            <h2>Kenapa Peniaga Pilih <span>POSKedai?</span></h2>
+        </div>
+        <div class="compare-wrap anim">
+            <div class="compare-card others">
+                <h3>😐 Sistem POS Biasa</h3>
+                <ul class="compare-list">
+                    <li><span>💸</span> Kena beli mesin/terminal khas — RM2,000 ke atas</li>
+                    <li><span>📄</span> Ada kontrak 6–12 bulan — tak boleh berhenti</li>
+                    <li><span>⏳</span> Setup ambil masa 1–2 minggu</li>
+                    <li><span>🤯</span> Interface kompleks — staff ambil masa lama belajar</li>
+                    <li><span>🌐</span> Support Bahasa Inggeris — susah komunikasi</li>
+                    <li><span>❌</span> KDS kena beli hardware tambahan mahal</li>
+                    <li><span>❌</span> Tiada closing report per stesen</li>
+                </ul>
+            </div>
+            <div class="compare-card us">
+                <h3>POSKedai</h3>
+                <ul class="compare-list">
+                    <li><span>📱</span> <strong>Guna phone/tablet sendiri</strong> — zero hardware cost</li>
+                    <li><span>🆓</span> <strong>Tiada kontrak</strong> — bayar bulan ke bulan, berhenti bila-bila</li>
+                    <li><span>⚡</span> <strong>Setup dalam 1 hari</strong> — WhatsApp kami, esok dah boleh guna</li>
+                    <li><span>😊</span> <strong>Super simple</strong> — staff belajar dalam 15 minit</li>
+                    <li><span>🇲🇾</span> <strong>100% Bahasa Melayu</strong> — support pun dalam BM</li>
+                    <li><span>📺</span> <strong>KDS percuma</strong> — guna phone sedia ada</li>
+                    <li><span>📋</span> <strong>Closing report per stesen</strong> — sesuai untuk food court</li>
+                </ul>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="guarantee" id="jaminan">
-    <div class="guarantee-container animate">
-        <div class="guarantee-shield">🛡️</div>
+<!-- GUARANTEE -->
+<section class="guarantee">
+    <div class="guarantee-wrap anim">
+        <div class="g-shield">🛡️</div>
         <h2>Jaminan <span>Tanpa Risiko</span></h2>
-        <p>Kami yakin anda akan suka POSKedai. Sebab tu kami bagi jaminan penuh — tak ada risiko untuk anda langsung.</p>
-        <div class="guarantee-grid">
-            <div class="guarantee-card"><div class="gc-icon">🆓</div><h4>Cuba Percuma 7 Hari</h4><p>Hubungi kami melalui WhatsApp untuk dapatkan akses percubaan 7 hari. Butiran di footer.</p></div>
-            <div class="guarantee-card"><div class="gc-icon">🚫</div><h4>Tiada Kontrak</h4><p>Bayar bulan ke bulan sahaja. Nak berhenti? Boleh stop bila-bila masa. Tiada penalti.</p></div>
-            <div class="guarantee-card"><div class="gc-icon">💬</div><h4>Support Penuh</h4><p>Ada masalah? WhatsApp kami terus. Kami bantu setup, ajar guna, dan selesaikan sebarang isu.</p></div>
+        <p>Kami yakin anda akan suka POSKedai. Sebab tu kami bagi jaminan penuh — tiada risiko untuk anda.</p>
+        <div class="g-grid">
+            <div class="g-card"><div class="g-icon">🆓</div><h4>Cuba Percuma 7 Hari</h4><p>Hubungi kami via WhatsApp untuk akses percubaan 7 hari penuh.</p></div>
+            <div class="g-card"><div class="g-icon">🚫</div><h4>Tiada Kontrak</h4><p>Bayar bulan ke bulan. Nak berhenti? Boleh stop bila-bila. Tiada penalti.</p></div>
+            <div class="g-card"><div class="g-icon">💬</div><h4>Support Penuh</h4><p>Ada masalah? WhatsApp kami terus. Kami bantu setup dan selesaikan isu.</p></div>
         </div>
     </div>
 </section>
 
+<!-- FAQ -->
 <section class="faq" id="faq">
-    <div class="section-container">
-        <div class="section-header animate"><div class="section-badge">❓ Soalan Lazim</div><h2>Soalan <span>Popular</span></h2></div>
+    <div class="sc">
+        <div class="sh anim"><div class="sh-badge">❓ FAQ</div><h2>Soalan <span>Popular</span></h2></div>
         <div class="faq-list">
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Perlu beli mesin atau hardware khas?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Tidak! Anda cuma perlukan phone, tablet atau laptop yang sedia ada. Buka browser, login, terus boleh guna. Tak perlu install apa-apa app.</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Macam mana kalau internet putus?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Sistem perlu internet untuk simpan data. Tapi data mobile (4G/5G) pun dah cukup. Kalau internet putus kejap, boleh catat manual dulu dan masukkan balik nanti.</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Boleh cetak resit?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Ya! Sistem auto generate resit. Boleh cetak guna printer biasa atau thermal printer. Resit ada nama kedai, butiran pesanan, dan jumlah bayaran.</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Data saya selamat ke?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Ya, sangat selamat! Data disimpan dalam cloud yang secure. Backup automatik setiap hari, takkan hilang.</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Ada kontrak atau lock-in period?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Tiada kontrak langsung! Bayar bulan ke bulan atau setahun. Nak berhenti? Boleh stop bila-bila masa. Tiada caj tersembunyi.</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Berapa lama nak setup?</span><span class="faq-toggle">+</span></div><div class="faq-answer">1 hari je! WhatsApp kami, kami buat akaun untuk anda. Lepas tu anda boleh tambah menu sendiri dalam sistem — senang sangat, ambil masa dalam 15 minit. Terus boleh mula guna!</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Sesuai untuk kedai jenis apa?</span><span class="faq-toggle">+</span></div><div class="faq-answer">POSKedai dibina khas untuk F&B — gerai makan, restoran kecil, warung, cafe, food truck, dan food court. Apa-apa kedai yang jual makanan dan minuman!</div></div>
-            <div class="faq-item animate"><div class="faq-question" onclick="toggleFaq(this)"><span>Apa beza pakej bulanan dan tahunan?</span><span class="faq-toggle">+</span></div><div class="faq-answer">Semua fungsi sama! Bezanya cuma harga — pakej tahunan RM270 berbanding RM360 (RM30×12) jika bayar bulanan. Anda jimat RM90 setahun. Pakej tahunan juga dapat support WhatsApp prioriti.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Perlu beli mesin atau hardware khas?</span><span class="faq-toggle">+</span></div><div class="faq-a">Tidak! Anda cuma perlukan phone, tablet atau laptop sedia ada. Buka browser, login, terus boleh guna. Untuk Kitchen Display System (KDS) pun sama — guna phone lama atau tablet murah pun boleh.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Macam mana auto print slip dapur berfungsi?</span><span class="faq-toggle">+</span></div><div class="faq-a">Cashier sambung printer thermal Bluetooth (PrinterMax M58 atau Xprinter XP-58IIH) ke device. Bila order disubmit, sistem auto split item ikut stesen dan print slip masing-masing. Tiada setup rumit — connect printer, terus guna.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Sesuai untuk food court dengan beberapa peniaga?</span><span class="faq-toggle">+</span></div><div class="faq-a">Ya, sangat sesuai! Setup stesen ikut nama peniaga (contoh: Pak Ali, Mak Som, Ah Chong). Setiap stesen ada kategori menu masing-masing. Masa closing, setiap peniaga boleh print slip jualan sendiri.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Printer apa yang disyorkan?</span><span class="faq-toggle">+</span></div><div class="faq-a">PrinterMax M58 atau Xprinter XP-58IIH — kedua-dua thermal printer Bluetooth 58mm yang berfungsi dengan POSKedai. Harga dalam RM150–RM200 di Shopee. Printer ini juga boleh print resit customer.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Boleh guna tanpa printer?</span><span class="faq-toggle">+</span></div><div class="faq-a">Boleh! Printer adalah pilihan tambahan. Tanpa printer, sistem tetap berfungsi penuh — cashier ambil order, KDS papar order, laporan jualan ada. Printer hanya untuk auto print slip dan resit.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Berapa lama setup?</span><span class="faq-toggle">+</span></div><div class="faq-a">1 hari je! Kami buat akaun, anda tambah menu dalam 15–30 minit. Setup stesen dapur dalam 10 minit. Terus boleh mula guna.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Ada kontrak atau lock-in?</span><span class="faq-toggle">+</span></div><div class="faq-a">Tiada kontrak langsung! Bayar bulan ke bulan atau setahun. Nak berhenti? Boleh stop bila-bila. Tiada caj tersembunyi.</div></div>
+            <div class="faq-item anim"><div class="faq-q" onclick="toggleFaq(this)"><span>Macam mana kalau internet putus?</span><span class="faq-toggle">+</span></div><div class="faq-a">Sistem perlu internet untuk simpan data. Data mobile 4G/5G pun dah cukup. Kalau internet putus kejap, catat manual dulu dan masukkan balik nanti.</div></div>
         </div>
     </div>
 </section>
 
-<section class="cta" id="hubungi">
-    <h2>Pilih Pakej Anda.<br><span>Mula Hari Ini.</span></h2>
-    <p>Setup dalam 1 hari. Staff belajar dalam 15 minit. Kedai anda dah ada sistem POS sendiri.</p>
-    <div class="cta-buttons">
-        <a href="javascript:void(0)" onclick="openPaymentModal('bulanan')" class="btn-cta-orange">📅 Pakej Bulanan — RM80</a>
-        <a href="javascript:void(0)" onclick="openPaymentModal('tahunan')" class="btn-cta-orange" style="background:linear-gradient(135deg,#1d4ed8,#1e40af);box-shadow:0 8px 25px rgba(29,78,216,0.4);">🏆 Pakej Tahunan — RM320</a>
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Mula Hari Ini.<br><span>Setup Esok.</span></h2>
+    <p>Staff belajar 15 minit. Dapur ada KDS. Printer auto print. Closing report siap.</p>
+    <div class="cta-btns">
+        <a href="javascript:void(0)" onclick="openPaymentModal('bulanan')" class="btn-cta-oren">📅 Pakej Bulanan — RM80</a>
+        <a href="javascript:void(0)" onclick="openPaymentModal('tahunan')" class="btn-cta-oren" style="background:linear-gradient(135deg,#1d4ed8,#1e40af);box-shadow:0 8px 25px rgba(29,78,216,.4)">🏆 Pakej Tahunan — RM320</a>
     </div>
-    <p style="margin-top:20px;font-size:0.85rem;opacity:0.5;position:relative;z-index:2;">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
+    <p style="margin-top:18px;font-size:.82rem;opacity:.4;position:relative;z-index:2">🔒 Tiada kontrak. Berhenti bila-bila. Tiada risiko.</p>
 </section>
 
+<!-- FOOTER -->
 <footer class="footer">
-    <div class="footer-container">
+    <div class="footer-grid">
         <div class="footer-brand">
             <h3>POS<span>Kedai</span></h3>
-            <p>Sistem POS paling mudah dan murah untuk kedai makan di Malaysia. Dibina khas untuk peniaga tempatan. 🇲🇾</p>
-            <div class="footer-trial-box">
+            <p>Sistem POS paling lengkap dan murah untuk kedai makan di Malaysia. Kitchen Display, Auto Print, Closing Report — semua dalam RM30/bulan. 🇲🇾</p>
+            <div class="footer-trial">
                 <strong>🎁 Cuba Percuma 7 Hari</strong>
-                <p>Belum pasti? Hubungi kami untuk dapatkan akses percubaan penuh selama 7 hari — tiada bayaran, tiada kad kredit diperlukan.</p>
-                <button class="btn-footer-trial" onclick="openPopup()">📱 Mohon Trial Percuma</button>
+                <p>Belum pasti? Hubungi kami untuk akses percubaan penuh — tiada bayaran, tiada kad kredit.</p>
+                <button class="btn-ft" onclick="openPopup()">📱 Mohon Trial Percuma</button>
             </div>
         </div>
         <div class="footer-links">
             <h4>Pautan</h4>
             <a href="#features">Fungsi</a>
+            <a href="#kds">Kitchen Display</a>
             <a href="#harga">Harga</a>
             <a href="#faq">FAQ</a>
-            <a href="#hubungi">Hubungi</a>
             <a href="https://saudaranas.github.io/poskedai/affiliate/">💰 Program Affiliate</a>
         </div>
         <div class="footer-links">
             <h4>Hubungi</h4>
             <a href="https://wa.me/60167388358">📱 WhatsApp</a>
-            <a href="#" id="email-link">📧 hello@poskedai.online</a>
-            <script>
-              var e = 'hello' + '@' + 'poskedai.online';
-              var el = document.getElementById('email-link');
-              el.href = 'mailto:' + e;
-              el.textContent = '📧 ' + e;
-            </script>
+            <a href="mailto:hello@poskedai.online">📧 hello@poskedai.online</a>
             <a href="#">📍 Malaysia</a>
+            <a href="https://poskedai.store/?kedai=demo" target="_blank">👁️ Demo Live</a>
         </div>
     </div>
     <div class="footer-bottom">
-        <p>© 2025 POSKedai. Hak Cipta Terpelihara. Dibina dengan ❤️ di Malaysia</p>
+        <p>© 2026 POSKedai. Hak Cipta Terpelihara. Dibina dengan ❤️ di Malaysia</p>
     </div>
 </footer>
 
 <a href="https://wa.me/60167388358?text=Hai!%20Saya%20nak%20tahu%20tentang%20POSKedai" class="wa-float" target="_blank">
-    <span class="wa-icon">💬</span><span>WhatsApp Kami</span>
+    <span style="font-size:1.2rem">💬</span><span>WhatsApp Kami</span>
 </a>
 
-<!-- ==================== PAYMENT MODAL ==================== -->
-<div class="payment-overlay" id="paymentModal">
-    <div class="payment-modal">
-        <div class="payment-modal-header">
-            <div>
-                <h3 id="pm-title">💳 Langgan POSKedai</h3>
-                <p id="pm-subtitle">Lengkapkan bayaran untuk mula guna POSKedai</p>
-            </div>
-            <button class="payment-modal-close" onclick="closePaymentModal()">&times;</button>
+<!-- PAYMENT MODAL (same as original) -->
+<div class="payment-overlay" id="paymentModal" style="display:none;justify-content:center;align-items:center;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:9999;padding:20px;opacity:0;transition:opacity .3s ease">
+    <div style="background:#fff;border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.25);position:relative;transform:translateY(20px);transition:transform .3s ease">
+        <div style="background:linear-gradient(135deg,var(--orange),var(--orange-dark));padding:22px 26px;border-radius:24px 24px 0 0;color:#fff;display:flex;justify-content:space-between;align-items:center">
+            <div><h3 id="pm-title" style="font-size:1.05rem;font-weight:800">💳 Langgan POSKedai</h3><p id="pm-subtitle" style="font-size:.78rem;opacity:.85;margin-top:3px">Lengkapkan bayaran untuk mula guna</p></div>
+            <button onclick="closePaymentModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer">×</button>
         </div>
-        <div class="payment-modal-info">
-            <div>
-                <div class="pmi-label" id="pm-label">Jumlah Bayaran</div>
-                <div class="pmi-breakdown" id="pm-breakdown">Setup RM50 (sekali) + Bulan pertama RM30</div>
-            </div>
-            <div class="pmi-amount" id="pm-amount">RM80</div>
+        <div style="padding:14px 26px;background:#fff7ed;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #fed7aa">
+            <div><div id="pm-label" style="font-size:.82rem;color:var(--gray);font-weight:600">Jumlah Bayaran</div><div id="pm-breakdown" style="font-size:.68rem;color:#94a3b8;margin-top:2px">Setup RM50 + bulan pertama RM30</div></div>
+            <div id="pm-amount" style="font-size:1.4rem;font-weight:900;color:var(--orange-dark)">RM80</div>
         </div>
-        <div class="payment-modal-body">
-            <!-- BCL form container — data-url swapped by JS before script loads -->
-            <div id="bcl-payment-form" data-url="https://nucleusriver.bcl.my/embed/form/poskedai-daftar"></div>
-        </div>
-        <div class="payment-modal-footer">
-            <p>🔒 Bayaran selamat melalui <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>Kad Kredit/Debit</strong> · <strong>eWallet</strong></p>
-        </div>
+        <div style="min-height:400px"><div id="bcl-payment-form" data-url="https://nucleusriver.bcl.my/embed/form/poskedai-daftar"></div></div>
+        <div style="padding:10px 26px 14px;text-align:center;border-top:1px solid var(--border);font-size:.68rem;color:#94a3b8">🔒 Bayaran selamat melalui <strong>FPX</strong> · <strong>DuitNow</strong> · <strong>eWallet</strong></div>
     </div>
 </div>
 
-<!-- POPUP LEAD CAPTURE (Trial Percuma) -->
-<div class="p-overlay" id="p-overlay" onclick="handlePOverlayClick(event)">
-<div class="p-modal">
-  <div class="p-accent"></div>
-  <div class="p-header">
-    <div class="p-badge"><span class="p-badge-dot"></span>🎁 Cuba Percuma 7 Hari</div>
-    <button class="p-close" onclick="closePopup()">✕</button>
+<!-- TRIAL POPUP (same as original) -->
+<div class="p-overlay" id="p-overlay" onclick="handlePOverlayClick(event)" style="position:fixed;inset:0;background:rgba(30,45,64,.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:99999;opacity:0;pointer-events:none;transition:opacity .25s ease">
+<div style="background:#fff;border:1px solid #ede8e0;border-radius:24px;width:100%;max-width:460px;box-shadow:0 24px 64px rgba(30,45,64,.16);overflow:hidden;transform:translateY(24px) scale(.96);transition:transform .32s cubic-bezier(.34,1.45,.64,1)">
+  <div style="height:4px;background:linear-gradient(90deg,var(--orange),#f97316,#fbbf24)"></div>
+  <div style="padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:#fef3ec;color:var(--orange);font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;border:1px solid #fddccc">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 1.8s ease-in-out infinite;display:inline-block"></span>🎁 Cuba Percuma 7 Hari</div>
+    <button onclick="closePopup()" style="width:32px;height:32px;border-radius:8px;background:#f7f4f0;border:none;color:#718096;font-size:16px;cursor:pointer">✕</button>
   </div>
-  <div class="p-progress-wrap">
-    <div class="p-progress-meta">
-      <span id="p-prog-label">Langkah 1 dari 4</span>
-      <span class="p-pct" id="p-prog-pct">25%</span>
-    </div>
-    <div class="p-progress-track"><div class="p-progress-fill" id="p-progress-fill" style="width:25%"></div></div>
+  <div style="padding:16px 24px 0">
+    <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:#718096;margin-bottom:8px"><span id="p-prog-label">Langkah 1 dari 4</span><span style="color:var(--orange);font-weight:700" id="p-prog-pct">25%</span></div>
+    <div style="height:6px;background:#f0ebe3;border-radius:99px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--orange),#f97316);border-radius:99px;transition:width .45s" id="p-progress-fill" style="width:25%"></div></div>
   </div>
-  <div class="p-dots">
-    <div class="p-dot active" id="p-dot-0"></div>
-    <div class="p-dot" id="p-dot-1"></div>
-    <div class="p-dot" id="p-dot-2"></div>
-    <div class="p-dot" id="p-dot-3"></div>
-  </div>
-  <div class="p-body">
-    <div class="p-step active" id="p-step-0">
-      <div class="p-step-title">Kedai anda jenis apa? 🍽️</div>
-      <div class="p-step-sub">Bantu kami setup sistem yang paling sesuai untuk anda.</div>
-      <div class="p-options" id="p-opts-0">
-        <div class="p-opt" data-val="Gerai Makan / Warung" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">🏪</div><span class="p-opt-label">Gerai Makan / Warung</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Restoran / Kedai Makan" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">🍛</div><span class="p-opt-label">Restoran / Kedai Makan</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Cafe / Kedai Kopi" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">☕</div><span class="p-opt-label">Cafe / Kedai Kopi</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Food Truck / Bazaar" onclick="pSelectOpt(this,0)"><div class="p-opt-icon">🚚</div><span class="p-opt-label">Food Truck / Bazaar</span><div class="p-opt-check"></div></div>
+  <div style="padding:20px 24px 24px" id="p-body-wrap">
+    <!-- Steps same as original -->
+    <div id="p-step-0">
+      <div style="font-size:18px;font-weight:800;color:#1e2d40;margin-bottom:4px">Kedai anda jenis apa? 🍽️</div>
+      <div style="font-size:13px;color:#718096;margin-bottom:16px">Bantu kami setup sistem yang paling sesuai.</div>
+      <div id="p-opts-0" style="display:grid;gap:8px">
+        <div onclick="pSelectOpt(this,0)" data-val="Gerai Makan / Warung" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">🏪</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Gerai Makan / Warung</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,0)" data-val="Restoran / Kedai Makan" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">🍛</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Restoran / Kedai Makan</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,0)" data-val="Food Court / Gerai Bergabung" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">🏬</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Food Court / Gerai Bergabung</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,0)" data-val="Cafe / Kedai Kopi" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">☕</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Cafe / Kedai Kopi</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
       </div>
-      <div class="p-btn-row">
-        <button class="p-btn-next" id="p-next-0" onclick="pGoNext(1)" disabled>
-          <span class="p-btn-text">Seterusnya <span class="p-btn-arrow">→</span></span><span class="p-spinner"></span>
-        </button>
+      <div style="margin-top:16px"><button id="p-next-0" onclick="pGoNext(1)" disabled style="width:100%;padding:13px;background:var(--orange);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;opacity:.4">Seterusnya →</button></div>
+    </div>
+    <div id="p-step-1" style="display:none">
+      <div style="font-size:18px;font-weight:800;color:#1e2d40;margin-bottom:4px">Macam mana urus pesanan sekarang? 📝</div>
+      <div style="font-size:13px;color:#718096;margin-bottom:16px">Tiada jawapan yang salah.</div>
+      <div id="p-opts-1" style="display:grid;gap:8px">
+        <div onclick="pSelectOpt(this,1)" data-val="Tulis tangan / kertas" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">✍️</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Tulis tangan / kertas</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,1)" data-val="Kalkulator + hafal" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">🧮</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Kalkulator + hafal je</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,1)" data-val="Guna aplikasi lain" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">📱</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Guna aplikasi lain</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button onclick="pGoBack(0)" style="padding:12px 16px;background:#f7f4f0;border:1.5px solid #ede8e0;border-radius:10px;color:#718096;font-size:13px;font-weight:600;cursor:pointer">← Balik</button>
+        <button id="p-next-1" onclick="pGoNext(2)" disabled style="flex:1;padding:13px;background:var(--orange);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;opacity:.4">Seterusnya →</button>
       </div>
     </div>
-    <div class="p-step" id="p-step-1">
-      <div class="p-step-title">Macam mana anda urus pesanan sekarang? 📝</div>
-      <div class="p-step-sub">Tiada jawapan yang salah — kami nak faham situasi anda.</div>
-      <div class="p-options" id="p-opts-1">
-        <div class="p-opt" data-val="Tulis tangan / kertas" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">✍️</div><span class="p-opt-label">Tulis tangan / kertas</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Kalkulator + hafal" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">🧮</div><span class="p-opt-label">Kalkulator + hafal je</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Guna aplikasi lain" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">📱</div><span class="p-opt-label">Guna aplikasi lain</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Langsung tiada sistem" onclick="pSelectOpt(this,1)"><div class="p-opt-icon">🤷</div><span class="p-opt-label">Langsung tiada sistem</span><div class="p-opt-check"></div></div>
+    <div id="p-step-2" style="display:none">
+      <div style="font-size:18px;font-weight:800;color:#1e2d40;margin-bottom:4px">Pernah guna sistem POS? 🖥️</div>
+      <div style="font-size:13px;color:#718096;margin-bottom:16px">Untuk tentukan sokongan yang anda perlukan.</div>
+      <div id="p-opts-2" style="display:grid;gap:8px">
+        <div onclick="pSelectOpt(this,2)" data-val="Tak pernah — pertama kali" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">🆕</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Tak pernah — pertama kali</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,2)" data-val="Pernah — tapi terlalu mahal" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">💸</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Pernah — tapi terlalu mahal</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
+        <div onclick="pSelectOpt(this,2)" data-val="Masih guna — nak tukar" style="display:flex;align-items:center;gap:12px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:12px;padding:11px 13px;cursor:pointer"><span style="font-size:20px;width:36px;height:36px;background:#fff;border:1px solid #ede8e0;border-radius:9px;display:flex;align-items:center;justify-content:center">🔄</span><span style="font-size:13.5px;font-weight:600;color:#1e2d40;flex:1">Masih guna — nak tukar je</span><div style="width:20px;height:20px;border:2px solid #ede8e0;border-radius:50%"></div></div>
       </div>
-      <div class="p-btn-row">
-        <button class="p-btn-back" onclick="pGoBack(0)">← Balik</button>
-        <button class="p-btn-next" id="p-next-1" onclick="pGoNext(2)" disabled>
-          <span class="p-btn-text">Seterusnya <span class="p-btn-arrow">→</span></span><span class="p-spinner"></span>
-        </button>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button onclick="pGoBack(1)" style="padding:12px 16px;background:#f7f4f0;border:1.5px solid #ede8e0;border-radius:10px;color:#718096;font-size:13px;font-weight:600;cursor:pointer">← Balik</button>
+        <button id="p-next-2" onclick="pGoNext(3)" disabled style="flex:1;padding:13px;background:var(--orange);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;opacity:.4">Seterusnya →</button>
       </div>
     </div>
-    <div class="p-step" id="p-step-2">
-      <div class="p-step-title">Pernah guna sistem POS sebelum ni? 🖥️</div>
-      <div class="p-step-sub">Ini bantu kami tentukan tahap sokongan yang anda perlukan.</div>
-      <div class="p-options" id="p-opts-2">
-        <div class="p-opt" data-val="Tak pernah — pertama kali" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">🆕</div><span class="p-opt-label">Tak pernah — pertama kali</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Pernah — tapi terlalu mahal" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">💸</div><span class="p-opt-label">Pernah — tapi terlalu mahal</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Pernah — tapi terlalu susah" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">😵</div><span class="p-opt-label">Pernah — tapi terlalu susah</span><div class="p-opt-check"></div></div>
-        <div class="p-opt" data-val="Masih guna — nak tukar je" onclick="pSelectOpt(this,2)"><div class="p-opt-icon">🔄</div><span class="p-opt-label">Masih guna — nak tukar je</span><div class="p-opt-check"></div></div>
+    <div id="p-step-3" style="display:none">
+      <div style="font-size:18px;font-weight:800;color:#1e2d40;margin-bottom:4px">Hampir siap! Bagi maklumat anda 🎉</div>
+      <div style="font-size:13px;color:#718096;margin-bottom:16px">Kami akan setup trial 7 hari dalam masa 24 jam.</div>
+      <div style="margin-bottom:12px"><label style="display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Nama Anda</label><input type="text" id="p-f-name" placeholder="Contoh: Ahmad bin Ali" oninput="pValidateForm()" style="width:100%;padding:11px 14px 11px 38px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:10px;font-size:14px;outline:none"></div>
+      <div style="margin-bottom:12px"><label style="display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Nombor WhatsApp</label><input type="tel" id="p-f-wa" placeholder="Contoh: 0123456789" oninput="pValidateForm()" style="width:100%;padding:11px 14px 11px 38px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:10px;font-size:14px;outline:none"></div>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button onclick="pGoBack(2)" style="padding:12px 16px;background:#f7f4f0;border:1.5px solid #ede8e0;border-radius:10px;color:#718096;font-size:13px;font-weight:600;cursor:pointer">← Balik</button>
+        <button id="p-next-3" onclick="pSubmitForm()" disabled style="flex:1;padding:13px;background:var(--orange);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;opacity:.4">Minta Trial! 🚀</button>
       </div>
-      <div class="p-btn-row">
-        <button class="p-btn-back" onclick="pGoBack(1)">← Balik</button>
-        <button class="p-btn-next" id="p-next-2" onclick="pGoNext(3)" disabled>
-          <span class="p-btn-text">Seterusnya <span class="p-btn-arrow">→</span></span><span class="p-spinner"></span>
-        </button>
-      </div>
+      <p style="font-size:11px;color:#c4b8a8;text-align:center;margin-top:12px">🔒 Maklumat anda selamat & sulit.</p>
     </div>
-    <div class="p-step" id="p-step-3">
-      <div class="p-step-title">Hampir siap! Bagi maklumat anda 🎉</div>
-      <div class="p-step-sub">Kami akan setup percubaan 7 hari anda dalam masa 24 jam.</div>
-      <div class="p-field">
-        <label>Nama Anda</label>
-        <div class="p-field-wrap"><span class="p-f-icon">👤</span><input type="text" id="p-f-name" placeholder="Contoh: Ahmad bin Ali" oninput="pValidateForm()"></div>
-        <div class="p-err" id="p-err-name">Sila masukkan nama anda.</div>
-      </div>
-      <div class="p-field">
-        <label>Nombor WhatsApp</label>
-        <div class="p-field-wrap"><span class="p-f-icon">📱</span><input type="tel" id="p-f-wa" placeholder="Contoh: 0123456789" oninput="pValidateForm()"></div>
-        <div class="p-err" id="p-err-wa">Sila masukkan nombor WhatsApp yang sah.</div>
-      </div>
-      <div class="p-field">
-        <label>Emel <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(Pilihan)</span></label>
-        <div class="p-field-wrap"><span class="p-f-icon">📧</span><input type="email" id="p-f-email" placeholder="Contoh: ahmad@gmail.com" oninput="pValidateForm()"></div>
-        <div class="p-err" id="p-err-email">Format emel tidak sah.</div>
-      </div>
-      <div class="p-btn-row">
-        <button class="p-btn-back" onclick="pGoBack(2)">← Balik</button>
-        <button class="p-btn-next" id="p-next-3" onclick="pSubmitForm()" disabled>
-          <span class="p-btn-text">Minta Trial Percuma! 🚀</span><span class="p-spinner"></span>
-        </button>
-      </div>
-      <p class="p-privacy">🔒 Maklumat anda selamat & sulit. Tidak dikongsi kepada pihak lain.</p>
-    </div>
-    <div class="p-step" id="p-step-4">
-      <div class="p-ty-wrap">
-        <div class="p-ty-icon">🎉</div>
-        <div class="p-ty-title">Terima kasih, <span class="p-ty-name" id="p-ty-name"></span>!</div>
-        <div class="p-ty-sub">Permohonan anda telah berjaya dihantar. Kami akan hubungi anda dalam masa <strong>24 jam</strong>.</div>
-        <div class="p-ty-detail" id="p-ty-detail"></div>
-        <a class="p-wa-btn" id="p-wa-link" href="https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w" target="_blank">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          🔔 Sertai Channel POSKedai
-        </a>
-        <a class="p-wa-personal" id="p-wa-personal-link" href="#" target="_blank">
-          💬 Atau terus WhatsApp kami untuk setup trial
-        </a>
-        <span class="p-skip" onclick="closePopup()">Tutup tetingkap ini</span>
-      </div>
+    <div id="p-step-4" style="display:none;text-align:center;padding:8px 0">
+      <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#fef3ec,#fff7ed);border:2px solid #fddccc;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 14px">🎉</div>
+      <div style="font-size:20px;font-weight:800;color:#1e2d40;margin-bottom:6px">Terima kasih, <span id="p-ty-name" style="color:var(--orange)"></span>!</div>
+      <div style="font-size:13px;color:#4a5568;margin-bottom:16px;line-height:1.6">Permohonan berjaya dihantar. Kami akan hubungi dalam <strong>24 jam</strong>.</div>
+      <a id="p-wa-link" href="https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w" target="_blank" style="width:100%;padding:13px;background:#25d366;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">🔔 Sertai Channel POSKedai</a>
+      <a id="p-wa-personal-link" href="#" target="_blank" style="display:block;margin-top:10px;font-size:13px;color:#718096;text-decoration:none;text-align:center">💬 Atau terus WhatsApp kami</a>
+      <span onclick="closePopup()" style="display:block;margin-top:10px;font-size:12px;color:#a0aec0;cursor:pointer">Tutup tetingkap ini</span>
     </div>
   </div>
 </div>
 </div>
 
 <script>
-// ==================== NAVBAR ====================
-window.addEventListener('scroll', function() {
-    var navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) navbar.classList.add('scrolled');
-    else navbar.classList.remove('scrolled');
+// NAVBAR
+window.addEventListener('scroll',function(){
+    document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
 });
 
-// ==================== FAQ ====================
-function toggleFaq(element) {
-    var item = element.parentElement;
-    var isActive = item.classList.contains('active');
-    document.querySelectorAll('.faq-item').forEach(function(faq) { faq.classList.remove('active'); });
-    if (!isActive) item.classList.add('active');
+// SCROLL ANIM
+var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target);}});
+},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.anim').forEach(function(el){observer.observe(el);});
+
+// FAQ
+function toggleFaq(el){
+    var item=el.parentElement;
+    var active=item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(function(f){f.classList.remove('active');});
+    if(!active)item.classList.add('active');
 }
 
-// ==================== SCROLL ANIMATIONS ====================
-function handleScrollAnimation() {
-    document.querySelectorAll('.animate').forEach(function(el) {
-        if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
-    });
-}
-window.addEventListener('scroll', handleScrollAnimation);
-window.addEventListener('load', handleScrollAnimation);
-if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.animate').forEach(function(el) { observer.observe(el); });
-}
-document.querySelectorAll('.nav-links a').forEach(function(link) {
-    link.addEventListener('click', function() { document.getElementById('navLinks').classList.remove('show'); });
+// NAVBAR CLOSE ON CLICK
+document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('show');});
 });
 
-// ==================== PAYMENT MODAL ====================
-var BCL_URL_BULANAN = 'https://nucleusriver.bcl.my/embed/form/poskedai-daftar';
-var BCL_URL_TAHUNAN = 'https://nucleusriver.bcl.my/embed/form/poskedai-daftar-tahunan';
-
-function openPaymentModal(pakej) {
-    var modal = document.getElementById('paymentModal');
-    var formDiv = document.getElementById('bcl-payment-form');
-
-    if (pakej === 'tahunan') {
-        document.getElementById('pm-title').textContent = '🏆 Langgan POSKedai — Pakej Tahunan';
-        document.getElementById('pm-subtitle').textContent = 'Jimat RM90 — langgan setahun penuh';
-        document.getElementById('pm-label').textContent = 'Jumlah Bayaran';
-        document.getElementById('pm-breakdown').textContent = 'Setup RM50 (sekali) + Setahun RM270';
-        document.getElementById('pm-amount').textContent = 'RM320';
-        formDiv.setAttribute('data-url', BCL_URL_TAHUNAN);
+// PAYMENT MODAL
+var BCL_BULANAN='https://nucleusriver.bcl.my/embed/form/poskedai-daftar';
+var BCL_TAHUNAN='https://nucleusriver.bcl.my/embed/form/poskedai-daftar-tahunan';
+function openPaymentModal(pakej){
+    var modal=document.getElementById('paymentModal');
+    var formDiv=document.getElementById('bcl-payment-form');
+    if(pakej==='tahunan'){
+        document.getElementById('pm-title').textContent='🏆 Langgan POSKedai — Pakej Tahunan';
+        document.getElementById('pm-subtitle').textContent='Jimat RM90 — langgan setahun penuh';
+        document.getElementById('pm-breakdown').textContent='Setup RM50 (sekali) + Setahun RM270';
+        document.getElementById('pm-amount').textContent='RM320';
+        formDiv.setAttribute('data-url',BCL_TAHUNAN);
     } else {
-        document.getElementById('pm-title').textContent = '💳 Langgan POSKedai — Pakej Bulanan';
-        document.getElementById('pm-subtitle').textContent = 'Lengkapkan bayaran untuk mula guna POSKedai';
-        document.getElementById('pm-label').textContent = 'Jumlah Bayaran';
-        document.getElementById('pm-breakdown').textContent = 'Setup RM50 (sekali) + Bulan pertama RM30';
-        document.getElementById('pm-amount').textContent = 'RM80';
-        formDiv.setAttribute('data-url', BCL_URL_BULANAN);
+        document.getElementById('pm-title').textContent='💳 Langgan POSKedai — Pakej Bulanan';
+        document.getElementById('pm-subtitle').textContent='Lengkapkan bayaran untuk mula guna';
+        document.getElementById('pm-breakdown').textContent='Setup RM50 (sekali) + Bulan pertama RM30';
+        document.getElementById('pm-amount').textContent='RM80';
+        formDiv.setAttribute('data-url',BCL_BULANAN);
     }
+    formDiv.innerHTML='';
+    var old=document.getElementById('bcl-script');
+    if(old)old.remove();
+    modal.style.display='flex';
+    requestAnimationFrame(function(){modal.style.opacity='1';modal.firstElementChild.style.transform='translateY(0)';});
+    document.body.style.overflow='hidden';
+    var s=document.createElement('script');
+    s.id='bcl-script';
+    s.src='https://bcl.my/js/bc-encrypted-payment-embed.js';
+    document.body.appendChild(s);
+}
+function closePaymentModal(){
+    var modal=document.getElementById('paymentModal');
+    modal.style.opacity='0';
+    setTimeout(function(){modal.style.display='none';},300);
+    document.body.style.overflow='';
+}
+document.getElementById('paymentModal').addEventListener('click',function(e){if(e.target===this)closePaymentModal();});
 
-    // Clear any previously rendered BCL form content
-    formDiv.innerHTML = '';
+// TRIAL POPUP
+var P_SHEET='https://script.google.com/macros/s/AKfycbyzQRGrDOJGSgjoxhhA2YK761-3NTLV3FctfmK8ezqL5zzwI0VBRRWlIsLXqWSY769Y/exec';
+var P_WA='60167388358';
+var P_CH='https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w';
+var pAns={jenis:'',cara:'',pos:'',nama:'',wa:''};
 
-    // Remove old BCL script if present so it re-initialises with the new data-url
-    var oldScript = document.getElementById('bcl-script');
-    if (oldScript) oldScript.remove();
+function openPopup(){
+    var ov=document.getElementById('p-overlay');
+    ov.style.opacity='1';ov.style.pointerEvents='all';
+    ov.firstElementChild.style.transform='translateY(0) scale(1)';
+    document.body.style.overflow='hidden';
+}
+function closePopup(){
+    var ov=document.getElementById('p-overlay');
+    ov.style.opacity='0';ov.style.pointerEvents='none';
+    ov.firstElementChild.style.transform='translateY(24px) scale(.96)';
+    document.body.style.overflow='';
+}
+function handlePOverlayClick(e){if(e.target===document.getElementById('p-overlay'))closePopup();}
 
-    // Show modal first
-    modal.style.display = 'flex';
-    requestAnimationFrame(function() { modal.classList.add('show'); });
-    document.body.style.overflow = 'hidden';
-
-    // Load (or reload) BCL embed script — it reads data-url on execution
-    var script = document.createElement('script');
-    script.id = 'bcl-script';
-    script.src = 'https://bcl.my/js/bc-encrypted-payment-embed.js';
-    document.body.appendChild(script);
+function pSelectOpt(el,idx){
+    var container=document.getElementById('p-opts-'+idx);
+    container.querySelectorAll('[data-val]').forEach(function(o){
+        o.style.borderColor='#ede8e0';o.style.background='#fdfaf7';
+        o.lastElementChild.style.background='';o.lastElementChild.style.borderColor='#ede8e0';
+    });
+    el.style.borderColor='var(--orange)';el.style.background='#fef3ec';
+    el.lastElementChild.style.background='var(--orange)';el.lastElementChild.style.borderColor='var(--orange)';
+    el.lastElementChild.textContent='✓';el.lastElementChild.style.color='#fff';el.lastElementChild.style.fontSize='11px';el.lastElementChild.style.fontWeight='800';el.lastElementChild.style.display='flex';el.lastElementChild.style.alignItems='center';el.lastElementChild.style.justifyContent='center';
+    var btn=document.getElementById('p-next-'+idx);
+    btn.disabled=false;btn.style.opacity='1';
 }
-
-function closePaymentModal() {
-    var modal = document.getElementById('paymentModal');
-    modal.classList.remove('show');
-    setTimeout(function() { modal.style.display = 'none'; }, 300);
-    document.body.style.overflow = '';
+function pGoNext(to){
+    if(to===1)pAns.jenis=document.querySelector('#p-opts-0 [data-val]')?.getAttribute('data-val');
+    if(to===2)pAns.cara=document.querySelector('#p-opts-1 [data-val]')?.getAttribute('data-val');
+    if(to===3)pAns.pos=document.querySelector('#p-opts-2 [data-val]')?.getAttribute('data-val');
+    // Fix: get selected
+    if(to===1){var sel=document.querySelector('#p-opts-0 [style*="var(--orange)"]');if(sel)pAns.jenis=sel.dataset.val;}
+    if(to===2){var sel=document.querySelector('#p-opts-1 [style*="var(--orange)"]');if(sel)pAns.cara=sel.dataset.val;}
+    if(to===3){var sel=document.querySelector('#p-opts-2 [style*="var(--orange)"]');if(sel)pAns.pos=sel.dataset.val;}
+    pShowStep(to);
+    var pct=Math.round((to+1)/4*100);
+    document.getElementById('p-progress-fill').style.width=pct+'%';
+    document.getElementById('p-prog-label').textContent='Langkah '+(to+1)+' dari 4';
+    document.getElementById('p-prog-pct').textContent=pct+'%';
 }
-
-document.getElementById('paymentModal').addEventListener('click', function(e) {
-    if (e.target === this) closePaymentModal();
-});
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') { closePaymentModal(); closePopup(); }
-});
-
-// ==================== POPUP LEAD CAPTURE ====================
-const P_SHEET_URL    = 'https://script.google.com/macros/s/AKfycbyzQRGrDOJGSgjoxhhA2YK761-3NTLV3FctfmK8ezqL5zzwI0VBRRWlIsLXqWSY769Y/exec';
-const P_WA_NUM       = '60167388358';
-const P_CHANNEL_URL  = 'https://whatsapp.com/channel/0029Vb7e0DNFXUuiJel8B30w';
-
-const pAns = { jenis:'', cara:'', pos:'', nama:'', wa:'', email:'' };
-
-function openPopup() {
-    document.getElementById('p-overlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
+function pGoBack(to){pShowStep(to);}
+function pShowStep(idx){
+    for(var i=0;i<=4;i++){var s=document.getElementById('p-step-'+i);if(s)s.style.display=i===idx?'block':'none';}
 }
-function closePopup() {
-    document.getElementById('p-overlay').classList.remove('active');
-    document.body.style.overflow = '';
+function pValidateForm(){
+    var name=document.getElementById('p-f-name').value.trim();
+    var wa=document.getElementById('p-f-wa').value.trim().replace(/[\s\-]/g,'');
+    var ok=name.length>=2&&/^[0-9]{9,12}$/.test(wa);
+    var btn=document.getElementById('p-next-3');
+    btn.disabled=!ok;btn.style.opacity=ok?'1':'.4';
 }
-function handlePOverlayClick(e) {
-    if (e.target === document.getElementById('p-overlay')) closePopup();
-}
-function pSelectOpt(el, idx) {
-    document.getElementById('p-opts-'+idx).querySelectorAll('.p-opt').forEach(o=>o.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('p-next-'+idx).disabled = false;
-}
-function pUpdateProgress(idx) {
-    const pct = Math.round(((idx+1)/4)*100);
-    document.getElementById('p-progress-fill').style.width = pct+'%';
-    document.getElementById('p-prog-label').textContent = 'Langkah '+(idx+1)+' dari 4';
-    document.getElementById('p-prog-pct').textContent = pct+'%';
-    for(let i=0;i<4;i++){
-        const d=document.getElementById('p-dot-'+i);
-        d.className='p-dot'+(i<idx?' done':i===idx?' active':'');
-    }
-}
-function pGoNext(to) {
-    if(to===1) pAns.jenis = document.querySelector('#p-opts-0 .p-opt.selected')?.dataset.val;
-    if(to===2) pAns.cara  = document.querySelector('#p-opts-1 .p-opt.selected')?.dataset.val;
-    if(to===3) pAns.pos   = document.querySelector('#p-opts-2 .p-opt.selected')?.dataset.val;
-    pShowStep(to, false);
-}
-function pGoBack(to) { pShowStep(to, true); }
-function pShowStep(idx, isBack) {
-    document.querySelectorAll('.p-step').forEach(s=>s.classList.remove('active','back-anim'));
-    const t=document.getElementById('p-step-'+idx);
-    t.classList.add('active');
-    if(isBack) t.classList.add('back-anim');
-    if(idx<4) pUpdateProgress(idx);
-}
-function pValidateForm() {
-    const name  = document.getElementById('p-f-name').value.trim();
-    const wa    = document.getElementById('p-f-wa').value.trim().replace(/[\s\-]/g,'');
-    const email = document.getElementById('p-f-email').value.trim();
-    const ok = name.length>=2 && /^[0-9]{9,12}$/.test(wa) && (email===''||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
-    document.getElementById('p-next-3').disabled = !ok;
-}
-async function pSubmitForm() {
-    const name  = document.getElementById('p-f-name').value.trim();
-    const wa    = document.getElementById('p-f-wa').value.trim();
-    const email = document.getElementById('p-f-email').value.trim();
-    let ok=true;
-    if(name.length<2)                                    { pShowErr('p-err-name'); ok=false; } else pHideErr('p-err-name');
-    if(!/^[0-9]{9,12}$/.test(wa.replace(/[\s\-]/g,''))) { pShowErr('p-err-wa');   ok=false; } else pHideErr('p-err-wa');
-    if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ pShowErr('p-err-email');ok=false; } else pHideErr('p-err-email');
-    if(!ok) return;
-    pAns.nama=name; pAns.wa=wa; pAns.email=email;
-    const btn=document.getElementById('p-next-3');
-    btn.classList.add('loading'); btn.disabled=true;
-    const payload={
-        tarikh    : new Date().toLocaleString('ms-MY',{timeZone:'Asia/Kuala_Lumpur'}),
-        nama      : pAns.nama,
-        whatsapp  : pAns.wa,
-        emel      : pAns.email||'-',
-        jenisKedai: pAns.jenis,
-        caraUrus  : pAns.cara,
-        pengalaman: pAns.pos,
-        sumber    : 'Website – Footer Trial'
-    };
-    try {
-        await fetch(P_SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    } catch(e){ console.warn('Sheets:',e); }
-    const msg=encodeURIComponent(
-        'Hai POSKedai! Saya nak cuba percuma 7 hari 🎉\n\n'+
-        '👤 Nama: '+pAns.nama+'\n'+
-        '📱 WhatsApp: '+pAns.wa+'\n'+
-        (pAns.email?'📧 Emel: '+pAns.email+'\n':'')+
-        '🍽️ Jenis Kedai: '+pAns.jenis+'\n'+
-        '📝 Cara Urus: '+pAns.cara+'\n'+
-        '🖥️ Pengalaman POS: '+pAns.pos+'\n\n'+
-        'Sila bantu setup ya! Terima kasih 🙏'
-    );
-    const waUrl='https://wa.me/'+P_WA_NUM+'?text='+msg;
-    document.getElementById('p-wa-link').href = P_CHANNEL_URL;
-    document.getElementById('p-wa-personal-link').href = waUrl;
+async function pSubmitForm(){
+    var name=document.getElementById('p-f-name').value.trim();
+    var wa=document.getElementById('p-f-wa').value.trim();
+    pAns.nama=name;pAns.wa=wa;
+    try{await fetch(P_SHEET,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({tarikh:new Date().toLocaleString('ms-MY',{timeZone:'Asia/Kuala_Lumpur'}),nama:pAns.nama,whatsapp:pAns.wa,jenisKedai:pAns.jenis,caraUrus:pAns.cara,pengalaman:pAns.pos,sumber:'Website – Trial Popup'})});}catch(e){}
+    var msg=encodeURIComponent('Hai POSKedai! Saya nak cuba percuma 7 hari 🎉\n\n👤 Nama: '+pAns.nama+'\n📱 WA: '+pAns.wa+'\n🍽️ Jenis: '+pAns.jenis+'\n\nTolong setup ya! Terima kasih 🙏');
+    document.getElementById('p-wa-link').href=P_CH;
+    document.getElementById('p-wa-personal-link').href='https://wa.me/'+P_WA+'?text='+msg;
     document.getElementById('p-ty-name').textContent=name.split(' ')[0];
-    document.getElementById('p-ty-detail').innerHTML=
-        '<strong>📋 Ringkasan permohonan anda:</strong>'+
-        '🍽️ <b>'+pAns.jenis+'</b><br>'+
-        '📝 '+pAns.cara+'<br>'+
-        '🖥️ '+pAns.pos;
     document.getElementById('p-progress-fill').style.width='100%';
     document.getElementById('p-prog-label').textContent='Selesai! ✓';
     document.getElementById('p-prog-pct').textContent='100%';
-    for(let i=0;i<4;i++) document.getElementById('p-dot-'+i).className='p-dot done';
-    btn.classList.remove('loading');
-    pShowStep(4, false);
-    setTimeout(()=>window.open(P_CHANNEL_URL,'_blank'), 1500);
+    pShowStep(4);
+    setTimeout(function(){window.open(P_CH,'_blank');},1500);
 }
-function pShowErr(id){document.getElementById(id).classList.add('show');}
-function pHideErr(id){document.getElementById(id).classList.remove('show');}
-</script>
 
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePaymentModal();closePopup();}});
+</script>
 </body>
 </html>
