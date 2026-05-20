@@ -380,10 +380,10 @@
 <section class="hero">
     <div class="hero-container">
         <div class="hero-content">
-            <div class="hero-badge"><span class="pulse"></span> RM30/Bulan — Tiada Kontrak</div>
-            <h1>Sistem POS Kedai Makan <span class="grad-text">Paling Lengkap</span> di Malaysia</h1>
-            <p class="hero-sub">Auto print slip dapur. Kitchen Display. Laporan jualan per stesen.</p>
-            <p>Guna phone, tablet atau laptop sedia ada. Setup 1 hari. Staff belajar 15 minit. Dibina khas untuk kedai makan, gerai, cafe, dan food court Malaysia.</p>
+            <div class="hero-badge"><span class="pulse"></span> Hanya RM30/Bulan — Tiada Kontrak</div>
+            <h1>Kedai Makan Anda Tak Perlukan <span class="grad-text">POS Mahal.</span></h1>
+            <p class="hero-sub">Kitchen Display. Auto Print. Laporan Jualan. Hanya RM30/Bulan. Tanpa Kontrak.</p>
+            <p>Guna phone, tablet atau laptop sedia ada. Setup 1 hari. Staff belajar 15 minit. Semua yang ada dalam POS RM200/bulan — hanya RM30. Dibina khas untuk kedai makan Malaysia.</p>
             <div class="hero-btns">
                 <a href="#harga" class="btn-primary">💳 Langgan Sekarang</a>
                 <a href="https://poskedai.store/?kedai=demo" class="btn-secondary" target="_blank">👁️ Cuba Demo</a>
@@ -650,7 +650,7 @@
         <div class="anim">
             <div class="closing-mockup">
                 <div class="cm-header">
-                    <div class="cm-title">📊 Laporan Closing — 19/05/2026</div>
+                    <div class="cm-title">📊 Laporan Closing — <span id="closingMockupDate"></span></div>
                     <div class="cm-sub">Jualan Mengikut Stesen</div>
                 </div>
                 <div class="cm-body">
@@ -800,7 +800,7 @@
         <h2>Jaminan <span>Tanpa Risiko</span></h2>
         <p>Kami yakin anda akan suka POSKedai. Sebab tu kami bagi jaminan penuh — tiada risiko untuk anda.</p>
         <div class="g-grid">
-            <div class="g-card"><div class="g-icon">🆓</div><h4>Cuba Percuma 7 Hari</h4><p>Hubungi kami via WhatsApp untuk akses percubaan 7 hari penuh.</p></div>
+            <div class="g-card"><div class="g-icon">🆓</div><h4>Cuba Percuma 1 Bulan</h4><p>Hubungi kami via WhatsApp untuk akses percubaan penuh selama 1 bulan.</p></div>
             <div class="g-card"><div class="g-icon">🚫</div><h4>Tiada Kontrak</h4><p>Bayar bulan ke bulan. Nak berhenti? Boleh stop bila-bila. Tiada penalti.</p></div>
             <div class="g-card"><div class="g-icon">💬</div><h4>Support Penuh</h4><p>Ada masalah? WhatsApp kami terus. Kami bantu setup dan selesaikan isu.</p></div>
         </div>
@@ -842,8 +842,8 @@
             <h3>POS<span>Kedai</span></h3>
             <p>Sistem POS paling lengkap dan murah untuk kedai makan di Malaysia. Kitchen Display, Auto Print, Closing Report — semua dalam RM30/bulan. 🇲🇾</p>
             <div class="footer-trial">
-                <strong>🎁 Cuba Percuma 7 Hari</strong>
-                <p>Belum pasti? Hubungi kami untuk akses percubaan penuh — tiada bayaran, tiada kad kredit.</p>
+                <strong>🎁 Cuba Percuma 1 Bulan</strong>
+                <p>Belum pasti? Hubungi kami untuk akses percubaan 1 bulan penuh — tiada bayaran, tiada kad kredit.</p>
                 <button class="btn-ft" onclick="openPopup()">📱 Mohon Trial Percuma</button>
             </div>
         </div>
@@ -894,7 +894,7 @@
   <div style="height:4px;background:linear-gradient(90deg,var(--orange),#f97316,#fbbf24)"></div>
   <div style="padding:20px 24px 0;display:flex;justify-content:space-between;align-items:center">
     <div style="display:inline-flex;align-items:center;gap:6px;background:#fef3ec;color:var(--orange);font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;border:1px solid #fddccc">
-        <span style="width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 1.8s ease-in-out infinite;display:inline-block"></span>🎁 Cuba Percuma 7 Hari</div>
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 1.8s ease-in-out infinite;display:inline-block"></span>🎁 Cuba Percuma 1 Bulan</div>
     <button onclick="closePopup()" style="width:32px;height:32px;border-radius:8px;background:#f7f4f0;border:none;color:#718096;font-size:16px;cursor:pointer">✕</button>
   </div>
   <div style="padding:16px 24px 0">
@@ -945,6 +945,8 @@
       <div style="font-size:13px;color:#718096;margin-bottom:16px">Kami akan setup trial 7 hari dalam masa 24 jam.</div>
       <div style="margin-bottom:12px"><label style="display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Nama Anda</label><input type="text" id="p-f-name" placeholder="Contoh: Ahmad bin Ali" oninput="pValidateForm()" style="width:100%;padding:11px 14px 11px 38px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:10px;font-size:14px;outline:none"></div>
       <div style="margin-bottom:12px"><label style="display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Nombor WhatsApp</label><input type="tel" id="p-f-wa" placeholder="Contoh: 0123456789" oninput="pValidateForm()" style="width:100%;padding:11px 14px 11px 38px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:10px;font-size:14px;outline:none"></div>
+      <div style="margin-bottom:12px"><label style="display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Nama Kedai</label><input type="text" id="p-f-kedai" placeholder="Contoh: Warung Pak Ali" oninput="pValidateForm()" style="width:100%;padding:11px 14px 11px 38px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:10px;font-size:14px;outline:none"></div>
+      <div style="margin-bottom:12px"><label style="display:block;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Kawasan / Negeri</label><input type="text" id="p-f-kawasan" placeholder="Contoh: Melaka / Johor Bahru" style="width:100%;padding:11px 14px 11px 38px;background:#fdfaf7;border:1.5px solid #ede8e0;border-radius:10px;font-size:14px;outline:none"></div>
       <div style="display:flex;gap:8px;margin-top:16px">
         <button onclick="pGoBack(2)" style="padding:12px 16px;background:#f7f4f0;border:1.5px solid #ede8e0;border-radius:10px;color:#718096;font-size:13px;font-weight:600;cursor:pointer">← Balik</button>
         <button id="p-next-3" onclick="pSubmitForm()" disabled style="flex:1;padding:13px;background:var(--orange);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;opacity:.4">Minta Trial! 🚀</button>
@@ -1008,15 +1010,18 @@ function openPaymentModal(pakej){
         formDiv.setAttribute('data-url',BCL_BULANAN);
     }
     formDiv.innerHTML='';
-    var old=document.getElementById('bcl-script');
-    if(old)old.remove();
     modal.style.display='flex';
     requestAnimationFrame(function(){modal.style.opacity='1';modal.firstElementChild.style.transform='translateY(0)';});
     document.body.style.overflow='hidden';
-    var s=document.createElement('script');
-    s.id='bcl-script';
-    s.src='https://bcl.my/js/bc-encrypted-payment-embed.js';
-    document.body.appendChild(s);
+    // Reinit BCL embed dengan data-url baru
+    if(window.BCL&&window.BCL.init){
+        window.BCL.init();
+    } else {
+        var s=document.createElement('script');
+        s.id='bcl-script';
+        s.src='https://bcl.my/js/bc-encrypted-payment-embed.js';
+        document.body.appendChild(s);
+    }
 }
 function closePaymentModal(){
     var modal=document.getElementById('paymentModal');
@@ -1086,20 +1091,68 @@ function pValidateForm(){
 async function pSubmitForm(){
     var name=document.getElementById('p-f-name').value.trim();
     var wa=document.getElementById('p-f-wa').value.trim();
+    var kedai=document.getElementById('p-f-kedai')?document.getElementById('p-f-kedai').value.trim():'';
+    var kawasan=document.getElementById('p-f-kawasan')?document.getElementById('p-f-kawasan').value.trim():'';
     pAns.nama=name;pAns.wa=wa;
-    try{await fetch(P_SHEET,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({tarikh:new Date().toLocaleString('ms-MY',{timeZone:'Asia/Kuala_Lumpur'}),nama:pAns.nama,whatsapp:pAns.wa,jenisKedai:pAns.jenis,caraUrus:pAns.cara,pengalaman:pAns.pos,sumber:'Website – Trial Popup'})});}catch(e){}
-    var msg=encodeURIComponent('Hai POSKedai! Saya nak cuba percuma 7 hari 🎉\n\n👤 Nama: '+pAns.nama+'\n📱 WA: '+pAns.wa+'\n🍽️ Jenis: '+pAns.jenis+'\n\nTolong setup ya! Terima kasih 🙏');
+    try{
+        await fetch(P_SHEET,{method:'POST',mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+            tarikh:new Date().toLocaleString('ms-MY',{timeZone:'Asia/Kuala_Lumpur'}),
+            nama:pAns.nama,
+            whatsapp:pAns.wa,
+            namaKedai:kedai,
+            kawasan:kawasan,
+            jenisKedai:pAns.jenis,
+            caraUrus:pAns.cara,
+            pengalaman:pAns.pos,
+            sumber:'Website – Trial 1 Bulan'
+        })});
+    }catch(e){}
+    var waMsg='Hai POSKedai! Saya nak cuba percuma 1 bulan \uD83C\uDF89\n\n'
+        +'\uD83D\uDC64 Nama: '+pAns.nama+'\n'
+        +'\uD83D\uDCF1 WA: '+pAns.wa+'\n'
+        +(kedai?'\uD83C\uDFEA Kedai: '+kedai+'\n':'')
+        +(kawasan?'\uD83D\uDCCD Kawasan: '+kawasan+'\n':'')
+        +'\uD83C\uDF7D\uFE0F Jenis: '+pAns.jenis+'\n\n'
+        +'Tolong setup ya! Terima kasih \uD83D\uDE4F';
+    var msg=encodeURIComponent(waMsg);
     document.getElementById('p-wa-link').href=P_CH;
     document.getElementById('p-wa-personal-link').href='https://wa.me/'+P_WA+'?text='+msg;
     document.getElementById('p-ty-name').textContent=name.split(' ')[0];
     document.getElementById('p-progress-fill').style.width='100%';
     document.getElementById('p-prog-label').textContent='Selesai! ✓';
     document.getElementById('p-prog-pct').textContent='100%';
+    document.getElementById('p-ty-detail').innerHTML=
+        '<strong>📋 Maklumat anda:</strong><br>'
+        +(kedai?'🏪 <b>'+kedai+'</b><br>':'')
+        +(kawasan?'📍 '+kawasan+'<br>':'')
+        +'🍽️ '+pAns.jenis+'<br>'
+        +'📝 '+pAns.cara;
     pShowStep(4);
     setTimeout(function(){window.open(P_CH,'_blank');},1500);
 }
 
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePaymentModal();closePopup();}});
+
+// Update closing mockup date to current date
+(function(){
+    var el = document.getElementById('closingMockupDate');
+    if(!el) return;
+    var now = new Date();
+    var d = now.getDate();
+    var m = now.getMonth()+1;
+    var y = now.getFullYear();
+    el.textContent = (d<10?'0'+d:d)+'/'+(m<10?'0'+m:m)+'/'+y;
+})();
+
+// Preload BCL script on page load for faster modal
+window.addEventListener('load',function(){
+    var s=document.createElement('script');
+    s.src='https://bcl.my/js/bc-encrypted-payment-embed.js';
+    s.id='bcl-preload';
+    document.body.appendChild(s);
+});
 </script>
 </body>
 </html>
